@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Palang is an OpenAI-compatible LLM security gateway (Bun + TypeScript). Full technical spec:
+Palang AI is an OpenAI-compatible LLM security gateway (Bun + TypeScript). Full technical spec:
 `docs/TSD.md` — read the relevant section before implementing anything.
 
 **This file stays high-level on purpose**: project structure, coding conventions, and the workflow
@@ -15,7 +15,7 @@ shipped, confirmed by the user — not a plan.
 
 ## Architecture
 
-Palang is a reverse proxy: apps change only `base_url`, and every request/response passes through a configurable pipeline of guards (TSD §2, §5–6).
+Palang AI is a reverse proxy: apps change only `base_url`, and every request/response passes through a configurable pipeline of guards (TSD §2, §5–6).
 
 ```
 Client → [Auth + tenant] → [Input pipeline: canary inject → PII mask → injection scan]
@@ -61,10 +61,14 @@ Config flows through `apps/gateway/src/config/` only — the YAML+Zod loader (TS
 - Install: `bun install`
 - Dev (all apps): `bun run dev`
 - Typecheck: `bun run typecheck`
-- Test: `bun test` (or `bun run test` for all workspaces via Turborepo)
+- Test: `bun run test` (all workspaces via Turborepo; run `bun test` directly inside one package to scope it)
+  - `packages/db`'s tests need a real Postgres 16 at `DATABASE_URL` (TSD §14 "DB" level) — e.g.
+    `docker run --rm -d -e POSTGRES_PASSWORD=dev -e POSTGRES_DB=palang -p 55433:5432 postgres:16`,
+    then `DATABASE_URL=postgres://postgres:dev@localhost:55433/palang bun run test`. CI provides
+    this via a `postgres` service container (`.github/workflows/ci.yml`).
 - Lint: `bun run lint` / Format: `bun run format` (ESLint + Prettier, see `docs/decisions/0001-lint-tooling.md`)
 - Eval: `bun run eval`
-- DB migration: `bun run --filter @palang/db migrate`
+- DB migration: `bun run --filter @palang-ai/db migrate`
 
 ## AI coding workflow
 

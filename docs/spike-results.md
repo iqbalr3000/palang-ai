@@ -27,7 +27,7 @@ path is mechanically reachable, just not through transformers.js's supported pub
 
 **Decision:** use the native backend as-is; see `docs/plans/spec-runtime-spike.md` Design table for
 the full reasoning (native works, is portable enough via prebuilt binaries, and is the expected
-choice for `@palang/guards`'s future Node.js npm consumers per decision 0002).
+choice for `@palang-ai/guards`'s future Node.js npm consumers per decision 0002).
 
 **Model note:** `meta-llama/Llama-Prompt-Guard-2-22M` (the spec's original pick) has no
 transformers.js-ready community ONNX mirror — `gravitee-io/Llama-Prompt-Guard-2-22M-onnx` uses a

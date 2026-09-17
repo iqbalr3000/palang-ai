@@ -1,0 +1,3 @@
+server:
+  public_port: 8080
+    admin_port: [this is not valid yaml

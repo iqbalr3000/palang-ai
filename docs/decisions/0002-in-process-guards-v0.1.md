@@ -1,6 +1,6 @@
-# 0002 — Pull in-process `@palang/guards` usage into v0.1
+# 0002 — Pull in-process `@palang-ai/guards` usage into v0.1
 
-`docs/TSD.md` §16 open question #5 listed "Publishing `@palang/guards` to npm for in-process use" as
+`docs/TSD.md` §16 open question #5 listed "Publishing `@palang-ai/guards` to npm for in-process use" as
 a v0.2 candidate. Decided 2026-09-17, during pre-`runtime-spike` discussion, after confirming Palang
 is a self-hosted open-source tool (not a hosted SaaS).
 

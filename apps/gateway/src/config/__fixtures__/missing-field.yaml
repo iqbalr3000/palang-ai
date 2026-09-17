@@ -1,0 +1,15 @@
+audit:
+  content_mode: redacted
+
+models:
+  path: ./models
+
+tenants:
+  - id: demo
+    failure_mode: fail_closed
+    upstream:
+      type: openai-compatible
+      base_url: https://api.openai.com/v1
+      api_key: sk-test
+    allowed_models: ["gpt-4o-mini"]
+    guards: {}

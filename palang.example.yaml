@@ -1,0 +1,47 @@
+server:
+  public_port: 8080
+  admin_port: 8081
+
+audit:
+  content_mode: redacted # none | redacted | hash
+  retention_days: 30
+
+models:
+  path: ./models
+
+tenants:
+  - id: demo
+    failure_mode: fail_closed
+    upstream:
+      type: openai-compatible
+      base_url: ${UPSTREAM_BASE_URL}
+      api_key: ${UPSTREAM_API_KEY}
+    allowed_models: ["gpt-4o-mini", "mock-*"]
+    guards:
+      canary:
+        mode: enforce
+        on_detect: block
+      pii-id:
+        mode: enforce
+        entities: [NIK, NPWP, PHONE_ID, EMAIL, CARD]
+        roles: [user, tool, assistant]
+        preserve_hint: true
+        mask_new_output_pii: false
+      injection:
+        mode: monitor
+        roles: [user, tool]
+        flag_threshold: 0.5
+        block_threshold: 0.85
+        classifier:
+          enabled: true
+          model: prompt-injection-classifier
+        judge:
+          enabled: false
+          model: gpt-4o-mini
+          low: 0.4
+          high: 0.85
+          timeout_ms: 3000
+      tool-policy:
+        mode: enforce
+        default: deny
+        rules: []

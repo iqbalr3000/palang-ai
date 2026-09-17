@@ -1,0 +1,5 @@
+docs/
+spike/
+*.md
+bun.lock
+**/__fixtures__/

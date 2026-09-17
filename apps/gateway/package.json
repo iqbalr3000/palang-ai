@@ -1,0 +1,28 @@
+{
+  "name": "@palang-ai/gateway",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@palang-ai/core": "workspace:*",
+    "@palang-ai/db": "workspace:*",
+    "drizzle-orm": "^0.45.2",
+    "hono": "^4.13.8",
+    "zod": "^3.24.0",
+    "yaml": "^2.6.0",
+    "eventsource-parser": "^3.0.0",
+    "pino": "^9.6.0"
+  },
+  "devDependencies": {
+    "@palang-ai/config": "workspace:*",
+    "@palang-ai/mock-upstream": "workspace:*",
+    "@types/bun": "^1.3.0",
+    "openai": "^4.77.0"
+  }
+}

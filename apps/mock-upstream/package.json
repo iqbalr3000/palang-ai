@@ -1,0 +1,22 @@
+{
+  "name": "@palang-ai/mock-upstream",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/app.ts"
+  },
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "hono": "^4.13.8"
+  },
+  "devDependencies": {
+    "@palang-ai/config": "workspace:*",
+    "@types/bun": "^1.3.0"
+  }
+}

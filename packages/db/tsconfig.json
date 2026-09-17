@@ -1,0 +1,7 @@
+{
+  "extends": "@palang-ai/config/base.json",
+  "compilerOptions": {
+    "types": ["bun"]
+  },
+  "include": ["src", "drizzle.config.ts"]
+}
