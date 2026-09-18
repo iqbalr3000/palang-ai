@@ -1,0 +1,21 @@
+{
+  "name": "@palang-ai/guards",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json",
+    "test": "bun test",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@palang-ai/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@palang-ai/config": "workspace:*",
+    "@types/bun": "^1.3.0"
+  }
+}

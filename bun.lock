@@ -22,6 +22,7 @@
       "dependencies": {
         "@palang-ai/core": "workspace:*",
         "@palang-ai/db": "workspace:*",
+        "@palang-ai/guards": "workspace:*",
         "drizzle-orm": "^0.45.2",
         "eventsource-parser": "^3.0.0",
         "hono": "^4.13.8",
@@ -71,6 +72,17 @@
         "@palang-ai/config": "workspace:*",
         "@types/bun": "^1.3.0",
         "drizzle-kit": "^0.31.10",
+      },
+    },
+    "packages/guards": {
+      "name": "@palang-ai/guards",
+      "version": "0.0.0",
+      "dependencies": {
+        "@palang-ai/core": "workspace:*",
+      },
+      "devDependencies": {
+        "@palang-ai/config": "workspace:*",
+        "@types/bun": "^1.3.0",
       },
     },
   },
@@ -168,6 +180,8 @@
     "@palang-ai/db": ["@palang-ai/db@workspace:packages/db"],
 
     "@palang-ai/gateway": ["@palang-ai/gateway@workspace:apps/gateway"],
+
+    "@palang-ai/guards": ["@palang-ai/guards@workspace:packages/guards"],
 
     "@palang-ai/mock-upstream": ["@palang-ai/mock-upstream@workspace:apps/mock-upstream"],
 

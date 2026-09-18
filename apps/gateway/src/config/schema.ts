@@ -1,9 +1,5 @@
 import { z } from "zod";
 
-// TSD §8 config shape, plus the guard-specific fields from §6.1–§6.4. Guards aren't wired into
-// the pipeline yet (pii-guard/injection-guard/tool-policy land later) — this only validates the
-// shape so tenant configs don't need re-validating once they do.
-
 const roleSchema = z.enum(["system", "user", "assistant", "tool"]);
 const guardModeSchema = z.enum(["enforce", "monitor"]);
 

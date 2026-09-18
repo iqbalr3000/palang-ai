@@ -4,10 +4,8 @@ import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { createDb } from "./client.js";
 import { apiKeys, auditEvents } from "./schema.js";
 
-// Integration test — needs a real Postgres 16 at DATABASE_URL (TSD §14 "DB" test level).
-// Locally: `docker run --rm -d -e POSTGRES_PASSWORD=dev -e POSTGRES_DB=palang -p 55433:5432 postgres:16`
-// then `DATABASE_URL=postgres://postgres:dev@localhost:55433/palang bun test`. CI provides this via
-// a postgres service container (.github/workflows/ci.yml).
+// needs a real Postgres 16 at DATABASE_URL:
+// docker run --rm -d -e POSTGRES_PASSWORD=dev -e POSTGRES_DB=palang -p 55433:5432 postgres:16
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) throw new Error("DATABASE_URL is required to run packages/db tests");
 

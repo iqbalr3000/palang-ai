@@ -9,13 +9,13 @@ import {
   type IncomingRequest,
 } from "./openai-shapes.js";
 
-const CHUNK_SIZE = 8;
+const DEFAULT_CHUNK_SIZE = 8;
 const CHUNK_DELAY_MS = 15;
 
-function chunkContent(content: string): string[] {
+function chunkContent(content: string, chunkSize: number): string[] {
   const chunks: string[] = [];
-  for (let i = 0; i < content.length; i += CHUNK_SIZE) {
-    chunks.push(content.slice(i, i + CHUNK_SIZE));
+  for (let i = 0; i < content.length; i += chunkSize) {
+    chunks.push(content.slice(i, i + chunkSize));
   }
   return chunks;
 }
@@ -58,7 +58,7 @@ export function createApp(): Hono {
         `data: ${JSON.stringify(buildChunk(id, model, { role: "assistant" }, null))}\n\n`,
       );
 
-      for (const piece of chunkContent(content)) {
+      for (const piece of chunkContent(content, scenario.chunkSize ?? DEFAULT_CHUNK_SIZE)) {
         await s.sleep(CHUNK_DELAY_MS);
         await s.write(
           `data: ${JSON.stringify(buildChunk(id, model, { content: piece }, null))}\n\n`,

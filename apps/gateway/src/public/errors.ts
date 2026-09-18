@@ -1,6 +1,5 @@
 import type { Decision } from "@palang-ai/core";
 
-// TSD §7.1 block response shape (non-streaming).
 export function blockedErrorBody(requestId: string, blocked: Decision) {
   const code = blocked.reason ?? "blocked";
   return {

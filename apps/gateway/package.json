@@ -12,6 +12,7 @@
   "dependencies": {
     "@palang-ai/core": "workspace:*",
     "@palang-ai/db": "workspace:*",
+    "@palang-ai/guards": "workspace:*",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.13.8",
     "zod": "^3.24.0",

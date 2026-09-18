@@ -1,7 +1,6 @@
 import type { Context, Next } from "hono";
 import { timingSafeEqualString } from "../util/timing-safe-equal.js";
 
-// TSD §7.4: v0.1 uses a single admin token for the whole instance.
 export function createAdminAuthMiddleware(adminToken: string) {
   return async (c: Context, next: Next) => {
     const header = c.req.header("Authorization");

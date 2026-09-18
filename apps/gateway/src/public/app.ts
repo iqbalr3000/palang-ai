@@ -1,15 +1,18 @@
 import { Hono } from "hono";
+import { stream } from "hono/streaming";
 import { sql } from "drizzle-orm";
 import type { Db } from "@palang-ai/db";
-import { runInputPipeline } from "@palang-ai/core";
+import { runInputPipeline, type GuardContext } from "@palang-ai/core";
 import type { PalangConfig, TenantConfig } from "../config/schema.js";
 import { createAuthMiddleware } from "../auth/middleware.js";
 import { matchGlob } from "../util/glob.js";
 import { callUpstream } from "../upstream/adapter.js";
-import { relayStream } from "../stream/relay.js";
+import { processStream } from "../stream/processor.js";
 import type { AuditQueue } from "../audit/queue.js";
 import { chatCompletionRequestSchema } from "./request-schema.js";
 import { blockedErrorBody } from "./errors.js";
+import { buildAllTenantGuards } from "./guards.js";
+import { applyOutputGuardsToChoices, type NonStreamingChoice } from "./apply-output-guards.js";
 
 export interface Variables {
   tenantId: string;
@@ -29,11 +32,10 @@ function findTenant(config: PalangConfig, tenantId: string): TenantConfig | unde
 export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variables }> {
   const app = new Hono<{ Variables: Variables }>();
   const auth = createAuthMiddleware(deps.db);
+  const tenantGuards = buildAllTenantGuards(deps.config.tenants);
 
   app.get("/healthz", (c) => c.text("ok"));
 
-  // Checks DB reachable + config valid only — "models loaded" (TSD §7.1's full definition)
-  // becomes meaningful once injection-guard actually loads a model (spec-gateway-core.md Design).
   app.get("/readyz", async (c) => {
     try {
       await deps.db.execute(sql`select 1`);
@@ -56,13 +58,14 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
     const requestStart = performance.now();
     const tenant = findTenant(deps.config, c.get("tenantId"));
     if (!tenant) return c.json({ error: { message: "Unknown tenant" } }, 401);
+    const guards = tenantGuards.get(tenant.id)!;
 
     const parsed = chatCompletionRequestSchema.safeParse(await c.req.json());
     if (!parsed.success) {
       return c.json({ error: { message: "Invalid request body", code: "invalid_request" } }, 400);
     }
     const body = parsed.data;
-    const requestId = `req_${crypto.randomUUID()}`;
+    const requestId = crypto.randomUUID(); // also the audit_events primary key — must stay a real uuid
     const apiKeyId = c.get("apiKeyId");
 
     if (!tenant.allowed_models.some((pattern) => matchGlob(pattern, body.model))) {
@@ -77,21 +80,22 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
       );
     }
 
+    const ctx: GuardContext = {
+      requestId,
+      tenantId: tenant.id,
+      model: body.model,
+      stream: body.stream ?? false,
+      messages: body.messages,
+      piiVault: new Map(),
+      signal: c.req.raw.signal,
+      metadata: {},
+    };
+
     const guardsStart = performance.now();
-    const pipelineResult = await runInputPipeline(
-      [], // no guards wired in yet — pii-guard/injection-guard land in later features
-      {
-        requestId,
-        tenantId: tenant.id,
-        model: body.model,
-        stream: body.stream ?? false,
-        messages: body.messages,
-        piiVault: new Map(),
-        signal: c.req.raw.signal,
-        metadata: {},
-      },
-      { failureMode: tenant.failure_mode, guards: {} },
-    );
+    const pipelineResult = await runInputPipeline(guards.input, ctx, {
+      failureMode: tenant.failure_mode,
+      guards: guards.runtimeConfigs,
+    });
     const latencyGuardsMs = performance.now() - guardsStart;
 
     if (pipelineResult.blocked) {
@@ -116,7 +120,7 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
     try {
       upstreamResponse = await callUpstream(
         { baseUrl: tenant.upstream.base_url, apiKey: tenant.upstream.api_key },
-        body,
+        { ...body, messages: ctx.messages }, // input guards mutate ctx.messages in place
         c.req.raw.signal,
       );
     } catch {
@@ -136,12 +140,8 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
     }
     const latencyUpstreamMs = performance.now() - upstreamStart;
 
-    c.header("x-palang-request-id", requestId);
-    c.header("x-palang-decision", "allow");
-
     if (!upstreamResponse.ok) {
-      // Forward upstream errors with original status/body as-is (TSD §7.2) — no PII restore
-      // applied to error bodies (moot here, no guards yet).
+      // no guard restore on error bodies — forwarded as-is
       deps.auditQueue.enqueue({
         id: requestId,
         tenantId: tenant.id,
@@ -161,27 +161,76 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
       });
     }
 
+    c.header("x-palang-request-id", requestId);
+
     if (body.stream) {
-      // Audit is recorded at hand-off, not after the stream drains — the real
-      // latency/ttft/usage-aware accounting is `pii-guard`'s stream processor's job (it already
-      // has to inspect every chunk; this stage's relay deliberately doesn't).
+      // Headers (and the 200 status) are already committed once the SSE body starts, so this is
+      // provisional — a guard block is signaled in-band as an error event instead. The real
+      // outcome is only known once the stream ends, which is when it's actually audited below.
+      c.header("x-palang-decision", "allow");
+      return stream(c, async (s) => {
+        const result = await processStream(
+          upstreamResponse.body!,
+          {
+            outputGuards: guards.output,
+            guardConfigs: guards.runtimeConfigs,
+            failureMode: tenant.failure_mode,
+            ctx,
+          },
+          async (chunk) => {
+            await s.write(chunk);
+          },
+        );
+        deps.auditQueue.enqueue({
+          id: requestId,
+          tenantId: tenant.id,
+          apiKeyId,
+          model: body.model,
+          stream: true,
+          finalAction: result.blocked ? "block" : "allow",
+          blockedBy: result.blocked?.guard,
+          statusCode: 200,
+          decisions: [...pipelineResult.decisions, ...result.decisions],
+          latencyTotalMs: performance.now() - requestStart,
+          latencyGuardsMs,
+          latencyUpstreamMs,
+        });
+      });
+    }
+
+    const json = (await upstreamResponse.json()) as {
+      choices?: NonStreamingChoice[];
+      usage?: unknown;
+    };
+
+    const outputResult = await applyOutputGuardsToChoices(
+      json.choices ?? [],
+      guards.output,
+      guards.runtimeConfigs,
+      tenant.failure_mode,
+      ctx,
+    );
+    const allDecisions = [...pipelineResult.decisions, ...outputResult.decisions];
+
+    if (outputResult.blocked) {
       deps.auditQueue.enqueue({
         id: requestId,
         tenantId: tenant.id,
         apiKeyId,
         model: body.model,
-        stream: true,
-        finalAction: "allow",
-        statusCode: 200,
-        decisions: pipelineResult.decisions,
+        stream: false,
+        finalAction: "block",
+        blockedBy: outputResult.blocked.guard,
+        statusCode: 400,
+        decisions: allDecisions,
         latencyTotalMs: performance.now() - requestStart,
         latencyGuardsMs,
         latencyUpstreamMs,
       });
-      return relayStream(c, upstreamResponse.body!);
+      return c.json(blockedErrorBody(requestId, outputResult.blocked), 400);
     }
 
-    const json = (await upstreamResponse.json()) as { usage?: unknown };
+    c.header("x-palang-decision", "allow");
     deps.auditQueue.enqueue({
       id: requestId,
       tenantId: tenant.id,
@@ -190,7 +239,7 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
       stream: false,
       finalAction: "allow",
       statusCode: 200,
-      decisions: pipelineResult.decisions,
+      decisions: allDecisions,
       latencyTotalMs: performance.now() - requestStart,
       latencyGuardsMs,
       latencyUpstreamMs,

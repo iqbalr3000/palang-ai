@@ -54,6 +54,14 @@ Same history as above, dated against the actual commit that shipped it (`git log
 
 ### 2026-09-17
 
+**`ca541dd` — feat: implement gateway-core — passthrough proxy, auth, audit, admin keys**
+The whole `gateway-core` feature (TSD §15 M1): Bun workspaces monorepo scaffold + CI,
+`packages/core` (pipeline runner), `packages/db` (`api_keys`/`audit_events`), config loader,
+`apps/mock-upstream` (`mock-echo`), `apps/gateway` (auth, passthrough proxy, audit queue, minimal
+admin key endpoints). Verified end-to-end with the real `openai` SDK. Also renamed the project to
+Palang AI / `@palang-ai` scope (decision 0003) and scoped the DB-outage acceptance criterion
+(decision 0004).
+
 **`fe8df4a` — docs: bootstrap planning workflow and complete runtime-spike**
 Initial commit. Planning docs (`CLAUDE.md`, `docs/plans/overview.md`, `docs/plans/roadmap.md`,
 `docs/decisions/0001-lint-tooling.md`, `docs/decisions/0002-in-process-guards-v0.1.md`) plus the

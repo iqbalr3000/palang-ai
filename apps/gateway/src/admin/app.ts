@@ -21,10 +21,6 @@ export function createAdminApp(deps: AdminAppDeps): Hono {
   const app = new Hono();
   const auth = createAdminAuthMiddleware(deps.adminToken);
 
-  // TSD §7.4 — scope for gateway-core is deliberately just create/revoke (see
-  // docs/plans/spec-gateway-core.md's Design table); stats/events/tenants/config land with
-  // dashboard-launch.
-
   app.post("/admin/tenants/:id/keys", auth, async (c) => {
     const tenantId = c.req.param("id");
     if (!tenantId || !deps.config.tenants.some((t) => t.id === tenantId)) {
@@ -42,7 +38,7 @@ export function createAdminApp(deps: AdminAppDeps): Hono {
       .values({ tenantId, name: parsed.data.name, prefix: key.prefix, keyHash: key.hash })
       .returning();
 
-    // Plaintext is returned exactly once — only the hash is ever persisted (TSD §7.4, §10.2).
+    // returned once — only the hash is ever persisted
     return c.json(
       {
         id: row?.id,

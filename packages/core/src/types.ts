@@ -1,18 +1,14 @@
-// TSD §5 core domain model, verbatim except two additions noted inline.
-
 export type Action = "allow" | "block" | "modify" | "flag";
 export type GuardMode = "enforce" | "monitor";
 export type Role = "system" | "user" | "assistant" | "tool";
 export type FailureMode = "fail_open" | "fail_closed";
 
-// Not in TSD §5's aggregate — the pipeline's overall outcome (§7.1's `x-palang-decision` header,
-// §9's `audit_events.final_action`) is narrower than a single guard's `Action`: "modify" is a
-// per-guard signal, never a pipeline-level outcome.
+// "modify" is a per-guard signal, never a pipeline-level outcome.
 export type FinalAction = "allow" | "flag" | "block";
 
 export interface ChatMessage {
   role: Role;
-  content: string | null; // v0.1: text only; array content is flattened for scanning
+  content: string | null;
   name?: string;
   tool_call_id?: string;
   tool_calls?: ToolCall[];
@@ -27,19 +23,16 @@ export interface ToolCall {
 export interface Decision {
   guard: string;
   action: Action;
-  reason?: string; // machine-readable code, see reasons.ts
-  detail?: string; // human-readable, must not contain raw PII
-  score?: number; // 0..1 when applicable
+  reason?: string;
+  detail?: string; // must not contain raw PII
+  score?: number;
   findings?: Finding[];
   latencyMs: number;
-  // Set by the pipeline runner (not the guard) when a `monitor`-mode guard's `block` is downgraded
-  // to `flag`. TSD §5.1 names this field in prose ("recorded as wouldBlock: true") but omits it
-  // from §5's type listing — added here to close that gap.
-  wouldBlock?: boolean;
+  wouldBlock?: boolean; // set by the pipeline runner, not the guard
 }
 
 export interface Finding {
-  type: string; // "NIK", "PHONE_ID", "INJECTION_HEURISTIC", ...
+  type: string;
   messageIndex?: number;
   start?: number;
   end?: number;

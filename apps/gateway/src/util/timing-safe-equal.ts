@@ -1,14 +1,13 @@
-// Constant-time string compare (TSD §10.2) — used wherever a secret is compared directly in
-// application code (the admin token has no DB-mediated lookup to do this for it, unlike API keys
-// — see auth/middleware.ts's comment on that).
+// Always loops to the longer length instead of returning early on a size mismatch — an early
+// return leaks the secret's length via timing, defeating the point of a constant-time compare.
 export function timingSafeEqualString(a: string, b: string): boolean {
   const aBytes = new TextEncoder().encode(a);
   const bBytes = new TextEncoder().encode(b);
-  if (aBytes.length !== bBytes.length) return false;
+  const maxLength = Math.max(aBytes.length, bBytes.length);
 
-  let diff = 0;
-  for (let i = 0; i < aBytes.length; i++) {
-    diff |= aBytes[i]! ^ bBytes[i]!;
+  let diff = aBytes.length ^ bBytes.length;
+  for (let i = 0; i < maxLength; i++) {
+    diff |= (aBytes[i] ?? 0) ^ (bBytes[i] ?? 0);
   }
   return diff === 0;
 }

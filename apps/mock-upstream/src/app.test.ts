@@ -60,6 +60,32 @@ test("mock-echo: streaming reassembles to the same content, ends with [DONE]", a
   expect(reassembled).toBe("streamed reply please");
 });
 
+test("mock-split-placeholder: streams one character per chunk, splitting any [TYPE_N] token", async () => {
+  const res = await app.fetch(
+    req({
+      model: "mock-split-placeholder",
+      stream: true,
+      messages: [{ role: "user", content: "your id is [NIK_1] thanks" }],
+    }),
+  );
+
+  const text = await res.text();
+  const dataLines = text
+    .split("\n\n")
+    .map((l) => l.trim())
+    .filter((l) => l.startsWith("data: "))
+    .map((l) => l.slice("data: ".length));
+
+  const events = dataLines.slice(0, -1).map((l) => JSON.parse(l));
+  const contentDeltas = events
+    .map((e) => e.choices[0].delta.content)
+    .filter((c) => c !== undefined);
+
+  // every content delta is exactly one character — the placeholder is necessarily split
+  expect(contentDeltas.every((c: string) => c.length === 1)).toBe(true);
+  expect(contentDeltas.join("")).toBe("your id is [NIK_1] thanks");
+});
+
 test("missing messages returns 400", async () => {
   const res = await app.fetch(req({ model: "mock-echo" }));
   expect(res.status).toBe(400);

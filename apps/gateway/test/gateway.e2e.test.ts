@@ -9,9 +9,6 @@ import { AuditQueue } from "../src/audit/queue.js";
 import { generateApiKey } from "../src/auth/keys.js";
 import type { PalangConfig } from "../src/config/schema.js";
 
-// End-to-end integration test, matching TSD §15 M1's acceptance criteria exactly: the official
-// `openai` SDK against a really-bound gateway, in both modes, with audit rows landing in Postgres.
-// Needs a real Postgres 16 at DATABASE_URL (TSD §14).
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) throw new Error("DATABASE_URL is required to run apps/gateway e2e tests");
 

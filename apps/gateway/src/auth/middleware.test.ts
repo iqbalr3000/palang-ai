@@ -5,7 +5,6 @@ import { createDb, apiKeys, type Db } from "@palang-ai/db";
 import { createAuthMiddleware } from "./middleware.js";
 import { generateApiKey } from "./keys.js";
 
-// Integration test — needs a real Postgres 16 at DATABASE_URL, same as packages/db (TSD §14).
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) throw new Error("DATABASE_URL is required to run apps/gateway auth tests");
 

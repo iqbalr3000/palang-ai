@@ -20,12 +20,9 @@ export interface PipelineResult {
 
 class GuardTimeoutError extends Error {}
 
-/**
- * Runs one guard call with a per-guard timeout (TSD §5.1). The timeout is enforced by racing the
- * guard's promise, not by cancelling it — an unresponsive guard's work may continue in the
- * background, but the pipeline moves on regardless. Well-behaved guards can still observe the
- * combined `AbortSignal` passed to `fn` and stop early.
- */
+// Enforced by racing the guard's promise, not cancelling it — an unresponsive guard's work may
+// continue in the background, but the pipeline moves on. `fn` still gets a combined `AbortSignal`
+// so well-behaved guards can stop early.
 async function withTimeout<T>(
   fn: (signal: AbortSignal) => Promise<T>,
   parentSignal: AbortSignal,
@@ -51,12 +48,7 @@ async function withTimeout<T>(
   }
 }
 
-/**
- * Runs a single guard's check with mode + timeout + failure-mode handling applied (TSD §5.1).
- * Shared by the input pipeline below and, later, by output-phase (`checkText`/`checkToolCall`)
- * invocations in `apps/gateway`'s stream processor — kept generic over the guard call itself
- * (`fn`) so both call shapes can reuse the same mode/timeout/failure-mode logic.
- */
+// Generic over the guard call (`fn`) so input and output guard invocations can share this.
 export async function evaluateGuard(
   name: string,
   config: GuardRuntimeConfig,
@@ -75,23 +67,22 @@ export async function evaluateGuard(
     }
     return { ...decision, latencyMs };
   } catch {
-    // Timeout or thrown exception: tenant `failureMode` decides the outcome directly (TSD §5.1),
-    // independent of the guard's own `mode`.
     const latencyMs = performance.now() - start;
-    return {
-      guard: name,
-      action: failureMode === "fail_closed" ? "block" : "flag",
-      reason: REASONS.GUARD_ERROR,
-      latencyMs,
-    };
+    const action = failureMode === "fail_closed" ? "block" : "flag";
+    if (config.mode === "monitor" && action === "block") {
+      return {
+        guard: name,
+        action: "flag",
+        wouldBlock: true,
+        reason: REASONS.GUARD_ERROR,
+        latencyMs,
+      };
+    }
+    return { guard: name, action, reason: REASONS.GUARD_ERROR, latencyMs };
   }
 }
 
-/**
- * Runs input guards sequentially, in the order given (TSD §5.1 — order matters, e.g. PII mask
- * before the injection judge). Short-circuits on the first enforced `block`; a `monitor`-mode
- * guard's downgraded block (`flag` + `wouldBlock: true`) does not short-circuit.
- */
+// Runs guards sequentially in the given order; short-circuits on the first enforced block.
 export async function runInputPipeline(
   guards: InputGuard[],
   ctx: GuardContext,

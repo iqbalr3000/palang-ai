@@ -24,16 +24,12 @@ export interface AuditQueueOptions {
   flushBatchSize?: number;
 }
 
-const DEFAULT_MAX_SIZE = 10_000; // TSD §7.5
+const DEFAULT_MAX_SIZE = 10_000;
 const DEFAULT_FLUSH_INTERVAL_MS = 1000;
 const DEFAULT_FLUSH_BATCH_SIZE = 200;
 
-/**
- * In-memory bounded queue, flushed on an interval or batch-size trigger (TSD §7.5). `enqueue` is
- * synchronous and never awaited by the request path (Working rule 5) — a full queue or a failed
- * flush (e.g. DB down) drops events rather than blocking or retrying indefinitely, matching TSD
- * §10.3's documented limitation ("audit events can be lost on crash or overload").
- */
+// enqueue is synchronous and never awaited by the request path — a full queue or a failed flush
+// drops events rather than blocking or retrying.
 export class AuditQueue {
   private queue: AuditEventInput[] = [];
   private droppedTotal = 0;
@@ -82,7 +78,6 @@ export class AuditQueue {
     }
   }
 
-  /** Graceful shutdown (TSD §7.5): stop the timer and flush whatever remains, up to a deadline. */
   async shutdown(deadlineMs = 5000): Promise<void> {
     clearInterval(this.flushTimer);
     await Promise.race([

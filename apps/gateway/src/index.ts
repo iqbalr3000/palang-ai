@@ -9,7 +9,6 @@ async function main(): Promise<void> {
   try {
     config = await loadConfig();
   } catch (error) {
-    // Invalid config -> process exits with a readable error (TSD §8).
     console.error(error instanceof ConfigError ? error.message : error);
     process.exit(1);
   }
@@ -37,7 +36,6 @@ async function main(): Promise<void> {
   console.log(`[gateway] public API on :${config.server.public_port}`);
   console.log(`[gateway] admin API on :${config.server.admin_port}`);
 
-  // Graceful shutdown (TSD §7.5): stop accepting requests, flush the audit queue with a deadline.
   const shutdown = async () => {
     console.log("[gateway] shutting down...");
     publicServer.stop();

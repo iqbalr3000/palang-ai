@@ -1,0 +1,8 @@
+{
+  "extends": "@palang-ai/config/base.json",
+  "compilerOptions": {
+    "types": []
+  },
+  "include": ["src"],
+  "exclude": ["src/**/*.test.ts"]
+}
