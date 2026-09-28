@@ -46,7 +46,6 @@ export interface GuardContext {
   stream: boolean;
   messages: ChatMessage[]; // input guards may mutate
   piiVault: Map<string, string>; // placeholder -> original; NEVER log or persist
-  canary?: string;
   signal: AbortSignal;
   metadata: Record<string, unknown>;
 }

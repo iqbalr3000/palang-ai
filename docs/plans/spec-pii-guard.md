@@ -95,3 +95,5 @@ Matches TSD §15 M2 checklist:
   it needs substitution-provenance tracking (knowing *which* placeholder a given output span came
   from, not just whether the value matches something in the vault), which is a design decision, not
   a bug fix. Deferred to `tool-policy` (2026-09-18), since that feature owns output PII detection.
+  **Resolved in `tool-policy` (2026-09-28):** detection now runs on the model's raw text before
+  restore, in one pass — see `spec-tool-policy.md`.

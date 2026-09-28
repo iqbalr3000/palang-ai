@@ -82,3 +82,49 @@ test("random chunk splits of the same text always reassemble identically", () =>
     expect(released).toBe(original);
   }
 });
+
+function releaseInChunks(buffer: HoldbackBuffer, text: string, chunkSize: () => number): string[] {
+  const segments: string[] = [];
+  let cursor = 0;
+  while (cursor < text.length) {
+    const chunk = text.slice(cursor, cursor + chunkSize());
+    cursor += chunk.length;
+    segments.push(buffer.append(chunk));
+  }
+  segments.push(buffer.flush());
+  return segments.filter((s) => s !== "");
+}
+
+const TOKENS = [
+  "plg-canary-0123456789abcdef",
+  "budi.santoso@example.com",
+  "0812 3456 7890",
+  "4111 1111 1111 1111",
+  "3171011506900001",
+];
+
+test("whitespace-delimited tokens and space-grouped numbers are never split across releases", () => {
+  const text = `Balasan: ${TOKENS.join(" lalu ")} selesai, terima kasih banyak ya.`;
+
+  for (let trial = 0; trial < 50; trial++) {
+    const segments = releaseInChunks(
+      new HoldbackBuffer(32),
+      text,
+      () => 1 + Math.floor(Math.random() * 12),
+    );
+    expect(segments.join("")).toBe(text);
+    for (const token of TOKENS) {
+      expect(segments.filter((s) => s.includes(token))).toHaveLength(1);
+    }
+  }
+});
+
+test("a token with no safe boundary within the cap is still released, not held forever", () => {
+  const buffer = new HoldbackBuffer(8);
+  const released = buffer.append("x".repeat(600));
+  expect(released.length).toBeGreaterThan(0);
+});
+
+test("no holdback (no output guards) releases everything immediately", () => {
+  expect(new HoldbackBuffer(0).append("budi@exam")).toBe("budi@exam");
+});

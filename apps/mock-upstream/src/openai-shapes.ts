@@ -21,8 +21,22 @@ export function buildCompletionId(): string {
   return `chatcmpl-mock-${crypto.randomUUID()}`;
 }
 
-export function buildCompletion(id: string, model: string, promptTokens: number, content: string) {
-  const completionTokens = estimateTokens(content);
+export interface MockToolCall {
+  id: string;
+  type: "function";
+  function: { name: string; arguments: string };
+}
+
+export function buildCompletion(
+  id: string,
+  model: string,
+  promptTokens: number,
+  reply: { content: string } | { toolCall: MockToolCall },
+) {
+  const isToolCall = "toolCall" in reply;
+  const completionTokens = estimateTokens(
+    isToolCall ? reply.toolCall.function.arguments : reply.content,
+  );
   return {
     id,
     object: "chat.completion" as const,
@@ -31,8 +45,10 @@ export function buildCompletion(id: string, model: string, promptTokens: number,
     choices: [
       {
         index: 0,
-        message: { role: "assistant" as const, content },
-        finish_reason: "stop" as const,
+        message: isToolCall
+          ? { role: "assistant" as const, content: null, tool_calls: [reply.toolCall] }
+          : { role: "assistant" as const, content: reply.content },
+        finish_reason: isToolCall ? ("tool_calls" as const) : ("stop" as const),
       },
     ],
     usage: {
@@ -46,8 +62,17 @@ export function buildCompletion(id: string, model: string, promptTokens: number,
 export function buildChunk(
   id: string,
   model: string,
-  delta: { role?: "assistant"; content?: string },
-  finishReason: "stop" | null,
+  delta: {
+    role?: "assistant";
+    content?: string;
+    tool_calls?: {
+      index: number;
+      id?: string;
+      type?: "function";
+      function: { name?: string; arguments: string };
+    }[];
+  },
+  finishReason: "stop" | "tool_calls" | null,
 ) {
   return {
     id,

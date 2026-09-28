@@ -62,6 +62,32 @@ Feature order comes from `docs/TSD.md` §15; see `docs/plans/overview.md` for th
   input's vault should be flagged as a leak (it currently isn't — see `spec-pii-guard.md`'s open
   questions).
 
+## `injection-guard`
+
+*Spec: `spec-injection-guard.md`. Decision: `docs/decisions/0005`. Report:
+`evals/results/2026-09-28-9576c75-dirty-fp32.md`.*
+
+- `packages/guards/injection`: normalization (NFKC, zero-width/bidi strip, base64 decode) and
+  EN/ID L1 heuristics, plus an `InjectionClassifier` interface (score = max(L1, L2));
+  standalone-usable per decision 0002.
+- L2 classifier (`protectai/deberta-v3-base-prompt-injection-v2`, fp32, sliding windows capped at
+  8 × 512 tokens) in `apps/gateway/src/classifier/`. Missed TSD's latency budget by ~9–16× on an
+  M1, so it's opt-in per tenant and the L2 budget was withdrawn (0005); int8 was rejected for
+  losing most of its recall.
+- Wired into the gateway after `pii-id` (scans masked text only), default `monitor`, optional
+  `timeout_ms`; the gateway refuses to boot if an enabled model can't load; `judge.enabled: true`
+  is rejected until L3 exists.
+- `evals/`: injection dev/test datasets with disjoint phrasing, a 550-sample synthetic PII dataset,
+  and one `bun run eval` report (injection per layer/language/category; PII precision/recall per
+  entity, streaming restore round trip, `restore_miss`). Held-out test, flag threshold: L1 recall
+  48.3% / FPR 22.9%, combined 92.4% / 39.9% — `monitor` is the intended mode.
+- PII eval findings recorded for later (`spec-injection-guard.md`): `PHONE_ID` matching inside
+  longer digit runs (carried into `tool-policy`), any 15 digits read as `NPWP`, Luhn/NIK
+  collisions.
+- Also fixed two `gateway-core` audit-queue bugs found on the way: fractional latencies rejected by
+  the integer columns (events silently dropped) and flush/shutdown not waiting for in-flight
+  inserts.
+
 ## Platform foundation
 
 *Cross-cutting — not owned by a single feature spec.*
@@ -77,6 +103,14 @@ Feature order comes from `docs/TSD.md` §15; see `docs/plans/overview.md` for th
 ## Shipped, by commit
 
 Same history as above, dated against the actual commit that shipped it (`git log`), newest first.
+
+### 2026-09-28
+
+**`19bef40` — feat: implement injection-guard — L1 heuristics, opt-in L2 classifier, gateway
+wiring, and eval harness**
+The whole `injection-guard` feature (TSD §15 M3): normalization + L1 heuristics, the opt-in L2
+classifier (0005), gateway wiring, and the `evals/` harness with the first injection + PII report.
+Includes the two audit-queue fixes above and stops tracking `CLAUDE.md`.
 
 ### 2026-09-18
 

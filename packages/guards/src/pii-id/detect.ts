@@ -17,10 +17,11 @@ interface Candidate {
 const NIK_CANDIDATE = /\b(?:\d[.-]?){15}\d\b/g;
 const NPWP15_FORMATTED = /\b\d{2}\.\d{3}\.\d{3}\.\d-\d{3}\.\d{3}\b/g;
 const NPWP15_PLAIN = /\b\d{15}\b/g;
-// Trailing lookahead rejects a match immediately followed by "@" (no whitespace between) — without
-// it, the digit-only pattern also matches the local part of an email like "0812345678@x.com" and,
-// checked before EMAIL below, wins the overlap and swallows the whole address.
-const PHONE_CANDIDATE = /(?:\+62|62|0)[\s.-]?8(?:[\s.-]?\d){8,11}(?!\S*@)/g;
+// Not `\b`: that would reject "+62" after a space. Without the digit guards (a separator-grouped
+// run counts too), a phone is read out of a longer run ("5200 8283 9981 7031" → "0 8283 9981 7031")
+// and, being checked before CARD, wins the overlap. The "@" lookahead stops it swallowing an
+// email's local part the same way.
+const PHONE_CANDIDATE = /(?<!\d[\s.-]?)(?:\+62|62|0)[\s.-]?8(?:[\s.-]?\d){8,11}(?!\d)(?!\S*@)/g;
 // Restricted to actual email-safe characters (not "any non-whitespace") — a naive `[^\s@]+`
 // swallows surrounding JSON punctuation (`{"email":"x@y.com"}`) as part of the match.
 const EMAIL_CANDIDATE = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;

@@ -42,11 +42,30 @@ const injectionGuardSchema = z.object({
     .optional(),
 });
 
-const constraintSchema = z.object({
-  path: z.string(),
-  op: z.enum(["eq", "neq", "lt", "lte", "gt", "gte", "in", "not_in", "regex"]),
-  value: z.unknown(),
-});
+const primitiveSchema = z.union([z.string(), z.number(), z.boolean(), z.null()]);
+
+// Mirrors `ToolConstraint` in @palang-ai/guards: each op's value type is checked here so a bad
+// policy fails at config load, not on the first tool call.
+const constraintSchema = z.union([
+  z.object({ path: z.string(), op: z.enum(["eq", "neq"]), value: primitiveSchema }),
+  z.object({ path: z.string(), op: z.enum(["lt", "lte", "gt", "gte"]), value: z.number() }),
+  z.object({ path: z.string(), op: z.enum(["in", "not_in"]), value: z.array(primitiveSchema) }),
+  z.object({
+    path: z.string(),
+    op: z.literal("regex"),
+    value: z.string().refine(
+      (pattern) => {
+        try {
+          new RegExp(pattern);
+          return true;
+        } catch {
+          return false;
+        }
+      },
+      { message: "not a valid regular expression" },
+    ),
+  }),
+]);
 
 const toolPolicyGuardSchema = z.object({
   mode: guardModeSchema,

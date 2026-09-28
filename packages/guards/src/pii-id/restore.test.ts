@@ -123,3 +123,43 @@ test("holdback is a fixed cap, long enough for any real placeholder", () => {
   expect(guard.holdback).toBe(32);
   expect("[PHONE_ID_999]".length).toBeLessThanOrEqual(guard.holdback!);
 });
+
+test("raw PII the model wrote itself is flagged even when it equals a vault value", async () => {
+  const guard = createPiiIdOutputGuard(DEFAULT_PII_ID_CONFIG);
+  const ctx = makeCtx([["[NIK_1]", "3171011506900001"]]);
+
+  // The input was masked, so a raw copy can only have come from elsewhere (context, memory).
+  const { text, decision } = await guard.checkText!("NIK: 3171011506900001", ctx);
+
+  expect(text).toBe("NIK: 3171011506900001");
+  expect(decision.findings).toEqual([
+    expect.objectContaining({ type: "OUTPUT_PII", meta: { entityType: "NIK" } }),
+  ]);
+});
+
+test("masking raw output PII is one pass: the mask isn't restored right back", async () => {
+  const guard = createPiiIdOutputGuard({ ...DEFAULT_PII_ID_CONFIG, maskNewOutputPii: true });
+  const ctx = makeCtx([["[NIK_1]", "3171011506900001"]]);
+
+  const { text, decision } = await guard.checkText!("[NIK_1] vs 3171011506900001", ctx);
+
+  expect(text).toBe("3171011506900001 vs [NIK_1]");
+  expect(decision.findings?.filter((f) => f.type === "OUTPUT_PII")).toHaveLength(1);
+});
+
+test("checkToolCall flags raw PII in arguments but not restored placeholders", async () => {
+  const guard = createPiiIdOutputGuard(DEFAULT_PII_ID_CONFIG);
+  const ctx = makeCtx([["[EMAIL_1]", "budi@example.com"]]);
+  const toolCall: ToolCall = {
+    id: "call_1",
+    type: "function",
+    function: { name: "send_email", arguments: '{"to":"[EMAIL_1]","cc":"siti@example.com"}' },
+  };
+
+  const { call, decision } = await guard.checkToolCall!(toolCall, ctx);
+
+  expect(call.function.arguments).toBe('{"to":"budi@example.com","cc":"siti@example.com"}');
+  expect(decision.findings).toEqual([
+    expect.objectContaining({ type: "OUTPUT_PII", meta: { entityType: "EMAIL" } }),
+  ]);
+});

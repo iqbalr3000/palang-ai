@@ -20,47 +20,59 @@ function trackRestored(ctx: GuardContext, placeholder: string): void {
   restored.add(placeholder);
 }
 
-function restoreKnownPlaceholders(text: string, ctx: GuardContext, findings: Finding[]): string {
-  return text.replace(PLACEHOLDER_PATTERN, (placeholder) => {
-    const original = ctx.piiVault.get(placeholder);
-    if (original === undefined) {
-      findings.push({ type: "UNKNOWN_PLACEHOLDER", meta: { placeholder } });
-      return placeholder;
-    }
-    trackRestored(ctx, placeholder);
-    return original;
-  });
+interface Span {
+  start: number;
+  end: number;
 }
 
-// Flags PII in (already-restored) output text that wasn't a restored value — the model produced
-// it itself — and optionally masks it too when `mask_new_output_pii` is on.
-function flagOrMaskNewOutputPii(
-  text: string,
+// One pass over the model's raw text: known placeholders are restored, and PII the model wrote
+// out itself is flagged (optionally masked). Detecting on the raw text is what tells the two apart
+// — placeholders aren't PII-shaped, and the model never saw the real values, so a raw value is a
+// leak even when it equals one in the vault. A second pass would restore the masks right back.
+function restoreAndScan(
+  raw: string,
   ctx: GuardContext,
   config: PiiIdConfig,
   findings: Finding[],
 ): string {
-  const knownValues = new Set(ctx.piiVault.values());
+  const placeholders: Span[] = [...raw.matchAll(PLACEHOLDER_PATTERN)].map((m) => ({
+    start: m.index,
+    end: m.index + m[0].length,
+  }));
   const entities = new Set<string>(config.entities);
-  const matches = detectPii(text).filter((m) => entities.has(m.type));
+  const pii = detectPii(raw).filter(
+    (m) => entities.has(m.type) && !placeholders.some((p) => m.start < p.end && p.start < m.end),
+  );
+  const spans = [
+    ...placeholders.map((span) => ({ span, pii: undefined })),
+    ...pii.map((match) => ({ span: match, pii: match })),
+  ].sort((a, b) => a.span.start - b.span.start);
 
   let result = "";
   let cursor = 0;
-  let changed = false;
+  for (const { span, pii: match } of spans) {
+    result += raw.slice(cursor, span.start);
+    cursor = span.end;
+    const original = raw.slice(span.start, span.end);
 
-  for (const match of matches) {
-    if (knownValues.has(match.normalized)) continue; // a restored value, not new
+    if (match) {
+      findings.push({ type: "OUTPUT_PII", meta: { entityType: match.type } });
+      result += config.maskNewOutputPii
+        ? getOrCreatePlaceholder(ctx.piiVault, match.type, match.normalized)
+        : original;
+      continue;
+    }
 
-    findings.push({ type: "OUTPUT_PII", meta: { entityType: match.type } });
-    if (config.maskNewOutputPii) {
-      const placeholder = getOrCreatePlaceholder(ctx.piiVault, match.type, match.normalized);
-      result += text.slice(cursor, match.start) + placeholder;
-      cursor = match.end;
-      changed = true;
+    const value = ctx.piiVault.get(original);
+    if (value === undefined) {
+      findings.push({ type: "UNKNOWN_PLACEHOLDER", meta: { placeholder: original } });
+      result += original;
+    } else {
+      trackRestored(ctx, original);
+      result += value;
     }
   }
-  result += text.slice(cursor);
-  return changed ? result : text;
+  return result + raw.slice(cursor);
 }
 
 function buildDecision(findings: Finding[]): Decision {
@@ -83,15 +95,13 @@ export function createPiiIdOutputGuard(config: PiiIdConfig): OutputGuard {
 
     async checkText(text: string, ctx: GuardContext) {
       const findings: Finding[] = [];
-      let result = restoreKnownPlaceholders(text, ctx, findings);
-      result = flagOrMaskNewOutputPii(result, ctx, config, findings);
+      const result = restoreAndScan(text, ctx, config, findings);
       return { decision: buildDecision(findings), text: result };
     },
 
     async checkToolCall(call: ToolCall, ctx: GuardContext) {
       const findings: Finding[] = [];
-      let args = restoreKnownPlaceholders(call.function.arguments, ctx, findings);
-      args = flagOrMaskNewOutputPii(args, ctx, config, findings);
+      const args = restoreAndScan(call.function.arguments, ctx, config, findings);
       return {
         decision: buildDecision(findings),
         call: { ...call, function: { ...call.function, arguments: args } },

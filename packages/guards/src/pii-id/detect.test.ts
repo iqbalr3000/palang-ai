@@ -69,3 +69,19 @@ test("matches are returned in left-to-right order", () => {
   expect(matches.map((m) => m.type)).toEqual(["PHONE_ID", "EMAIL"]);
   expect(matches[0]!.start).toBeLessThan(matches[1]!.start);
 });
+
+test("a space-grouped card is a CARD, not a phone found inside it", () => {
+  const matches = detectPii("kartu 5200 8283 9981 7031 ya");
+  expect(matches.map((m) => m.type)).toEqual(["CARD"]);
+});
+
+test("no phone is read from the middle or start of a longer digit run", () => {
+  expect(detectPii("pesanan 6081870179141044").filter((m) => m.type === "PHONE_ID")).toEqual([]);
+  expect(detectPii("resi 0812345678901234567").filter((m) => m.type === "PHONE_ID")).toEqual([]);
+  expect(detectPii("voucher 7953 0806 4480 8778").filter((m) => m.type === "PHONE_ID")).toEqual([]);
+});
+
+test("phones right after punctuation or with a +62 prefix are still found", () => {
+  const matches = detectPii("HP:081234567890, WA +62 812-3456-7890");
+  expect(matches.map((m) => m.normalized)).toEqual(["+6281234567890", "+6281234567890"]);
+});

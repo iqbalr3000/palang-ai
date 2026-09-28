@@ -30,14 +30,13 @@ A reverse proxy that sits between an application and its LLM provider. Applicati
   - `runtime-spike` (`spec-runtime-spike.md`, results in `docs/spike-results.md`) — prove Bun handles SSE streaming, the ONNX classifier, and Postgres migrations. **Done** — see `docs/plans/roadmap.md`.
   - `gateway-core` (`spec-gateway-core.md`) — monorepo scaffold, passthrough proxy, auth, config, audit queue, minimal admin key API. **Done** — see `docs/plans/roadmap.md`.
   - `pii-guard` (`spec-pii-guard.md`) — Indonesian PII detection/masking + stream holdback buffer; standalone/in-process usage is in scope (0002). **Done** — see `docs/plans/roadmap.md`.
-  - `injection-guard` — prompt-injection detection (heuristics → classifier → judge) + eval harness; standalone/in-process usage is in scope (0002). Not started.
-  - `tool-policy` — tool-call policy, canary, output PII detection; standalone/in-process usage is in scope for tool-policy (0002) — canary's fit TBD, it's more tightly coupled to a request/response cycle. Not started. Carries an open question from `pii-guard`'s review — see `spec-pii-guard.md`'s open questions.
+  - `injection-guard` (`spec-injection-guard.md`) — prompt-injection detection (heuristics → opt-in classifier; LLM judge deferred) + eval harness; standalone/in-process usage is in scope (0002). **Done** — see `docs/plans/roadmap.md`.
+  - `tool-policy` — tool-call policy, canary, output PII detection; standalone/in-process usage is in scope for tool-policy (0002) — canary's fit TBD, it's more tightly coupled to a request/response cycle. In planning (`spec-tool-policy.md`). Resolves the open question carried from `pii-guard`'s review.
   - `dashboard-launch` — dashboard, packaging, `docker compose up`, release, **and** the `@palang-ai/core`/`@palang-ai/guards` npm publish (0002). Not started.
 - **`docs/decisions/`** — decisions made where the spec was ambiguous or a dependency wasn't in TSD §3 (e.g. `0001-lint-tooling.md`).
 
 ## Not yet scoped
 
 From TSD §16, genuinely undecided — no spec yet, not committed to:
-- Final classifier model (decided inside `injection-guard`, based on license + Indonesian-language metrics).
 - Anthropic Messages API adapter — v0.2 candidate.
 - Policy editing in the dashboard UI + DB-backed tenants — v0.2 candidate.

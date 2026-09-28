@@ -2,6 +2,10 @@ import { test, expect } from "bun:test";
 import { configSchema } from "./schema.js";
 
 function configWithInjection(injection: unknown): unknown {
+  return configWithGuards({ injection });
+}
+
+function configWithGuards(guards: unknown): unknown {
   return {
     server: { public_port: 8080, admin_port: 8081 },
     audit: {},
@@ -16,7 +20,7 @@ function configWithInjection(injection: unknown): unknown {
           api_key: "unused",
         },
         allowed_models: ["mock-echo"],
-        guards: { injection },
+        guards,
       },
     ],
   };
@@ -56,4 +60,40 @@ test("injection: judge.enabled: true is rejected, not silently ignored", () => {
   const issue = result.error?.issues[0];
   expect(issue?.path.join(".")).toBe("tenants.0.guards.injection.judge.enabled");
   expect(issue?.message).toMatch(/not implemented/);
+});
+
+function toolPolicy(constraints: unknown[]): unknown {
+  return configWithGuards({
+    "tool-policy": {
+      mode: "enforce",
+      default: "deny",
+      rules: [{ tool: "transfer_funds", action: "allow", constraints }],
+    },
+  });
+}
+
+test("tool-policy: well-typed constraints for every op parse", () => {
+  const result = configSchema.safeParse(
+    toolPolicy([
+      { path: "amount", op: "lte", value: 1000000 },
+      { path: "currency", op: "in", value: ["IDR"] },
+      { path: "note", op: "regex", value: "^[a-z ]*$" },
+      { path: "urgent", op: "eq", value: false },
+    ]),
+  );
+  expect(result.success).toBe(true);
+});
+
+test("tool-policy: an invalid regex fails at config load", () => {
+  const result = configSchema.safeParse(toolPolicy([{ path: "note", op: "regex", value: "(" }]));
+  expect(result.success).toBe(false);
+});
+
+test("tool-policy: a value of the wrong type for its op fails at config load", () => {
+  expect(
+    configSchema.safeParse(toolPolicy([{ path: "amount", op: "lte", value: "1000" }])).success,
+  ).toBe(false);
+  expect(
+    configSchema.safeParse(toolPolicy([{ path: "currency", op: "in", value: "IDR" }])).success,
+  ).toBe(false);
 });

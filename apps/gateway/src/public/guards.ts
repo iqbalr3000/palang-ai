@@ -1,8 +1,11 @@
 import type { GuardRuntimeConfig, InputGuard, OutputGuard } from "@palang-ai/core";
 import {
+  createCanaryInputGuard,
+  createCanaryOutputGuard,
   createInjectionInputGuard,
   createPiiIdInputGuard,
   createPiiIdOutputGuard,
+  createToolPolicyOutputGuard,
   type InjectionClassifier,
   type PiiIdConfig,
 } from "@palang-ai/guards";
@@ -23,6 +26,15 @@ export function buildTenantGuards(
   const input: InputGuard[] = [];
   const output: OutputGuard[] = [];
   const runtimeConfigs: Record<string, GuardRuntimeConfig> = {};
+
+  // Order matters (TSD §2): input canary → pii-id → injection; output canary → pii-id →
+  // tool-policy, so policy constraints see restored values.
+  const canaryConfig = tenant.guards.canary;
+  if (canaryConfig) {
+    input.push(createCanaryInputGuard());
+    output.push(createCanaryOutputGuard({ onDetect: canaryConfig.on_detect }));
+    runtimeConfigs.canary = { mode: canaryConfig.mode };
+  }
 
   const piiConfig = tenant.guards["pii-id"];
   if (piiConfig) {
@@ -63,6 +75,17 @@ export function buildTenantGuards(
       mode: injectionConfig.mode,
       timeoutMs: injectionConfig.timeout_ms,
     };
+  }
+
+  const toolPolicyConfig = tenant.guards["tool-policy"];
+  if (toolPolicyConfig) {
+    output.push(
+      createToolPolicyOutputGuard({
+        default: toolPolicyConfig.default,
+        rules: toolPolicyConfig.rules,
+      }),
+    );
+    runtimeConfigs["tool-policy"] = { mode: toolPolicyConfig.mode };
   }
 
   return { input, output, runtimeConfigs };

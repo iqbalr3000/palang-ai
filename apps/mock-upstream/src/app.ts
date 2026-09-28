@@ -7,6 +7,7 @@ import {
   buildCompletionId,
   estimatePromptTokens,
   type IncomingRequest,
+  type MockToolCall,
 } from "./openai-shapes.js";
 
 const DEFAULT_CHUNK_SIZE = 8;
@@ -47,12 +48,19 @@ export function createApp(options: MockUpstreamOptions = {}): Hono {
       );
     }
 
-    const content = scenario.reply(body.messages);
+    const reply = scenario.reply(body.messages);
     const id = buildCompletionId();
+    const toolCall: MockToolCall | null =
+      "toolCall" in reply
+        ? { id: `call_mock_${crypto.randomUUID()}`, type: "function", function: reply.toolCall }
+        : null;
+    const content = "content" in reply ? reply.content : "";
 
     if (!body.stream) {
       const promptTokens = estimatePromptTokens(body.messages);
-      return c.json(buildCompletion(id, body.model, promptTokens, content));
+      return c.json(
+        buildCompletion(id, body.model, promptTokens, toolCall ? { toolCall } : { content }),
+      );
     }
 
     c.header("Content-Type", "text/event-stream");
@@ -64,14 +72,45 @@ export function createApp(options: MockUpstreamOptions = {}): Hono {
         `data: ${JSON.stringify(buildChunk(id, model, { role: "assistant" }, null))}\n\n`,
       );
 
-      for (const piece of chunkContent(content, scenario.chunkSize ?? DEFAULT_CHUNK_SIZE)) {
+      const chunkSize = scenario.chunkSize ?? DEFAULT_CHUNK_SIZE;
+      const send = async (chunk: ReturnType<typeof buildChunk>) => {
         if (chunkDelayMs > 0) await s.sleep(chunkDelayMs);
-        await s.write(
-          `data: ${JSON.stringify(buildChunk(id, model, { content: piece }, null))}\n\n`,
+        await s.write(`data: ${JSON.stringify(chunk)}\n\n`);
+      };
+
+      if (toolCall) {
+        const { id: callId, type, function: fn } = toolCall;
+        await send(
+          buildChunk(
+            id,
+            model,
+            {
+              tool_calls: [
+                { index: 0, id: callId, type, function: { name: fn.name, arguments: "" } },
+              ],
+            },
+            null,
+          ),
         );
+        for (const piece of chunkContent(fn.arguments, chunkSize)) {
+          await send(
+            buildChunk(
+              id,
+              model,
+              { tool_calls: [{ index: 0, function: { arguments: piece } }] },
+              null,
+            ),
+          );
+        }
+      } else {
+        for (const piece of chunkContent(content, chunkSize)) {
+          await send(buildChunk(id, model, { content: piece }, null));
+        }
       }
 
-      await s.write(`data: ${JSON.stringify(buildChunk(id, model, {}, "stop"))}\n\n`);
+      await s.write(
+        `data: ${JSON.stringify(buildChunk(id, model, {}, toolCall ? "tool_calls" : "stop"))}\n\n`,
+      );
       await s.write("data: [DONE]\n\n");
     });
   });
