@@ -494,6 +494,10 @@ The full technical spec is [`docs/TSD.md`](docs/TSD.md). Feature specs live in
 
 ## 📄 License
 
-[MIT](docs/decisions/0006-license-mit.md). The optional classifier model is Apache-2.0 and
-downloaded separately, and `@huggingface/transformers` pulls in `sharp`/libvips
-(LGPL-3.0-or-later).
+Palang AI is [MIT](LICENSE) licensed, © 2026 [@iqbalr3000](https://github.com/iqbalr3000).
+
+**Third-party components** keep their own licenses:
+
+- The optional injection classifier model is Apache-2.0. It isn't included in this repo; you
+  download it yourself with `download-model`.
+- `@huggingface/transformers` installs `sharp`/libvips, which are LGPL-3.0-or-later.

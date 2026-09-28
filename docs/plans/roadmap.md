@@ -145,6 +145,19 @@ Feature order comes from `docs/TSD.md` §15; see `docs/plans/overview.md` for th
   variable; `bun run setup` creates `.env` (generated secrets) and `palang.yaml`; root scripts
   `db:migrate`, `mock`, `gateway`, `dashboard`. The guide was run end to end on a fresh clone.
 
+## `restructure`
+
+*Spec: `spec-restructure.md`. Decision: `docs/decisions/0007`.*
+
+- Flat layout: eight workspaces became five (`gateway/`, `dashboard/`, `guards/`, `mock-upstream/`,
+  `evals/`); `packages/core` merged into `guards/`, `packages/db` into `gateway/`,
+  `packages/config` into a root `tsconfig.base.json`; Turborepo and `spike/` removed.
+- Behavior unchanged: the same 331 tests pass, the PII eval numbers are identical, and the
+  getting-started flow was re-run on a fresh copy.
+- README rewritten for setting Palang up in front of a real app (own tenant, guards starting in
+  `monitor`, monitor-to-enforce), with a production checklist; YAML examples validated against the
+  config schema.
+
 ## Platform foundation
 
 *Cross-cutting — not owned by a single feature spec.*
@@ -162,6 +175,9 @@ Feature order comes from `docs/TSD.md` §15; see `docs/plans/overview.md` for th
 Same history as above, dated against the actual commit that shipped it (`git log`), newest first.
 
 ### 2026-09-28
+
+**`230205d` — refactor: flatten the repo into five workspaces and rewrite the README for real use**
+The whole `restructure` feature and the README rewrite.
 
 **`d65961f` — docs: add README and one-command setup with a single root .env**
 The README, the single root `.env` with `.env.example`, `bun run setup`, and root scripts.

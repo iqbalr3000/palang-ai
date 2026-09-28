@@ -1,6 +1,7 @@
 {
   "name": "palang-ai",
   "private": true,
+  "license": "MIT",
   "packageManager": "bun@1.3.12",
   "workspaces": [
     "gateway",
