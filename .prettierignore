@@ -5,3 +5,5 @@ bun.lock
 **/__fixtures__/
 evals/results/
 evals/datasets/
+.next/
+next-env.d.ts

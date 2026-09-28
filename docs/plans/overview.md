@@ -33,8 +33,8 @@ A reverse proxy that sits between an application and its LLM provider. Applicati
   - `injection-guard` (`spec-injection-guard.md`) — prompt-injection detection (heuristics → opt-in classifier; LLM judge deferred) + eval harness; standalone/in-process usage is in scope (0002). **Done** — see `docs/plans/roadmap.md`.
   - `tool-policy` (`spec-tool-policy.md`) — tool-call policy, canary, output PII detection (resolves the open question carried from `pii-guard`); standalone/in-process usage is in scope (0002). **Done** — see `docs/plans/roadmap.md`.
   - TSD M5 (`dashboard-launch`) was split into three features on 2026-09-28, in this order:
-    - `admin-api` — the rest of the admin API (TSD §7.4), `/metrics`, audit `content_mode` + retention, pino logging, request body limit, upstream timeout, `ttft_ms` (`spec-admin-api.md`). In progress.
-    - `dashboard` — Next.js dashboard, 4 pages + password login (TSD §13). Not started.
+    - `admin-api` — the rest of the admin API (TSD §7.4), `/metrics`, audit `content_mode` + retention, pino logging, request body limit, upstream timeout, `ttft_ms` (`spec-admin-api.md`). **Done** — see `docs/plans/roadmap.md`.
+    - `dashboard` — Next.js dashboard, 4 pages + password login (TSD §13) (`spec-dashboard.md`). In progress.
     - `launch` — `docker compose up` with a seeded demo, README, `LICENSE` (MIT, `docs/decisions/0006`) + third-party attribution, `@palang-ai/core`/`@palang-ai/guards` npm publish with `examples/` (0002), benchmark report, dependency audit in CI. Not started. The demo video and blog post are the user's own.
 - **`docs/decisions/`** — decisions made where the spec was ambiguous or a dependency wasn't in TSD §3 (e.g. `0001-lint-tooling.md`).
 

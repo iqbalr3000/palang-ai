@@ -108,6 +108,21 @@ Feature order comes from `docs/TSD.md` §15; see `docs/plans/overview.md` for th
 - Acceptance (TSD §15 M4): `mock-tool-call` and `mock-leak-canary` blocked/flagged as configured,
   streaming and non-streaming, enforce and monitor (16 e2e cases).
 
+## `admin-api`
+
+*Spec: `spec-admin-api.md`. First of the three features TSD M5 was split into.*
+
+- The rest of the admin API: stats (totals, time buckets, flag/block by guard, top block reasons,
+  latency percentiles), cursor-paginated and filterable events, event detail with stored content,
+  tenants, key list, effective config — upstream API keys always redacted.
+- `/metrics` in hand-rolled Prometheus text format, behind the admin token.
+- Audit `content_mode` actually stored; `redacted` masks raw PII and the canary regardless of guard
+  config and stores the model's raw output before restore (64 KB cap). Retention job at boot and
+  daily.
+- One recorder per finished request (audit + metrics + a content-free pino log line).
+- Fixed `final_action` never being `flag`; request body limit (413), upstream header timeout (504),
+  `ttft_ms` recorded. Verified with a real gateway boot as well as e2e tests.
+
 ## Platform foundation
 
 *Cross-cutting — not owned by a single feature spec.*
@@ -125,6 +140,12 @@ Feature order comes from `docs/TSD.md` §15; see `docs/plans/overview.md` for th
 Same history as above, dated against the actual commit that shipped it (`git log`), newest first.
 
 ### 2026-09-28
+
+**`19d077d` — feat: implement admin-api — read endpoints, metrics, audit content, and gateway
+hardening**
+The whole `admin-api` feature: admin read endpoints, `/metrics`, audit content + retention, pino
+logging, body limit, upstream timeout, `ttft_ms`, and the `final_action = flag` fix. Also records
+the TSD M5 split and the MIT license decision (0006).
 
 **`72d3a67` — feat: implement tool-policy — tool-call policy, canary, and streaming-safe output
 PII**

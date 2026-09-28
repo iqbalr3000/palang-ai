@@ -11,3 +11,6 @@ coverage
 models/
 
 CLAUDE.md
+# Next.js
+.next/
+next-env.d.ts
