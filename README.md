@@ -46,7 +46,6 @@ Your user gets back  →  "Status untuk 3171011506900001: aktif."
 
 ## What it does
 
-| | |
 |---|---|
 | **PII masking** | NIK, NPWP, phone numbers, emails and card numbers never reach the model. They're masked in every text field of the request and restored in the reply, streaming included. |
 | **Injection detection** | Flags or blocks prompt injection in user and tool messages, in English and Indonesian. |
@@ -85,73 +84,173 @@ flowchart LR
 
 ## Get started
 
-You need [Bun](https://bun.sh) 1.3+, [Node.js](https://nodejs.org) 22+, Docker and an
-OpenAI-compatible API key.
+This sets Palang up in front of your own app and model provider. Plan on about fifteen minutes.
 
-**1. Install**
+### What you need
+
+| | |
+|---|---|
+| [Bun](https://bun.sh) 1.3+ | runs the gateway (`bun --version`) |
+| [Node.js](https://nodejs.org) 22+ | runs the dashboard (`node --version`) |
+| Postgres 16 | stores the audit log and API keys; Docker is the quickest way to get one |
+| An OpenAI-compatible API | OpenAI, or any provider or self-hosted server that speaks the same API, plus its API key |
+
+No API key at hand? You can [try Palang with a mock model](#try-it-without-an-api-key) first.
+
+### 1. Install
 
 ```sh
-git clone <this-repo-url> palang-ai && cd palang-ai
+git clone <this-repo-url> palang-ai
+cd palang-ai
 bun install
-
-docker run -d --name palang-postgres -p 5432:5432 -v palang-pgdata:/var/lib/postgresql/data \
-  -e POSTGRES_USER=palang -e POSTGRES_PASSWORD=palang -e POSTGRES_DB=palang postgres:16
-
-bun run setup        # creates .env (with generated secrets) and palang.yaml
-bun run db:migrate
 ```
 
-**2. Configure**
+### 2. Start Postgres
 
-Set your provider in `.env`:
+Skip this if you already have a Postgres 16 server. Otherwise, this container keeps its data in a
+named volume so it survives restarts:
+
+```sh
+docker run -d --name palang-postgres \
+  -e POSTGRES_USER=palang -e POSTGRES_PASSWORD=palang -e POSTGRES_DB=palang \
+  -p 5432:5432 -v palang-pgdata:/var/lib/postgresql/data \
+  postgres:16
+```
+
+### 3. Create your config
+
+```sh
+bun run setup
+```
+
+This creates two git-ignored files from their templates and never overwrites existing ones:
+
+- **`.env`** holds secrets and connection settings. An admin token and a dashboard password are
+  generated for you, and the password is printed once.
+- **`palang.yaml`** describes your app (a *tenant*), its model provider and its guards.
+
+Now make them yours.
+
+**In `.env`**, point Palang at your model provider (and at your database, if it isn't the
+container above):
 
 ```sh
 UPSTREAM_BASE_URL=https://api.openai.com/v1
 UPSTREAM_API_KEY=sk-...
 ```
 
-Describe your app in `palang.yaml`. Start the guards in `monitor` so nothing is blocked yet:
+**In `palang.yaml`**, describe your app. Rename the example tenant, list the models your app uses,
+and start the guards in `monitor` mode so nothing gets blocked while you learn what your traffic
+looks like:
 
 ```yaml
 tenants:
-  - id: my-app
+  - id: my-app                      # used in the dashboard and when creating API keys
     failure_mode: fail_closed
     upstream:
       type: openai-compatible
       base_url: ${UPSTREAM_BASE_URL}
       api_key: ${UPSTREAM_API_KEY}
-    allowed_models: ["gpt-4o-mini"]
+    allowed_models: ["gpt-4o-mini", "gpt-4o"]   # globs work too, e.g. "gpt-4o*"
     guards:
-      pii-id: { mode: enforce, entities: [NIK, NPWP, PHONE_ID, EMAIL, CARD] }
-      injection: { mode: monitor }
-      canary: { mode: monitor, on_detect: block }
-      tool-policy: { mode: monitor, default: deny, rules: [] }
+      pii-id:                       # masking happens in either mode
+        mode: enforce
+        entities: [NIK, NPWP, PHONE_ID, EMAIL, CARD]
+      injection:
+        mode: monitor
+      canary:
+        mode: monitor
+        on_detect: block
+      tool-policy:
+        mode: monitor
+        default: deny
+        rules: []                   # add your tools before enforcing, see Configuration
 ```
 
-**3. Run**
+Every setting is explained in [`.env.example`](.env.example) and
+[`palang.example.yaml`](palang.example.yaml).
+
+### 4. Create the database tables
 
 ```sh
-bun run gateway      # your app → :8080 · admin → 127.0.0.1:8081
-bun run dashboard    # http://localhost:3000 · password in .env
+bun run db:migrate
 ```
 
-**4. Connect your app**
+### 5. Start Palang
 
-Create an API key in the dashboard under **API keys**, then change two lines:
+Run each of these in its own terminal:
+
+```sh
+bun run gateway     # your app talks to :8080, the admin API is on :8081
+```
+
+```sh
+bun run dashboard   # builds, then serves on http://localhost:3000
+```
+
+Open <http://localhost:3000> and sign in with the password from `.env`.
+
+### 6. Give your app an API key
+
+Your app authenticates to Palang with its own key, never the provider's. In the dashboard, go to
+**API keys**, pick your tenant and create a key. Copy it right away, because it's shown only once.
+
+<details>
+<summary>Prefer the command line?</summary>
+
+```sh
+export PALANG_ADMIN_TOKEN=$(grep '^PALANG_ADMIN_TOKEN=' .env | cut -d= -f2)
+
+curl -s -X POST localhost:8081/admin/tenants/my-app/keys \
+  -H "Authorization: Bearer $PALANG_ADMIN_TOKEN" \
+  -H 'content-type: application/json' -d '{"name":"production"}'
+```
+
+</details>
+
+### 7. Connect your app
+
+Keep using the OpenAI SDK you already use. Only the base URL and the key change:
 
 ```ts
+import OpenAI from "openai";
+
 const client = new OpenAI({
-  baseURL: "http://localhost:8080/v1",
-  apiKey: process.env.PALANG_API_KEY, // your Palang key, not the provider's
+  baseURL: "http://localhost:8080/v1", // your Palang gateway
+  apiKey: process.env.PALANG_API_KEY, // the key from step 6
+});
+
+const reply = await client.chat.completions.create({
+  model: "gpt-4o-mini",
+  messages: [{ role: "user", content: "NIK saya 3171011506900001, tolong cek statusnya" }],
 });
 ```
 
-Requests appear under **Events**. When the would-block decisions look right, switch the guards to
-`enforce` and restart the gateway.
+Streaming, tool calls and every other OpenAI-compatible SDK work the same way. Send a request and
+it shows up under **Events** in the dashboard, with each guard's decision.
 
-> [!TIP]
-> No API key? Run `bun run mock` and use the `demo` tenant with the model `mock-echo`, which
-> echoes your message back.
+### 8. From monitoring to enforcing
+
+Let real traffic run through for a while, then use the dashboard to decide what to block:
+
+1. **Overview** shows how much each guard *would* have blocked, and **Events** shows why, request
+   by request.
+2. Add your tools to `tool-policy` and tune the injection thresholds until the would-blocks look
+   right.
+3. Switch the guards you trust to `mode: enforce` and restart the gateway. Config is read at
+   startup.
+
+### Try it without an API key
+
+Palang ships with a mock model server that speaks the OpenAI API. Keep the `UPSTREAM_*` values
+from `bun run setup`, leave the example tenant (`demo`) as it is, then:
+
+```sh
+bun run mock        # in its own terminal, next to the gateway
+```
+
+Create a key for the `demo` tenant and use the model `mock-echo`, which repeats your message
+back. Send it a NIK and you get the NIK back, while the "model" only ever saw `[NIK_1]`.
 
 ## Configuration
 
@@ -222,15 +321,24 @@ ctx.messages[0]?.content; // "NIK saya [NIK_1]"
 
 ## How well it works
 
-Measured on synthetic data with `bun run eval`. Reports live in [`evals/results/`](evals/results/).
+Detection quality is measured, not claimed. `bun run eval` reproduces the report on synthetic
+datasets, and results are kept in [`evals/results/`](evals/results/).
 
-| | Result |
-|---|---|
-| PII detection | 93% precision, 99.7% recall |
-| PII restore | 100% of placeholders restored, streaming included |
-| Injection detection | 92% recall with the classifier, 48% with heuristics only |
+**Prompt injection**, on a held-out test set at the flag threshold (0.5):
 
-Injection false positives are still high (40%), so start that guard in `monitor` mode.
+| Layer | Recall | False positives | Recall (ID) | Recall (EN) |
+|---|---:|---:|---:|---:|
+| Heuristics only | 48.3% | 22.9% | 51.6% | 41.7% |
+| Classifier only | 81.3% | 27.1% | 71.9% | 100% |
+| **Combined** | **92.4%** | 39.9% | 88.5% | 100% |
+
+**PII**, on 550 synthetic samples: **93.0% precision and 99.7% recall** on supported formats, and
+the streaming restore round trip succeeds on **100%** of masked samples.
+
+> [!IMPORTANT]
+> The datasets are synthetic, and the heuristics were written by the same author as the samples,
+> so treat these numbers as optimistic. The combined false-positive rate is too high to block on,
+> which is why `injection` should start in `monitor` mode.
 
 ## Known limitations
 
