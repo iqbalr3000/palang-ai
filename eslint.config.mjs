@@ -8,7 +8,6 @@ export default tseslint.config(
       "**/dist/**",
       "**/node_modules/**",
       "**/drizzle/**",
-      "spike/**",
       "**/.next/**",
       "**/next-env.d.ts",
     ],

@@ -123,6 +123,28 @@ Feature order comes from `docs/TSD.md` §15; see `docs/plans/overview.md` for th
 - Fixed `final_action` never being `flag`; request body limit (413), upstream header timeout (504),
   `ttft_ms` recorded. Verified with a real gateway boot as well as e2e tests.
 
+## `dashboard`
+
+*Spec: `spec-dashboard.md`. Second of the three features TSD M5 was split into.*
+
+- `apps/dashboard`: Next.js 16 + Tailwind 4 + shadcn/ui + Recharts, standalone output (43 MB).
+  Overview, Events (filters, cursor pagination, detail drawer with redacted content), API keys
+  (created key shown once, revoke with confirmation), read-only Config.
+- Password login with an HMAC session cookie keyed off the admin token; `proxy.ts` redirects and
+  every data read and Server Action re-verifies. The admin token never reaches the browser.
+- Verified against a real stack (gateway + mock upstream + Postgres), including the login form and
+  key creation as no-JS form posts.
+
+## README and first-run setup
+
+*Cross-cutting, ahead of `launch`.*
+
+- `README.md`: what Palang is and why, a from-scratch getting-started guide, architecture, guards,
+  configuration, in-process usage, eval results, known limitations.
+- One root `.env` read by the gateway, dashboard and migrations; `.env.example` documents every
+  variable; `bun run setup` creates `.env` (generated secrets) and `palang.yaml`; root scripts
+  `db:migrate`, `mock`, `gateway`, `dashboard`. The guide was run end to end on a fresh clone.
+
 ## Platform foundation
 
 *Cross-cutting — not owned by a single feature spec.*
@@ -140,6 +162,13 @@ Feature order comes from `docs/TSD.md` §15; see `docs/plans/overview.md` for th
 Same history as above, dated against the actual commit that shipped it (`git log`), newest first.
 
 ### 2026-09-28
+
+**`d65961f` — docs: add README and one-command setup with a single root .env**
+The README, the single root `.env` with `.env.example`, `bun run setup`, and root scripts.
+
+**`1f1b01d` — feat: implement dashboard — Next.js admin UI with overview, events, keys, and
+config**
+The whole `dashboard` feature, plus logging `admin-api` as done.
 
 **`19d077d` — feat: implement admin-api — read endpoints, metrics, audit content, and gateway
 hardening**

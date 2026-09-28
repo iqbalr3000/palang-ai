@@ -2,7 +2,6 @@ node_modules
 dist
 dist-build
 *.tsbuildinfo
-.turbo
 coverage
 .env
 .env.*

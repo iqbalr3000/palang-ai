@@ -1,4 +1,4 @@
-import type { GuardContext } from "@palang-ai/core";
+import type { GuardContext } from "@palang-ai/guards";
 import { processStream } from "@palang-ai/gateway/stream";
 import {
   DEFAULT_PII_ID_CONFIG,
