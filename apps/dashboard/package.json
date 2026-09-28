@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev --port 3000",
     "build": "next build && cp -r .next/static .next/standalone/apps/dashboard/.next/static",
-    "start": "PORT=${PORT:-3000} node .next/standalone/apps/dashboard/server.js",
+    "start": "PORT=${PORT:-3000} node --env-file-if-exists=../../.env .next/standalone/apps/dashboard/server.js",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "bun test --conditions=react-server",
     "lint": "eslint ."

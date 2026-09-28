@@ -11,7 +11,7 @@ export interface GatewayEnv {
 
 function required(name: string): string {
   const value = process.env[name];
-  if (!value) throw new ConfigError(`${name} is required`);
+  if (!value) throw new ConfigError(`${name} is required — see .env.example`);
   return value;
 }
 

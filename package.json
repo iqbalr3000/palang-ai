@@ -15,7 +15,12 @@
     "eval": "bun run --filter @palang-ai/evals eval",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "setup": "bun run scripts/setup.ts",
+    "db:migrate": "bun run --filter @palang-ai/db migrate",
+    "mock": "bun run apps/mock-upstream/src/index.ts",
+    "gateway": "bun run apps/gateway/src/index.ts",
+    "dashboard": "bun run --filter @palang-ai/dashboard build && bun run --filter @palang-ai/dashboard start"
   },
   "devDependencies": {
     "turbo": "^2.5.0",

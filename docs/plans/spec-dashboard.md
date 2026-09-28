@@ -51,10 +51,18 @@ Decided or found while building, not separately discussed — flagged for the us
 overrule:
 - **Standalone output** (`output: "standalone"`, tracing rooted at the monorepo), at the user's
   request for a smaller build: `.next/standalone` is 43 MB including its trimmed `node_modules`.
-  `build` copies `.next/static` into it and `start` runs `node
+  `build` copies `.next/static` into it and `start` runs `node --env-file-if-exists=.env.local
   .next/standalone/apps/dashboard/server.js` — `next start` doesn't support standalone (an earlier
   attempt that kept `next start` broke Server Actions). Verified: assets, login, and every page
-  served from the standalone server.
+  served from the standalone server. The standalone server doesn't load `.env.local` itself (only
+  `next dev`/`next start` do), hence Node's `--env-file-if-exists` (Node 22.9+); plain env vars still
+  work when there's no file, as in a container.
+- **One `.env` at the repo root** for the gateway, dashboard and migrations (the user's call, for
+  first-time open-source users): `next.config.ts` and `drizzle.config.ts` load it, `start` passes
+  `--env-file-if-exists=../../.env`, and Bun loads it for root scripts. `PALANG_ADMIN_URL` defaults
+  to `http://localhost:8081`. `bun run setup` creates `.env` (generated admin token and dashboard
+  password) and `palang.yaml` without overwriting; root scripts `db:migrate`, `mock`, `gateway`,
+  `dashboard`. Missing required variables fail at startup, pointing at `.env.example`.
 - **`recharts` is 3.8.0, not 3.10.1**: shadcn's `chart` component pins it. Both are Recharts 3.
 - **shadcn CLI without `init`** installed an unrelated npm package named `cn` and left
   `lib/utils.ts` and the theme tokens out; replaced by hand with the standard `cn` helper

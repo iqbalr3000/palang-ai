@@ -2,7 +2,7 @@ import "server-only";
 import { z } from "zod";
 
 const envSchema = z.object({
-  PALANG_ADMIN_URL: z.string().url(),
+  PALANG_ADMIN_URL: z.string().url().default("http://localhost:8081"),
   PALANG_ADMIN_TOKEN: z.string().min(1),
   DASHBOARD_PASSWORD: z.string().min(1),
 });
@@ -14,7 +14,7 @@ export function dashboardEnv(): DashboardEnv {
   const result = envSchema.safeParse(process.env);
   if (!result.success) {
     const missing = result.error.issues.map((i) => i.path.join(".")).join(", ");
-    throw new Error(`Dashboard is missing or has invalid env: ${missing}`);
+    throw new Error(`Dashboard is missing or has invalid env: ${missing} — see .env.example`);
   }
   return result.data;
 }

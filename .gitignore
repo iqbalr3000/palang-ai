@@ -14,3 +14,6 @@ CLAUDE.md
 # Next.js
 .next/
 next-env.d.ts
+
+# Local gateway config (may hold secrets); palang.example.yaml is the template
+palang.yaml
