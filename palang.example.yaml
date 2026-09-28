@@ -32,15 +32,11 @@ tenants:
         roles: [user, tool]
         flag_threshold: 0.5
         block_threshold: 0.85
+        # L2 is off by default (docs/decisions/0005); enabling it needs `download-model` first.
         classifier:
-          enabled: true
-          model: prompt-injection-classifier
-        judge:
           enabled: false
-          model: gpt-4o-mini
-          low: 0.4
-          high: 0.85
-          timeout_ms: 3000
+          model: protectai/deberta-v3-base-prompt-injection-v2
+        # timeout_ms: 2000 # recommended once the classifier is enabled
       tool-policy:
         mode: enforce
         default: deny

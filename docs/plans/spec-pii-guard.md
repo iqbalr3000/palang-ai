@@ -85,3 +85,13 @@ Matches TSD §15 M2 checklist:
       (`apps/gateway/test/pii-guard-wiring.e2e.test.ts`) — non-streaming round-trip with an audit
       row inspected directly for raw PII, and a streaming round-trip through
       `mock-split-placeholder`.
+
+## Open questions
+
+- **`restore.ts`'s `flagOrMaskNewOutputPii`** treats "this normalized value already exists in
+  `ctx.piiVault`" as proof an output occurrence was a legitimate restoration, not a fresh leak. It
+  can't distinguish that from the model independently emitting the same raw value as plaintext
+  (context leakage, memorization, coincidence) — a real gap in `OUTPUT_PII` detection, but fixing
+  it needs substitution-provenance tracking (knowing *which* placeholder a given output span came
+  from, not just whether the value matches something in the vault), which is a design decision, not
+  a bug fix. Deferred to `tool-policy` (2026-09-18), since that feature owns output PII detection.

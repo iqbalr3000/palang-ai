@@ -3,3 +3,5 @@ spike/
 *.md
 bun.lock
 **/__fixtures__/
+evals/results/
+evals/datasets/

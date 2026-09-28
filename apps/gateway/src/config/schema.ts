@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { DEFAULT_INJECTION_CONFIG } from "@palang-ai/guards";
+import { CLASSIFIER_MODEL_ID } from "../classifier/model.js";
 
 const roleSchema = z.enum(["system", "user", "assistant", "tool"]);
 const guardModeSchema = z.enum(["enforce", "monitor"]);
@@ -19,21 +21,25 @@ const piiGuardSchema = z.object({
 });
 
 const injectionGuardSchema = z.object({
-  mode: guardModeSchema,
-  roles: z.array(roleSchema).default(["user", "tool"]),
-  flag_threshold: z.number().min(0).max(1),
-  block_threshold: z.number().min(0).max(1),
-  classifier: z.object({
-    enabled: z.boolean(),
-    model: z.string(),
-  }),
-  judge: z.object({
-    enabled: z.boolean(),
-    model: z.string(),
-    low: z.number().min(0).max(1),
-    high: z.number().min(0).max(1),
-    timeout_ms: z.number().int().positive(),
-  }),
+  mode: guardModeSchema.default("monitor"),
+  roles: z.array(roleSchema).default(DEFAULT_INJECTION_CONFIG.roles),
+  flag_threshold: z.number().min(0).max(1).default(DEFAULT_INJECTION_CONFIG.flagThreshold),
+  block_threshold: z.number().min(0).max(1).default(DEFAULT_INJECTION_CONFIG.blockThreshold),
+  timeout_ms: z.number().int().positive().optional(),
+  classifier: z
+    .object({
+      enabled: z.boolean().default(false),
+      model: z.string().default(CLASSIFIER_MODEL_ID),
+    })
+    .default({}),
+  // Accepted so existing configs parse, but enabling it must fail loudly rather than no-op.
+  judge: z
+    .object({
+      enabled: z.boolean().refine((enabled) => !enabled, {
+        message: "the LLM judge is not implemented yet; set it to false",
+      }),
+    })
+    .optional(),
 });
 
 const constraintSchema = z.object({

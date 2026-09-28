@@ -3,13 +3,19 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "exports": {
+    "./classifier": "./src/classifier/index.ts",
+    "./stream": "./src/stream/processor.ts"
+  },
   "scripts": {
     "dev": "bun run --watch src/index.ts",
     "typecheck": "tsc --noEmit",
     "test": "bun test",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "download-model": "bun run src/classifier/download-model.ts"
   },
   "dependencies": {
+    "@huggingface/transformers": "^4.3.0",
     "@palang-ai/core": "workspace:*",
     "@palang-ai/db": "workspace:*",
     "@palang-ai/guards": "workspace:*",

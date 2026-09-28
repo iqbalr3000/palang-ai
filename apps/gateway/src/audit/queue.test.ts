@@ -94,3 +94,84 @@ test("a failed flush (e.g. DB down) drops the batch instead of throwing", async 
   expect(queue.droppedCount).toBe(1);
   expect(queue.pendingCount).toBe(0);
 });
+
+// Insert stays in flight until `release()`.
+function gatedDb(): { db: Db; release: () => void; inserted: () => boolean } {
+  let done = false;
+  let release = (): void => {};
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  const db = {
+    insert: () => ({
+      values: async () => {
+        await gate;
+        done = true;
+      },
+    }),
+  } as unknown as Db;
+  return { db, release, inserted: () => done };
+}
+
+test("flush() waits for an insert already in flight instead of returning on an empty queue", async () => {
+  const { db: slowDb, release, inserted } = gatedDb();
+  const queue = new AuditQueue(slowDb, { flushIntervalMs: 60_000 });
+  queue.enqueue(makeEvent());
+
+  const first = queue.flush();
+  expect(queue.pendingCount).toBe(0);
+
+  let secondResolved = false;
+  const second = queue.flush().then(() => {
+    secondResolved = true;
+  });
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  expect(secondResolved).toBe(false);
+
+  release();
+  await second;
+  expect(inserted()).toBe(true);
+  await first;
+  await queue.shutdown();
+});
+
+test("shutdown waits for an in-flight insert even when the queue is already empty", async () => {
+  const { db: slowDb, release, inserted } = gatedDb();
+  const queue = new AuditQueue(slowDb, { flushIntervalMs: 60_000 });
+  queue.enqueue(makeEvent());
+  void queue.flush();
+
+  let shutDown = false;
+  const shutdown = queue.shutdown().then(() => {
+    shutDown = true;
+  });
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  expect(shutDown).toBe(false);
+
+  release();
+  await shutdown;
+  expect(inserted()).toBe(true);
+});
+
+test("fractional millisecond latencies are stored (rounded), not dropped by the integer columns", async () => {
+  const queue = new AuditQueue(db, { flushIntervalMs: 60_000 });
+  const event = makeEvent({
+    latencyTotalMs: 5.186667,
+    latencyGuardsMs: 0.4,
+    latencyUpstreamMs: 2.5,
+    ttftMs: 3.7,
+  });
+  queue.enqueue(event);
+
+  await queue.flush();
+
+  expect(queue.droppedCount).toBe(0);
+  const [row] = await db.select().from(auditEvents).where(eq(auditEvents.id, event.id));
+  expect(row).toMatchObject({
+    latencyTotalMs: 5,
+    latencyGuardsMs: 0,
+    latencyUpstreamMs: 3,
+    ttftMs: 4,
+  });
+  await queue.shutdown();
+});

@@ -9,3 +9,5 @@ coverage
 !.env.example
 .DS_Store
 models/
+
+CLAUDE.md

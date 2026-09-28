@@ -3,6 +3,7 @@ import { loadConfig, ConfigError } from "./config/loader.js";
 import { AuditQueue } from "./audit/queue.js";
 import { createPublicApp } from "./public/app.js";
 import { createAdminApp } from "./admin/app.js";
+import { loadClassifiers } from "./classifier/load.js";
 
 async function main(): Promise<void> {
   let config;
@@ -24,10 +25,21 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
+  let classifiers;
+  try {
+    classifiers = await loadClassifiers(config);
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : error);
+    process.exit(1);
+  }
+  for (const modelId of classifiers.keys()) {
+    console.log(`[gateway] injection classifier loaded: ${modelId}`);
+  }
+
   const db = createDb(databaseUrl);
   const auditQueue = new AuditQueue(db);
 
-  const publicApp = createPublicApp({ db, config, auditQueue });
+  const publicApp = createPublicApp({ db, config, auditQueue, classifiers });
   const adminApp = createAdminApp({ db, config, adminToken });
 
   const publicServer = Bun.serve({ port: config.server.public_port, fetch: publicApp.fetch });

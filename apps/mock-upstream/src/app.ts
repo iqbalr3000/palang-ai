@@ -20,7 +20,13 @@ function chunkContent(content: string, chunkSize: number): string[] {
   return chunks;
 }
 
-export function createApp(): Hono {
+export interface MockUpstreamOptions {
+  /** Pause before each streamed chunk. The default makes streaming observable over a real socket. */
+  chunkDelayMs?: number;
+}
+
+export function createApp(options: MockUpstreamOptions = {}): Hono {
+  const chunkDelayMs = options.chunkDelayMs ?? CHUNK_DELAY_MS;
   const app = new Hono();
 
   app.post("/v1/chat/completions", async (c) => {
@@ -59,7 +65,7 @@ export function createApp(): Hono {
       );
 
       for (const piece of chunkContent(content, scenario.chunkSize ?? DEFAULT_CHUNK_SIZE)) {
-        await s.sleep(CHUNK_DELAY_MS);
+        if (chunkDelayMs > 0) await s.sleep(chunkDelayMs);
         await s.write(
           `data: ${JSON.stringify(buildChunk(id, model, { content: piece }, null))}\n\n`,
         );

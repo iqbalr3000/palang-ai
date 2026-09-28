@@ -4,13 +4,15 @@
   "packageManager": "bun@1.3.12",
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "evals"
   ],
   "scripts": {
     "dev": "turbo run dev",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "lint": "turbo run lint",
+    "eval": "bun run --filter @palang-ai/evals eval",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky"

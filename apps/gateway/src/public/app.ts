@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { stream } from "hono/streaming";
 import { sql } from "drizzle-orm";
 import type { Db } from "@palang-ai/db";
+import type { InjectionClassifier } from "@palang-ai/guards";
 import { runInputPipeline, type GuardContext } from "@palang-ai/core";
 import type { PalangConfig, TenantConfig } from "../config/schema.js";
 import { createAuthMiddleware } from "../auth/middleware.js";
@@ -23,6 +24,8 @@ export interface PublicAppDeps {
   db: Db;
   config: PalangConfig;
   auditQueue: AuditQueue;
+  /** Keyed by model id, loaded at boot (`loadClassifiers`). Only needed if a tenant enables L2. */
+  classifiers?: ReadonlyMap<string, InjectionClassifier>;
 }
 
 function findTenant(config: PalangConfig, tenantId: string): TenantConfig | undefined {
@@ -32,7 +35,7 @@ function findTenant(config: PalangConfig, tenantId: string): TenantConfig | unde
 export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variables }> {
   const app = new Hono<{ Variables: Variables }>();
   const auth = createAuthMiddleware(deps.db);
-  const tenantGuards = buildAllTenantGuards(deps.config.tenants);
+  const tenantGuards = buildAllTenantGuards(deps.config.tenants, deps.classifiers ?? new Map());
 
   app.get("/healthz", (c) => c.text("ok"));
 

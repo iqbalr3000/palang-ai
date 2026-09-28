@@ -28,6 +28,18 @@ const DEFAULT_MAX_SIZE = 10_000;
 const DEFAULT_FLUSH_INTERVAL_MS = 1000;
 const DEFAULT_FLUSH_BATCH_SIZE = 200;
 
+// The latency columns are `integer`; Postgres rejects the fractional values `performance.now()`
+// deltas produce, and a rejected batch is dropped silently.
+function roundLatencies(event: AuditEventInput): AuditEventInput {
+  return {
+    ...event,
+    latencyTotalMs: Math.round(event.latencyTotalMs),
+    latencyGuardsMs: Math.round(event.latencyGuardsMs),
+    latencyUpstreamMs: event.latencyUpstreamMs && Math.round(event.latencyUpstreamMs),
+    ttftMs: event.ttftMs && Math.round(event.ttftMs),
+  };
+}
+
 // enqueue is synchronous and never awaited by the request path — a full queue or a failed flush
 // drops events rather than blocking or retrying.
 export class AuditQueue {
@@ -36,6 +48,8 @@ export class AuditQueue {
   private readonly maxSize: number;
   private readonly flushBatchSize: number;
   private readonly flushTimer: ReturnType<typeof setInterval>;
+  // Inserts are chained so flush()/shutdown() can wait for one already started by the timer.
+  private inFlight: Promise<void> = Promise.resolve();
 
   constructor(
     private readonly db: Db,
@@ -62,15 +76,21 @@ export class AuditQueue {
       this.droppedTotal++;
       return;
     }
-    this.queue.push(event);
+    this.queue.push(roundLatencies(event));
     if (this.queue.length >= this.flushBatchSize) {
       void this.flush();
     }
   }
 
-  async flush(): Promise<void> {
-    if (this.queue.length === 0) return;
-    const batch = this.queue.splice(0, this.flushBatchSize);
+  flush(): Promise<void> {
+    if (this.queue.length > 0) {
+      const batch = this.queue.splice(0, this.flushBatchSize);
+      this.inFlight = this.inFlight.then(() => this.insert(batch));
+    }
+    return this.inFlight;
+  }
+
+  private async insert(batch: AuditEventInput[]): Promise<void> {
     try {
       await this.db.insert(auditEvents).values(batch);
     } catch {
@@ -90,5 +110,6 @@ export class AuditQueue {
     while (this.queue.length > 0) {
       await this.flush();
     }
+    await this.inFlight;
   }
 }

@@ -36,6 +36,32 @@ Feature order comes from `docs/TSD.md` §15; see `docs/plans/overview.md` for th
 - DB-outage behavior scoped deliberately: only the audit path is required to survive the DB being
   down; auth still needs it and fails with a distinguishable `503` (`docs/decisions/0004`).
 
+## `pii-guard`
+
+*Spec: `spec-pii-guard.md`.*
+
+- `packages/guards/pii-id`: detectors + validators for all v0.1 entity types (NIK, NPWP,
+  PHONE_ID, EMAIL, CARD), mask (`InputGuard`) and restore (`OutputGuard`) with a per-request
+  placeholder vault; standalone-usable per decision 0002.
+- Real stream processor (`apps/gateway/src/stream/`): holdback buffer + tool-call assembler,
+  replacing `gateway-core`'s straight-through relay stub. `mock-split-placeholder` deliberately
+  splits placeholders across SSE chunks to exercise it.
+- `pii-id` wired into the real gateway pipeline for both streaming and non-streaming
+  (config-driven per tenant); non-streaming reuses the same guard-call helpers as streaming.
+- Verified end-to-end: random-chunk-split property test (50 trials), a real round trip against a
+  really-bound `mock-split-placeholder` server, and the real `openai` SDK against a really-bound
+  gateway with an audit row inspected directly for raw PII.
+- Reviewed after implementation (`code-review` skill, findings independently reproduced): 9 real
+  bugs found and fixed — audit event id didn't fit the `uuid` column (audit had silently never
+  persisted for real traffic), streaming audit recorded the wrong outcome on a mid-stream guard
+  block, a phone-number regex swallowed emails sharing its prefix shape, the holdback buffer could
+  release a half-formed placeholder, monitor-mode guards could still block on timeout/error, usage
+  chunks bypassed output guards, no flush on early stream exit, the admin-token timing-safe compare
+  leaked length via early return, and tool calls could be emitted out of order.
+- Open question carried to `tool-policy`: whether output PII matching a value already in the
+  input's vault should be flagged as a leak (it currently isn't — see `spec-pii-guard.md`'s open
+  questions).
+
 ## Platform foundation
 
 *Cross-cutting — not owned by a single feature spec.*
@@ -51,6 +77,17 @@ Feature order comes from `docs/TSD.md` §15; see `docs/plans/overview.md` for th
 ## Shipped, by commit
 
 Same history as above, dated against the actual commit that shipped it (`git log`), newest first.
+
+### 2026-09-18
+
+**`9576c75` — feat: implement pii-guard — NIK/NPWP/phone/email/card detection, mask, and
+streaming restore**
+The whole `pii-guard` feature (TSD §15 M2): detectors/validators, mask/restore with a per-request
+vault, the real stream processor (holdback buffer + tool-call assembler), and wiring into the
+gateway pipeline for both streaming and non-streaming. Includes 9 bug fixes from a post-implementation
+review (audit id/uuid mismatch, streaming audit outcome, phone/email regex overlap, holdback buffer
+half-formed release, monitor-mode error handling, usage-chunk guard bypass, no flush on early stream
+exit, timing-safe compare length leak, tool-call ordering).
 
 ### 2026-09-17
 

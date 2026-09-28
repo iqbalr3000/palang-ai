@@ -1,6 +1,6 @@
 import { test, expect, beforeAll, afterAll } from "bun:test";
 import OpenAI from "openai";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { createDb, apiKeys, auditEvents } from "@palang-ai/db";
 import { createApp as createMockUpstreamApp } from "@palang-ai/mock-upstream";
@@ -80,7 +80,10 @@ test("non-streaming: openai SDK gets the echoed content back, and an audit row a
   expect(completion.choices[0]?.message.content).toBe("hello from the openai sdk");
 
   await auditQueue.flush();
-  const rows = await db.select().from(auditEvents).where(eq(auditEvents.model, "mock-echo"));
+  const rows = await db
+    .select()
+    .from(auditEvents)
+    .where(and(eq(auditEvents.tenantId, "demo"), eq(auditEvents.model, "mock-echo")));
   expect(rows.length).toBeGreaterThan(0);
   expect(rows[0]?.finalAction).toBe("allow");
 });
