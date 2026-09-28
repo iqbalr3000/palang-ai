@@ -46,6 +46,7 @@ Your user gets back  →  "Status untuk 3171011506900001: aktif."
 
 ## What it does
 
+| | |
 |---|---|
 | **PII masking** | NIK, NPWP, phone numbers, emails and card numbers never reach the model. They're masked in every text field of the request and restored in the reply, streaming included. |
 | **Injection detection** | Flags or blocks prompt injection in user and tool messages, in English and Indonesian. |
