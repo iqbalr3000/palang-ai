@@ -1,61 +1,68 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Dark mode follows a .dark class on <html>, set from the theme toggle (or the system). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Neutral surfaces; the logo's blue (#1e8ff5) is kept for accents: primary actions, focus, the
+   active nav item, "allowed" traffic. */
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  /* allow / flag / block */
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --action-allow: oklch(0.6 0.118 184.704);
-  --action-flag: oklch(0.769 0.188 70.08);
-  --action-block: oklch(0.577 0.245 27.325);
+  --background: #f5f6f8;
+  --foreground: #1c2130;
+  --card: #fbfbfc;
+  --card-foreground: #1c2130;
+  --popover: #fbfbfc;
+  --popover-foreground: #1c2130;
+  --primary: #1672e0;
+  --primary-foreground: #ffffff;
+  --secondary: #eceef2;
+  --secondary-foreground: #1c2130;
+  --muted: #eef0f3;
+  --muted-foreground: #646d7e;
+  --accent: #e9ecf1;
+  --accent-foreground: #1c2130;
+  --destructive: #dc2626;
+  --border: #e1e4ea;
+  --input: #d8dce3;
+  --ring: #1e8ff5;
+  --sidebar: #eff1f4;
+  --nav-active-foreground: #1672e0;
+  --brand-navy: #0a1030;
+  --chart-1: #1e8ff5;
+  --chart-2: #22c8f5;
+  --chart-3: #94a3b8;
+  --chart-4: #f5a524;
+  --chart-5: #ef4444;
+  --action-allow: #1e8ff5;
+  --action-flag: #d98a07;
+  --action-block: #dc2626;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --action-allow: oklch(0.696 0.17 162.48);
-    --action-flag: oklch(0.828 0.189 84.429);
-    --action-block: oklch(0.704 0.191 22.216);
-  }
+.dark {
+  --background: #0c0e12;
+  --foreground: #e8eaee;
+  --card: #13161c;
+  --card-foreground: #e8eaee;
+  --popover: #13161c;
+  --popover-foreground: #e8eaee;
+  --primary: #2a86f0;
+  --primary-foreground: #ffffff;
+  --secondary: #1b1f27;
+  --secondary-foreground: #e8eaee;
+  --muted: #1b1f27;
+  --muted-foreground: #8a92a3;
+  --accent: #1d212a;
+  --accent-foreground: #e8eaee;
+  --destructive: #f87171;
+  --border: rgb(255 255 255 / 8%);
+  --input: rgb(255 255 255 / 12%);
+  --ring: #22c8f5;
+  --sidebar: #0f1116;
+  --nav-active-foreground: #7cbcff;
+  --action-allow: #3a9bff;
+  --action-flag: #f5b03c;
+  --action-block: #f87171;
 }
 
 @theme inline {
@@ -81,6 +88,9 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-nav-active-foreground: var(--nav-active-foreground);
+  --color-brand-navy: var(--brand-navy);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);

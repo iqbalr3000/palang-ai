@@ -117,3 +117,14 @@ test("clean output, or no canary injected, is allowed untouched", async () => {
 test("holdback covers the whole token", () => {
   expect(createCanaryOutputGuard({ onDetect: "block" }).holdback).toBe(generateCanary().length);
 });
+
+test("a canary split across segments is caught within one choice, not across choices", async () => {
+  const { ctx, canary } = await injected();
+  const guard = createCanaryOutputGuard({ onDetect: "flag" });
+  const head = canary.slice(0, 10);
+  const tail = canary.slice(10);
+
+  await guard.checkText!(`a${head}`, ctx, 0);
+  expect((await guard.checkText!(`${tail}b`, ctx, 1)).decision.action).toBe("allow");
+  expect((await guard.checkText!(`${tail}b`, ctx, 0)).decision.action).toBe("block");
+});

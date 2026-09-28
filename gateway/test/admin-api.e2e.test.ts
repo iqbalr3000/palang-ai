@@ -300,3 +300,18 @@ test("retention deletes only events older than retention_days", async () => {
   expect(remaining.map((r) => r.id)).not.toContain(oldId);
   expect(remaining).toHaveLength(1);
 });
+
+test("events name the key that made the request, and mark it once revoked", async () => {
+  const [before] = (await events(`tenant=${T.monitor}`)).events as unknown as {
+    id: string;
+    api_key: { name: string; prefix: string; revoked: boolean } | null;
+  }[];
+  expect(before?.api_key).toMatchObject({ name: `key-${T.monitor}`, revoked: false });
+  expect(before?.api_key?.prefix).toStartWith("plg_test_");
+  expect(JSON.stringify(before)).not.toContain(keys.get(T.monitor)!);
+
+  const [key] = await db.select().from(apiKeys).where(eq(apiKeys.tenantId, T.monitor));
+  await db.update(apiKeys).set({ revokedAt: new Date() }).where(eq(apiKeys.id, key!.id));
+  const { body } = await adminGet(`/admin/events/${before!.id}`);
+  expect(body).toMatchObject({ api_key: { name: `key-${T.monitor}`, revoked: true } });
+});

@@ -2,7 +2,8 @@ import "server-only";
 import { z } from "zod";
 
 const envSchema = z.object({
-  PALANG_ADMIN_URL: z.string().url().default("http://localhost:8081"),
+  // 127.0.0.1, not "localhost": the admin API binds IPv4 loopback, and localhost may resolve to ::1.
+  PALANG_ADMIN_URL: z.string().url().default("http://127.0.0.1:8081"),
   PALANG_ADMIN_TOKEN: z.string().min(1),
   DASHBOARD_PASSWORD: z.string().min(12, "must be at least 12 characters"),
 });

@@ -55,6 +55,10 @@ const eventSchema = z.object({
   latency_upstream_ms: z.number().nullable(),
   ttft_ms: z.number().nullable(),
   usage: z.unknown(),
+  // Optional: a gateway older than the dashboard doesn't send it.
+  api_key: z
+    .object({ id: z.string(), name: z.string(), prefix: z.string(), revoked: z.boolean() })
+    .nullish(),
 });
 export type AuditEvent = z.infer<typeof eventSchema>;
 

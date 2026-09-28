@@ -1,5 +1,5 @@
 import { and, desc, eq, gte, lt, sql, type SQL } from "drizzle-orm";
-import { auditEvents, type Db } from "../db/index.js";
+import { apiKeys, auditEvents, type Db } from "../db/index.js";
 import type { FinalAction } from "@palang-ai/guards";
 
 const TWO_DAYS_MS = 2 * 24 * 60 * 60 * 1000;
@@ -167,6 +167,10 @@ const listColumns = {
   latencyUpstreamMs: auditEvents.latencyUpstreamMs,
   ttftMs: auditEvents.ttftMs,
   usage: auditEvents.usage,
+  // Left-joined: which key made the request (never the key itself, only its name and prefix).
+  keyName: apiKeys.name,
+  keyPrefix: apiKeys.prefix,
+  keyRevokedAt: apiKeys.revokedAt,
 };
 
 type EventRow = Pick<
@@ -186,7 +190,7 @@ type EventRow = Pick<
   | "latencyUpstreamMs"
   | "ttftMs"
   | "usage"
->;
+> & { keyName: string | null; keyPrefix: string | null; keyRevokedAt: Date | null };
 
 function eventJson(row: EventRow) {
   return {
@@ -205,6 +209,16 @@ function eventJson(row: EventRow) {
     latency_upstream_ms: row.latencyUpstreamMs,
     ttft_ms: row.ttftMs,
     usage: row.usage,
+    // name and prefix are NOT NULL, so a null name means the left join found no key.
+    api_key:
+      row.apiKeyId && row.keyName !== null
+        ? {
+            id: row.apiKeyId,
+            name: row.keyName,
+            prefix: row.keyPrefix ?? "",
+            revoked: row.keyRevokedAt !== null,
+          }
+        : null,
   };
 }
 
@@ -212,6 +226,7 @@ export async function queryEvents(db: Db, filter: EventFilter) {
   const rows = await db
     .select(listColumns)
     .from(auditEvents)
+    .leftJoin(apiKeys, eq(auditEvents.apiKeyId, apiKeys.id))
     .where(
       and(
         filter.tenant ? eq(auditEvents.tenantId, filter.tenant) : undefined,
@@ -248,6 +263,7 @@ export async function queryEvent(db: Db, id: string) {
       responseContent: auditEvents.responseContent,
     })
     .from(auditEvents)
+    .leftJoin(apiKeys, eq(auditEvents.apiKeyId, apiKeys.id))
     .where(eq(auditEvents.id, id));
   if (!row) return null;
   return {

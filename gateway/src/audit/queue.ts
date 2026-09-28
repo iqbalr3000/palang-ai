@@ -42,6 +42,18 @@ function roundLatencies(event: AuditEventInput): AuditEventInput {
   };
 }
 
+// Postgres rejects NUL in text and jsonb (keys included), which would fail the whole batch.
+function stripNul(value: unknown): unknown {
+  if (typeof value === "string") return value.replaceAll("\u0000", "\uFFFD");
+  if (Array.isArray(value)) return value.map(stripNul);
+  if (typeof value === "object" && value !== null) {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, child]) => [stripNul(key), stripNul(child)]),
+    );
+  }
+  return value;
+}
+
 // enqueue is synchronous and never awaited by the request path — a full queue or a failed flush
 // drops events rather than blocking or retrying.
 export class AuditQueue {
@@ -83,7 +95,7 @@ export class AuditQueue {
       this.droppedTotal++;
       return;
     }
-    this.queue.push(roundLatencies(event));
+    this.queue.push(stripNul(roundLatencies(event)) as AuditEventInput);
     if (this.queue.length >= this.flushBatchSize) {
       void this.flush();
     }
@@ -102,7 +114,12 @@ export class AuditQueue {
       await this.db.insert(auditEvents).values(batch);
       this.flushedTotal += batch.length;
     } catch {
-      this.droppedTotal += batch.length;
+      if (batch.length === 1) {
+        this.droppedTotal++;
+        return;
+      }
+      // Retry one by one so a single bad row doesn't take the rest of the batch with it.
+      for (const event of batch) await this.insert([event]);
     }
   }
 

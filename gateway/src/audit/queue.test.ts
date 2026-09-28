@@ -175,3 +175,41 @@ test("fractional millisecond latencies are stored (rounded), not dropped by the 
   });
   await queue.shutdown();
 });
+
+test("NUL characters in audited content are replaced instead of failing the insert", async () => {
+  const queue = new AuditQueue(db, { flushIntervalMs: 60_000 });
+  const event = makeEvent({
+    model: "mock\u0000echo",
+    requestContent: { "k\u0000": ["a\u0000b"] },
+  });
+  queue.enqueue(event);
+
+  await queue.flush();
+
+  expect(queue.droppedCount).toBe(0);
+  const [row] = await db.select().from(auditEvents).where(eq(auditEvents.id, event.id));
+  expect(row?.model).toBe("mock�echo");
+  expect(row?.requestContent).toEqual({ "k�": ["a�b"] });
+  await queue.shutdown();
+});
+
+test("one bad row doesn't drop the rest of its batch", async () => {
+  const queue = new AuditQueue(db, { flushBatchSize: 200, flushIntervalMs: 60_000 });
+  const existing = makeEvent();
+  queue.enqueue(existing);
+  await queue.flush();
+
+  const good = [makeEvent(), makeEvent()];
+  queue.enqueue(good[0]!);
+  queue.enqueue(makeEvent({ id: existing.id }));
+  queue.enqueue(good[1]!);
+  await queue.flush();
+
+  expect(queue.droppedCount).toBe(1);
+  expect(queue.flushedCount).toBe(3);
+  for (const event of good) {
+    const rows = await db.select().from(auditEvents).where(eq(auditEvents.id, event.id));
+    expect(rows).toHaveLength(1);
+  }
+  await queue.shutdown();
+});

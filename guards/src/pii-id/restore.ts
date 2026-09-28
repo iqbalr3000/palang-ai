@@ -88,11 +88,13 @@ function scanAcrossSegments(
   ctx: GuardContext,
   config: PiiIdConfig,
   findings: Finding[],
+  choice: number,
 ): boolean {
-  const carried = ctx.metadata[CARRY_KEY];
+  const key = `${CARRY_KEY}:${choice}`; // per choice: with n > 1, choices' segments interleave
+  const carried = ctx.metadata[key];
   const carry = typeof carried === "string" ? carried : "";
   const window = carry + raw;
-  ctx.metadata[CARRY_KEY] = window.slice(-CARRY_LENGTH);
+  ctx.metadata[key] = window.slice(-CARRY_LENGTH);
   if (carry === "") return false;
 
   const entities = new Set<string>(config.entities);
@@ -132,9 +134,9 @@ export function createPiiIdOutputGuard(config: PiiIdConfig): OutputGuard {
     phase: "output",
     holdback: HOLDBACK,
 
-    async checkText(text: string, ctx: GuardContext) {
+    async checkText(text: string, ctx: GuardContext, choice = 0) {
       const findings: Finding[] = [];
-      const block = scanAcrossSegments(text, ctx, config, findings);
+      const block = scanAcrossSegments(text, ctx, config, findings, choice);
       const result = restoreAndScan(text, ctx, config, findings);
       return { decision: buildDecision(findings, block), text: result };
     },

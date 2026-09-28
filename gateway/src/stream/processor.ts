@@ -12,7 +12,7 @@ import { HoldbackBuffer } from "./holdback-buffer.js";
 import { ToolCallAssembler, ToolArgsTooLargeError } from "./tool-call-assembler.js";
 import { runOutputGuardText, runOutputGuardToolCall } from "./run-output-guard.js";
 import { blockedErrorBody } from "../public/errors.js";
-import type { StreamChunk } from "./types.js";
+import { streamChunkSchema, type StreamChunk, type StreamDelta } from "./types.js";
 
 /** Receives the model's raw output, before any output guard touches it (audit content). */
 export interface RawResponseSink {
@@ -35,11 +35,15 @@ export interface StreamResult {
   usage?: unknown;
 }
 
-// Delta fields other than content and tool calls (`role`, `refusal`, …) carry nothing guards
-// inspect and are forwarded as they arrive; the OpenAI SDKs require `role` on the first chunk.
-function passthroughDelta(delta: object): Record<string, unknown> | null {
+// Text the guards inspect (content, refusal, tool calls) and legacy `function_call`, which no
+// guard inspects and requests can't ask for any more, never pass through as-is.
+const GUARDED_DELTA_KEYS = new Set(["content", "refusal", "tool_calls", "function_call"]);
+
+// Other delta fields (`role`, …) are forwarded as they arrive; the OpenAI SDKs require `role` on
+// the first chunk.
+function passthroughDelta(delta: StreamDelta): Record<string, unknown> | null {
   const rest = Object.fromEntries(
-    Object.entries(delta).filter(([key]) => key !== "content" && key !== "tool_calls"),
+    Object.entries(delta).filter(([key]) => !GUARDED_DELTA_KEYS.has(key)),
   );
   return Object.keys(rest).length > 0 ? rest : null;
 }
@@ -55,7 +59,7 @@ function buildChunk(
   choiceIndex: number,
   delta: Record<string, unknown>,
   finishReason: string | null,
-): StreamChunk {
+): Omit<StreamChunk, "choices"> & { object: string; choices: unknown[] } {
   return {
     id: meta.id,
     object: "chat.completion.chunk",
@@ -75,6 +79,8 @@ export async function processStream(
   const holdbackSize = Math.max(0, ...deps.outputGuards.map((g) => g.holdback ?? 0));
   const buffersByChoice = new Map<number, HoldbackBuffer>();
   const assemblersByChoice = new Map<number, ToolCallAssembler>();
+  // Refusals are short: collected per choice and checked whole when the choice finishes.
+  const refusalsByChoice = new Map<number, string>();
   const finishedChoices = new Set<number>();
   const decisions: Decision[] = [];
   let blocked: Decision | null = null;
@@ -107,7 +113,7 @@ export async function processStream(
 
   /** Runs `text` through every active `checkText` guard in order; returns null (and has already
    * written the block response) if a guard blocks. */
-  async function runTextThroughGuards(text: string): Promise<string | null> {
+  async function runTextThroughGuards(text: string, choiceIndex: number): Promise<string | null> {
     let current = text;
     for (const guard of deps.outputGuards) {
       if (!guard.checkText) continue;
@@ -117,6 +123,7 @@ export async function processStream(
         deps.ctx,
         guardConfigFor(guard.name),
         deps.failureMode,
+        choiceIndex,
       );
       decisions.push(decision);
       current = next;
@@ -131,7 +138,7 @@ export async function processStream(
 
   async function emitTextChunk(choiceIndex: number, text: string): Promise<boolean> {
     if (!text) return true;
-    const restored = await runTextThroughGuards(text);
+    const restored = await runTextThroughGuards(text, choiceIndex);
     if (restored === null) return false;
     if (restored) {
       await write(
@@ -164,6 +171,15 @@ export async function processStream(
   async function finishChoice(choiceIndex: number, finishReason: string | null): Promise<boolean> {
     const remaining = getBuffer(choiceIndex).flush();
     if (!(await emitTextChunk(choiceIndex, remaining))) return false;
+
+    const refusal = refusalsByChoice.get(choiceIndex);
+    if (refusal) {
+      const checked = await runTextThroughGuards(refusal, choiceIndex);
+      if (checked === null) return false;
+      await write(
+        `data: ${JSON.stringify(buildChunk(meta, choiceIndex, { refusal: checked }, null))}\n\n`,
+      );
+    }
 
     for (const [toolCallIndex, assembled] of getAssembler(choiceIndex).finalize().entries()) {
       let toolCall = assembled;
@@ -213,6 +229,9 @@ export async function processStream(
     .pipeThrough(new TextDecoderStream() as ReadableWritablePair<string, Uint8Array>)
     .pipeThrough(new EventSourceParserStream());
   const reader = eventStream.getReader();
+  // An early return (a block, oversized tool arguments, an error) cancels the body. On Bun that
+  // doesn't close the connection; the caller also aborts the upstream fetch.
+  let consumedToEnd = false;
 
   try {
     while (true) {
@@ -220,12 +239,15 @@ export async function processStream(
       if (done) break;
       if (value.data === "[DONE]") break;
 
-      let chunk: StreamChunk;
+      let json: unknown;
       try {
-        chunk = JSON.parse(value.data) as StreamChunk;
+        json = JSON.parse(value.data);
       } catch {
-        continue; // ignore lines that aren't valid JSON chunks
+        continue; // ignore lines that aren't valid JSON
       }
+      const parsed = streamChunkSchema.safeParse(json);
+      if (!parsed.success) continue; // e.g. a provider-specific chunk without choices we can read
+      const chunk: StreamChunk = parsed.data;
 
       meta = { id: chunk.id, model: chunk.model, created: chunk.created };
 
@@ -234,6 +256,13 @@ export async function processStream(
         if (passthrough) {
           await write(
             `data: ${JSON.stringify(buildChunk(meta, choice.index, passthrough, null))}\n\n`,
+          );
+        }
+
+        if (choice.delta.refusal) {
+          refusalsByChoice.set(
+            choice.index,
+            (refusalsByChoice.get(choice.index) ?? "") + choice.delta.refusal,
           );
         }
 
@@ -291,15 +320,21 @@ export async function processStream(
 
     // Upstream ended (or sent [DONE]) before some choice's finish_reason ever arrived — flush what
     // it was still holding instead of silently dropping it.
-    const pendingChoices = new Set([...buffersByChoice.keys(), ...assemblersByChoice.keys()]);
+    const pendingChoices = new Set([
+      ...buffersByChoice.keys(),
+      ...assemblersByChoice.keys(),
+      ...refusalsByChoice.keys(),
+    ]);
     for (const choiceIndex of pendingChoices) {
       if (finishedChoices.has(choiceIndex)) continue;
       if (!(await finishChoice(choiceIndex, null))) return { decisions, blocked, usage };
     }
 
     await write("data: [DONE]\n\n");
+    consumedToEnd = true;
   } finally {
-    reader.releaseLock();
+    if (consumedToEnd) reader.releaseLock();
+    else await reader.cancel().catch(() => {});
   }
 
   return { decisions, blocked, usage };

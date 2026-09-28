@@ -84,3 +84,40 @@ the token. The login form and key creation were exercised as no-JS form posts (w
 error, right password → `HttpOnly; SameSite=lax` 12 h cookie and redirect; a created key is shown
 once). Not yet checked in a real browser: layout, the chart, the drawer and revoke dialog (both
 client-only), and dark mode.
+
+## Enhancements (2026-09-28)
+
+Asked for after the first round of use; agreed 2026-09-28, to be iterated on with the user in the
+browser:
+- **Cursor:** Tailwind v4's preflight gives buttons and selects the default cursor and shadcn's
+  components don't add it back; one base rule in `globals.css` restores `cursor: pointer` for
+  enabled buttons, selects, `summary` and `[role=button]`.
+- **Which key made the request:** the admin API's event list and detail join `api_keys` and
+  return `api_key: { id, name, prefix, revoked }` (additive). Events shows a Key column (name +
+  prefix, marked when revoked) and the drawer shows it too. No key filter for now.
+- **Theme from the logo** (navy `#0a1030`, blue `#1e8ff5`, cyan `#22c8f5`, white): follows the
+  system; dark uses the logo's navy with blue/cyan accents, light is white with the logo blue as
+  primary. Status colors: allow = logo blue, flag = amber, block = red. The favicon mark and name
+  go in the sidebar, the full logo on the login page.
+
+Then iterated with the user in the browser:
+- **Colors toned down:** "not everything blue" — surfaces are neutral grays in both themes, and
+  the logo blue is kept for accents (primary actions, focus, the active nav item, "AI", allowed
+  traffic). The light theme uses soft off-white surfaces instead of pure white.
+- **Theme setting:** Light / Dark / System, stored in the browser, applied before first paint
+  (class-based `dark` variant).
+- **Sidebar:** fixed while the content scrolls; grouped nav (Monitor: Overview, Events · Manage:
+  API keys, Config) with icons and a soft blue tint on the active item; an account menu at the
+  bottom (avatar → Theme submenu, Sign out).
+- **Cursor:** in the end set per component (`Button`, selects, menu items, sheet close); the
+  global base rule was removed as a duplicate.
+
+Second code/security review fixes (2026-09-28): the theme `<head>` script is generated from the
+same function the toggle uses and only guards the storage read (a blocked `localStorage` still
+follows the system); a root-level `ThemeSync` follows OS changes and other tabs on every page;
+theme colors used outside the palette became tokens (`--nav-active-foreground`, `--brand-navy`);
+`api_key` is optional in the client schema so an older gateway doesn't break Events; Sign out is
+a real form submit again (works without JS); images are served at their display size (56 px mark,
+400 px login logo); on small screens the sidebar becomes a top bar with the nav scrolling on its
+own row; `PALANG_ADMIN_URL` defaults to `http://127.0.0.1:8081` (the admin API binds IPv4
+loopback, and `localhost` can resolve to `::1`).

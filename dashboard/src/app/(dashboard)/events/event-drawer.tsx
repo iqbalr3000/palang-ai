@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { ActionBadge } from "@/components/action-badge";
+import { KeyLabel } from "@/components/key-label";
 import { LocalTime } from "@/components/local-time";
 import {
   Sheet,
@@ -54,6 +55,9 @@ export function EventDrawer({ event, closeHref }: { event: EventDetail; closeHre
               <LocalTime iso={event.created_at} />
             </Field>
             <Field label="Tenant">{event.tenant_id}</Field>
+            <Field label="Key">
+              <KeyLabel apiKey={event.api_key} />
+            </Field>
             <Field label="Model">{event.model}</Field>
             <Field label="Status">
               {event.status_code}

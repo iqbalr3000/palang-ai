@@ -8,6 +8,8 @@ import { loadClassifiers } from "./classifier/load.js";
 import { createGatewayMetrics } from "./metrics/gateway.js";
 import { createLogger } from "./log/logger.js";
 
+const SHUTDOWN_GRACE_MS = 10_000;
+
 async function main(): Promise<void> {
   let config;
   let env;
@@ -56,8 +58,16 @@ async function main(): Promise<void> {
 
   const shutdown = async () => {
     logger.info("shutting down");
-    publicServer.stop();
-    adminServer.stop();
+    // stop() resolves once in-flight responses (streams included) finish, so they're audited.
+    const drained = Promise.all([publicServer.stop(), adminServer.stop()]);
+    const timedOut = await Promise.race([
+      drained.then(() => false),
+      new Promise<boolean>((resolve) => setTimeout(() => resolve(true), SHUTDOWN_GRACE_MS)),
+    ]);
+    if (timedOut) {
+      logger.warn("in-flight requests still open at shutdown; closing them");
+      await Promise.all([publicServer.stop(true), adminServer.stop(true)]);
+    }
     stopRetention();
     await auditQueue.shutdown(5000);
     process.exit(0);

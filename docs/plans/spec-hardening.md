@@ -105,7 +105,12 @@ Decided while building, not separately discussed — flagged for the user to con
 - **#12:** the first live test showed a burst of parallel attempts all got a free slot before any
   of them failed; attempts still being checked now count toward the spacing. Live: 40 parallel
   guesses → 8 checked, 32 turned away; the real password still works afterwards. A failed attempt
-  still takes at least 500 ms.
+  still takes at least 500 ms. **Correction (second review, 2026-09-28):** the design table's
+  "never a lockout" is wrong under a *sustained* attack: one wrong guess every 2 s keeps the global
+  queue full, and in a simulation the admin was turned away 9 times out of 9 over 10 minutes. This
+  is the cost of a global limit; accepted and documented in the README's known limitations (keep
+  the dashboard off the public internet). Per-IP limiting behind a trusted-proxy setting is the
+  way out, left as a later improvement.
 - **#15:** the session token is now `expiresAt.id.signature`, so existing dashboard sessions are
   signed out once on upgrade.
 
@@ -116,3 +121,49 @@ Decided while building, not separately discussed — flagged for the user to con
 - Verified on a live gateway + dashboard: the admin port listens on `127.0.0.1` only, the four
   security headers are sent, a copied cookie is rejected after logout, and the throttle holds
   under parallel guessing.
+
+## Round 2 (third review, 2026-09-28)
+
+A whole-project code review and a third security review, run after the dashboard rework. Findings
+(✅ reproduced, 📖 from reading the code) and the agreed fixes:
+
+| # | Finding | Fix |
+|---|---|---|
+| H1 | PII reaches the provider through request fields other than `messages[].content`: `user`, message `name` ✅, `prediction`, tool descriptions, `response_format` 📖. | **Mask PII in every string of the outgoing request** (except `model`), with the request's vault, whenever the tenant runs `pii-id`. Injection scanning stays on messages. |
+| H2 | One request containing `\u0000` makes Postgres reject the audit batch, dropping every event in it, other tenants' included ✅. | Replace NUL in everything audited, and when a batch insert fails, retry row by row so only a bad row is lost. |
+| H3 | Output guards only see `content`/`tool_calls`: `refusal` and `logprobs` carry canaries/PII to the client ✅; legacy `function_call` skips tool-policy 📖. | Guard `refusal` like content (streaming and not); drop `logprobs` from responses (and the `logprobs`/`top_logprobs` request params); **reject** requests using `functions`/`function_call` with a 400. |
+| M1 | A mid-stream block doesn't cancel the upstream response; the provider keeps generating 📖. | Cancel the upstream stream on every early exit. |
+| M2 | The cross-segment carry is per request, not per choice, so `n > 1` mixes choices 📖. | Output guards get the choice index; carry is kept per choice. |
+| M3 | Upstream chunks/responses are cast, not validated; a choice without `delta` crashes the stream 📖. | Zod-validate chunks (malformed ones are skipped) and non-streaming responses (invalid → 502). |
+| M4 | Shutdown kills in-flight streams before they're audited 📖. | Wait for in-flight requests (bounded) before draining the audit queue. |
+| L1 | `/icon.png`, `/apple-icon.png` redirect to login without a session ✅. | Exclude them in the proxy matcher. |
+| L2 | A `base_url` ending in `/` produces `//chat/completions` 📖. | Strip the trailing slash. |
+
+Implementation notes (round 2), decided while building, flagged for the user to confirm or
+overrule:
+- **H1:** the request is masked with the same vault as the messages, so a value masked in `user`
+  and in a message gets the same placeholder. `model` is left alone.
+- **H2:** NUL becomes U+FFFD (in JSON keys too). A failed batch is retried row by row; only the
+  row Postgres still rejects is dropped and counted.
+- **H3:** a streamed refusal is collected per choice and checked whole when the choice finishes
+  (refusals are short). A non-streaming refusal that trips a guard blocks like content. A leftover
+  `function_call` in a response is dropped.
+- **M1:** cancelling the response body is not enough on Bun: the connection stays open and the
+  provider keeps sending (verified). The stream handler also aborts the upstream fetch when it
+  ends; after a fully read body that's a no-op.
+- **M3:** an invalid non-streaming response is recorded and answered `502 upstream_error`, like any
+  other upstream failure.
+- **M4:** no in-flight counter was needed: Bun's `server.stop()` already resolves only once open
+  responses, streams included, have finished (verified). Shutdown waits for that for up to 10 s,
+  then force-closes, then drains the audit queue.
+
+Results (round 2):
+- 382 tests pass (was 366). New: `maskPiiDeep`, per-choice canary carry, NUL and bad-row audit
+  inserts, and `gateway/test/upstream-fields.e2e.test.ts` (masked request fields, logprobs
+  stripped both ways, legacy functions 400, refusal canary blocked streaming and not, malformed
+  chunks skipped, malformed response 502, upstream cancelled on block, trailing-slash `base_url`).
+  The upstream-cancel test failed before the fetch abort was added.
+- Verified on a dev dashboard: `/icon.png` and `/apple-icon.png` are served without a session;
+  pages still redirect.
+- Not covered by an automated test: the shutdown wait (`index.ts` isn't importable without
+  starting servers); Bun's `stop()` behavior was checked with a standalone script.

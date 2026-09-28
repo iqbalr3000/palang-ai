@@ -42,12 +42,13 @@ function scan(text: string, ctx: GuardContext, config: CanaryConfig): Scan {
 
 // The holdback buffer cuts mid-token when a long run has no whitespace, so a canary can start in
 // the previous segment. Its start is already sent and can't be stripped, so this always blocks.
-function spansPreviousSegment(text: string, ctx: GuardContext): boolean {
+function spansPreviousSegment(text: string, ctx: GuardContext, choice: number): boolean {
+  const key = `${CARRY_KEY}:${choice}`; // per choice: with n > 1, choices' segments interleave
   const canary = getCanary(ctx);
-  const carried = ctx.metadata[CARRY_KEY];
+  const carried = ctx.metadata[key];
   const carry = typeof carried === "string" ? carried : "";
   const window = carry + text;
-  ctx.metadata[CARRY_KEY] = window.slice(-(CANARY_LENGTH - 1));
+  ctx.metadata[key] = window.slice(-(CANARY_LENGTH - 1));
   if (!canary || carry === "") return false;
   const at = window.toLowerCase().indexOf(canary.toLowerCase());
   return at !== -1 && at < carry.length;
@@ -59,8 +60,8 @@ export function createCanaryOutputGuard(config: CanaryConfig): OutputGuard {
     phase: "output",
     holdback: CANARY_LENGTH,
 
-    async checkText(text, ctx) {
-      if (spansPreviousSegment(text, ctx)) return { decision: leakDecision("block"), text };
+    async checkText(text, ctx, choice = 0) {
+      if (spansPreviousSegment(text, ctx, choice)) return { decision: leakDecision("block"), text };
       return scan(text, ctx, config);
     },
 

@@ -60,7 +60,12 @@ export interface OutputGuard {
   name: string;
   phase: "output";
   /** Called on text segments released by the holdback buffer. May return modified text. */
-  checkText?(text: string, ctx: GuardContext): Promise<{ decision: Decision; text: string }>;
+  /** `choice` is the response choice the text belongs to (0 unless the request set `n` > 1). */
+  checkText?(
+    text: string,
+    ctx: GuardContext,
+    choice?: number,
+  ): Promise<{ decision: Decision; text: string }>;
   /** Called once per fully assembled tool call. May return a modified call. */
   checkToolCall?(
     call: ToolCall,

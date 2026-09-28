@@ -1,6 +1,6 @@
 // One global throttle rather than per-IP: client IPs come from headers that can be forged when
-// the dashboard isn't behind a trusted proxy. It slows guessing without ever locking the admin
-// out for good.
+// the dashboard isn't behind a trusted proxy. The trade-off: while someone guesses nonstop, the
+// real admin is slowed or turned away too, which is why the dashboard mustn't be public.
 
 const WINDOW_MS = 15 * 60 * 1000;
 const FREE_FAILURES = 3;

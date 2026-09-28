@@ -5,6 +5,7 @@ import { sql } from "drizzle-orm";
 import type { Db } from "../db/index.js";
 import {
   getCanary,
+  maskPiiDeep,
   matchGlob,
   runInputPipeline,
   type GuardContext,
@@ -19,10 +20,11 @@ import { ResponseCapture } from "../audit/content.js";
 import { createRecorder, finalActionFor, type RequestOutcome } from "../audit/recorder.js";
 import { createGatewayMetrics, type GatewayMetrics } from "../metrics/gateway.js";
 import { createLogger, type Logger } from "../log/logger.js";
-import { chatCompletionRequestSchema } from "./request-schema.js";
+import { chatCompletionRequestSchema, type ChatCompletionRequest } from "./request-schema.js";
 import { blockedErrorBody } from "./errors.js";
 import { buildAllTenantGuards } from "./guards.js";
-import { applyOutputGuardsToChoices, type NonStreamingChoice } from "./apply-output-guards.js";
+import { applyOutputGuardsToChoices } from "./apply-output-guards.js";
+import { completionSchema } from "../stream/types.js";
 
 export interface Variables {
   tenantId: string;
@@ -50,6 +52,23 @@ function forwardableErrorHeaders(upstream: Headers): Headers {
     }
   });
   return headers;
+}
+
+// What goes to the provider: the messages as the input guards left them (mutated in place), no
+// logprobs (they'd return raw tokens past the output guards), and, when the tenant runs pii-id,
+// every other string masked too — `user`, message names, `prediction`, tool descriptions.
+function upstreamBody(
+  body: ChatCompletionRequest,
+  ctx: GuardContext,
+  tenant: TenantConfig,
+): Record<string, unknown> {
+  const { model, ...rest }: Record<string, unknown> = { ...body, messages: ctx.messages };
+  delete rest.logprobs;
+  delete rest.top_logprobs;
+  const pii = tenant.guards["pii-id"];
+  if (!pii) return { model, ...rest };
+  const masked = maskPiiDeep(rest, ctx.piiVault, pii.entities).value;
+  return { model, ...(masked as Record<string, unknown>) };
 }
 
 function findTenant(config: PalangConfig, tenantId: string): TenantConfig | undefined {
@@ -111,6 +130,19 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
       return c.json({ error: { message: "Invalid request body", code: "invalid_request" } }, 400);
     }
     const body = parsed.data;
+    // The deprecated functions API returns `function_call`, which no output guard inspects.
+    if ("functions" in body || "function_call" in body) {
+      return c.json(
+        {
+          error: {
+            message:
+              "The deprecated `functions`/`function_call` parameters aren't supported; use `tools`",
+            code: "unsupported_parameter",
+          },
+        },
+        400,
+      );
+    }
     const requestId = crypto.randomUUID(); // also the audit_events primary key — must stay a real uuid
     const apiKeyId = c.get("apiKeyId");
 
@@ -175,6 +207,9 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
     }
 
     const upstreamStart = performance.now();
+    // Bun doesn't close the connection when a response body is cancelled, only when the fetch is
+    // aborted: without this, a stream ended early keeps the provider generating.
+    const upstreamAbort = new AbortController();
     let upstreamResponse: Response;
     try {
       upstreamResponse = await callUpstream(
@@ -183,8 +218,8 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
           apiKey: tenant.upstream.api_key,
           timeoutMs: tenant.upstream.timeout_ms,
         },
-        { ...body, messages: ctx.messages }, // input guards mutate ctx.messages in place
-        c.req.raw.signal,
+        upstreamBody(body, ctx, tenant),
+        AbortSignal.any([c.req.raw.signal, upstreamAbort.signal]),
       );
     } catch (error) {
       const timedOut = error instanceof UpstreamTimeoutError;
@@ -253,6 +288,7 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
             },
           );
         } finally {
+          upstreamAbort.abort();
           // Every stream is recorded, including one cut short by the client (499, nginx's
           // "client closed request") or by the upstream.
           const statusCode = result ? 200 : c.req.raw.signal.aborted ? 499 : 502;
@@ -270,18 +306,34 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
       });
     }
 
-    const json = (await upstreamResponse.json()) as {
-      choices?: NonStreamingChoice[];
-      usage?: unknown;
-    };
+    const completion = completionSchema.safeParse(await upstreamResponse.json().catch(() => null));
+    if (!completion.success) {
+      metrics.recordUpstreamError(tenant.id);
+      record(
+        outcome({
+          blocked: null,
+          statusCode: 502,
+          decisions: pipelineResult.decisions,
+          latencyUpstreamMs,
+          response: null,
+        }),
+      );
+      return c.json(
+        { error: { message: "Upstream returned an invalid response", code: "upstream_error" } },
+        502,
+      );
+    }
+    const json = completion.data;
     // Captured before the output guards restore placeholders in place.
-    (json.choices ?? []).forEach((choice, index) => {
+    json.choices.forEach((choice, index) => {
       if (choice.message?.content) response?.text(index, choice.message.content);
       for (const call of choice.message?.tool_calls ?? []) response?.toolCall(index, call);
+      // Legacy functions output; requests can't ask for it, so it's never passed on unguarded.
+      if (choice.message) delete choice.message.function_call;
     });
 
     const outputResult = await applyOutputGuardsToChoices(
-      json.choices ?? [],
+      json.choices,
       guards.output,
       guards.runtimeConfigs,
       tenant.failure_mode,

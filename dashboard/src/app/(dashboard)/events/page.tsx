@@ -16,6 +16,7 @@ import {
 import { admin } from "@/lib/admin";
 import type { Action } from "@/lib/admin-client";
 import { EventDrawer } from "./event-drawer";
+import { KeyLabel } from "@/components/key-label";
 
 const ACTIONS: readonly Action[] = ["allow", "flag", "block"];
 const GUARDS = ["canary", "pii-id", "injection", "tool-policy"] as const;
@@ -122,6 +123,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
             <TableRow>
               <TableHead>Time</TableHead>
               <TableHead>Tenant</TableHead>
+              <TableHead>Key</TableHead>
               <TableHead>Model</TableHead>
               <TableHead>Action</TableHead>
               <TableHead>Blocked by</TableHead>
@@ -132,7 +134,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
           <TableBody>
             {page.events.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="py-10 text-center text-muted-foreground">
+                <TableCell colSpan={8} className="py-10 text-center text-muted-foreground">
                   No events match these filters.
                 </TableCell>
               </TableRow>
@@ -150,6 +152,9 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
                     </Link>
                   </TableCell>
                   <TableCell>{e.tenant_id}</TableCell>
+                  <TableCell>
+                    <KeyLabel apiKey={e.api_key} />
+                  </TableCell>
                   <TableCell className="font-mono text-xs">{e.model}</TableCell>
                   <TableCell>
                     <ActionBadge action={e.final_action} />

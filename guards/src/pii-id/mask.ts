@@ -39,6 +39,27 @@ function appendPreserveHint(messages: ChatMessage[]): void {
   messages.unshift({ role: "system", content: PRESERVE_HINT_TEXT });
 }
 
+/** Masks PII in every string of `value` (objects and arrays walked recursively) with the given
+ * vault, so the same value gets the same placeholder as in the messages. Returns a copy. */
+export function maskPiiDeep(
+  value: unknown,
+  vault: Map<string, string>,
+  entities: Iterable<string>,
+): { value: unknown; masked: number } {
+  const wanted = new Set(entities);
+  const findings: Finding[] = [];
+  const walk = (node: unknown): unknown => {
+    if (typeof node === "string") return maskText(node, vault, wanted, -1, findings);
+    if (Array.isArray(node)) return node.map(walk);
+    if (typeof node === "object" && node !== null) {
+      return Object.fromEntries(Object.entries(node).map(([key, child]) => [key, walk(child)]));
+    }
+    return node;
+  };
+  const masked = walk(value);
+  return { value: masked, masked: findings.length };
+}
+
 export function createPiiIdInputGuard(config: PiiIdConfig): InputGuard {
   const entities = new Set<string>(config.entities);
 

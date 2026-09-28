@@ -16,6 +16,7 @@ export async function runOutputGuardText(
   ctx: GuardContext,
   config: GuardRuntimeConfig,
   failureMode: FailureMode,
+  choice = 0,
 ): Promise<{ decision: Decision; text: string }> {
   let resultText = text;
   const decision = await evaluateGuard(
@@ -25,7 +26,7 @@ export async function runOutputGuardText(
     ctx.signal,
     async (signal) => {
       if (!guard.checkText) return { guard: guard.name, action: "allow", latencyMs: 0 };
-      const result = await guard.checkText(text, { ...ctx, signal });
+      const result = await guard.checkText(text, { ...ctx, signal }, choice);
       resultText = result.text;
       return result.decision;
     },

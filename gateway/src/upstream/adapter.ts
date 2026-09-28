@@ -15,7 +15,7 @@ export async function callUpstream(
   const timeout = new AbortController();
   const timer = setTimeout(() => timeout.abort(), config.timeoutMs);
   try {
-    return await fetch(`${config.baseUrl}/chat/completions`, {
+    return await fetch(`${config.baseUrl.replace(/\/+$/, "")}/chat/completions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

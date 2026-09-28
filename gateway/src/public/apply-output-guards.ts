@@ -7,10 +7,7 @@ import type {
   ToolCall,
 } from "@palang-ai/guards";
 import { runOutputGuardText, runOutputGuardToolCall } from "../stream/run-output-guard.js";
-
-export interface NonStreamingChoice {
-  message?: { content?: string | null; tool_calls?: ToolCall[] };
-}
+import type { CompletionChoice } from "../stream/types.js";
 
 export interface ApplyOutputGuardsResult {
   blocked: Decision | null;
@@ -29,7 +26,7 @@ function guardConfigFor(
 // Same runOutputGuardText/runOutputGuardToolCall helpers the stream processor uses, called once
 // over the complete response instead of per released chunk. Mutates choices in place.
 export async function applyOutputGuardsToChoices(
-  choices: NonStreamingChoice[],
+  choices: CompletionChoice[],
   outputGuards: OutputGuard[],
   guardConfigs: Record<string, GuardRuntimeConfig>,
   failureMode: FailureMode,
@@ -37,30 +34,42 @@ export async function applyOutputGuardsToChoices(
 ): Promise<ApplyOutputGuardsResult> {
   const decisions: Decision[] = [];
 
-  for (const choice of choices) {
-    if (!choice.message) continue;
+  async function guardText(text: string, choiceIndex: number): Promise<string | null> {
+    let current = text;
+    for (const guard of outputGuards) {
+      if (!guard.checkText) continue;
+      const result = await runOutputGuardText(
+        guard,
+        current,
+        ctx,
+        guardConfigFor(guardConfigs, guard.name),
+        failureMode,
+        choiceIndex,
+      );
+      current = result.text;
+      decisions.push(result.decision);
+      if (result.decision.action === "block") return null;
+    }
+    return current;
+  }
 
-    if (choice.message.content) {
-      let text = choice.message.content;
-      for (const guard of outputGuards) {
-        if (!guard.checkText) continue;
-        const result = await runOutputGuardText(
-          guard,
-          text,
-          ctx,
-          guardConfigFor(guardConfigs, guard.name),
-          failureMode,
-        );
-        text = result.text;
-        decisions.push(result.decision);
-        if (result.decision.action === "block") return { blocked: result.decision, decisions };
-      }
-      choice.message.content = text;
+  for (const [choiceIndex, choice] of choices.entries()) {
+    // Token-level logprobs would hand back the raw output the guards just rewrote.
+    delete choice.logprobs;
+    const message = choice.message;
+    if (!message) continue;
+
+    for (const field of ["content", "refusal"] as const) {
+      const text = message[field];
+      if (!text) continue;
+      const checked = await guardText(text, choiceIndex);
+      if (checked === null) return { blocked: decisions.at(-1) ?? null, decisions };
+      message[field] = checked;
     }
 
-    if (choice.message.tool_calls) {
-      for (let i = 0; i < choice.message.tool_calls.length; i++) {
-        let call = choice.message.tool_calls[i]!;
+    if (message.tool_calls) {
+      for (let i = 0; i < message.tool_calls.length; i++) {
+        let call: ToolCall = message.tool_calls[i]!;
         for (const guard of outputGuards) {
           if (!guard.checkToolCall) continue;
           const result = await runOutputGuardToolCall(
@@ -74,7 +83,7 @@ export async function applyOutputGuardsToChoices(
           decisions.push(result.decision);
           if (result.decision.action === "block") return { blocked: result.decision, decisions };
         }
-        choice.message.tool_calls[i] = call;
+        message.tool_calls[i] = { ...call };
       }
     }
   }
