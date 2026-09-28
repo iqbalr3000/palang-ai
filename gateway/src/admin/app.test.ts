@@ -14,7 +14,13 @@ const metrics = createGatewayMetrics(new AuditQueue(db));
 const ADMIN_TOKEN = "test-admin-token";
 
 const config: PalangConfig = {
-  server: { public_port: 8080, admin_port: 8081, max_body_bytes: 1_048_576 },
+  server: {
+    public_port: 8080,
+    admin_port: 8081,
+    max_body_bytes: 1_048_576,
+    public_host: "0.0.0.0",
+    admin_host: "127.0.0.1",
+  },
   audit: { content_mode: "redacted", retention_days: 30 },
   models: { path: "./models" },
   tenants: [

@@ -39,11 +39,20 @@ async function main(): Promise<void> {
   const publicApp = createPublicApp({ db, config, auditQueue, classifiers, metrics, logger });
   const adminApp = createAdminApp({ db, config, adminToken: env.adminToken, metrics });
 
-  const publicServer = Bun.serve({ port: config.server.public_port, fetch: publicApp.fetch });
-  const adminServer = Bun.serve({ port: config.server.admin_port, fetch: adminApp.fetch });
+  const { server } = config;
+  const publicServer = Bun.serve({
+    hostname: server.public_host,
+    port: server.public_port,
+    fetch: publicApp.fetch,
+  });
+  const adminServer = Bun.serve({
+    hostname: server.admin_host,
+    port: server.admin_port,
+    fetch: adminApp.fetch,
+  });
 
-  logger.info({ port: config.server.public_port }, "public API listening");
-  logger.info({ port: config.server.admin_port }, "admin API listening");
+  logger.info({ host: server.public_host, port: server.public_port }, "public API listening");
+  logger.info({ host: server.admin_host, port: server.admin_port }, "admin API listening");
 
   const shutdown = async () => {
     logger.info("shutting down");

@@ -181,3 +181,20 @@ test("mock-leak-canary: replies with the canary found in the system message", as
   const body = await res.json();
   expect(body.choices[0].message.content).toContain(canary);
 });
+
+test("stream_options.include_usage adds a final usage chunk with empty choices", async () => {
+  const res = await app.fetch(
+    req({
+      model: "mock-echo",
+      stream: true,
+      stream_options: { include_usage: true },
+      messages: [{ role: "user", content: "count me" }],
+    }),
+  );
+  const events = sseEvents(await res.text()) as {
+    choices: unknown[];
+    usage?: { total_tokens: number };
+  }[];
+  expect(events.at(-1)?.choices).toEqual([]);
+  expect(events.at(-1)?.usage?.total_tokens).toBeGreaterThan(0);
+});

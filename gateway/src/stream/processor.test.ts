@@ -1,5 +1,12 @@
 import { test, expect } from "bun:test";
 import type { GuardContext, OutputGuard } from "@palang-ai/guards";
+import {
+  DEFAULT_PII_ID_CONFIG,
+  createCanaryInputGuard,
+  createCanaryOutputGuard,
+  createPiiIdOutputGuard,
+  getCanary,
+} from "@palang-ai/guards";
 import { processStream, type StreamProcessorDeps } from "./processor.js";
 
 function sseStream(events: Array<Record<string, unknown> | "[DONE]">): ReadableStream<Uint8Array> {
@@ -319,4 +326,93 @@ test("a guard that blocks stops the stream with the same error shape as a non-st
     palang: { guard: "canary" },
   });
   expect(events.at(-1)).toBe("[DONE]");
+});
+
+// Upstream chunks of `size` characters, like a real model stream.
+function contentStream(text: string, size = 8): ReadableStream<Uint8Array> {
+  const chunk = (delta: Record<string, unknown>, finish: string | null = null) => ({
+    id: "1",
+    object: "chat.completion.chunk",
+    created: 1,
+    model: "m",
+    choices: [{ index: 0, delta, finish_reason: finish }],
+  });
+  const events: Array<Record<string, unknown> | "[DONE]"> = [];
+  for (let i = 0; i < text.length; i += size)
+    events.push(chunk({ content: text.slice(i, i + size) }));
+  events.push(chunk({}, "stop"), "[DONE]");
+  return sseStream(events);
+}
+
+function streamedContent(written: string[]): string {
+  return parseDataLines(written)
+    .map((e) =>
+      typeof e === "object" && e !== null && "choices" in e
+        ? ((e as { choices: { delta: { content?: string } }[] }).choices[0]?.delta.content ?? "")
+        : "",
+    )
+    .join("");
+}
+
+// Regression: past 256 characters without whitespace the holdback buffer cuts anyway, which used
+// to split a token across two checkText calls so neither saw it whole. Every prefix length puts
+// the cut at a different spot in the token.
+const PREFIX_LENGTHS = Array.from({ length: 321 }, (_, i) => 200 + i);
+
+for (const onDetect of ["block", "flag"] as const) {
+  test(`a canary never streams out whole, wherever a forced cut lands (on_detect: ${onDetect})`, async () => {
+    for (const prefix of PREFIX_LENGTHS) {
+      const ctx = makeCtx();
+      ctx.messages = [{ role: "system", content: "sys" }];
+      await createCanaryInputGuard().check(ctx);
+      const canary = getCanary(ctx)!;
+
+      const written: string[] = [];
+      const result = await processStream(
+        contentStream(`${"/".repeat(prefix)}${canary} done`),
+        {
+          outputGuards: [createCanaryOutputGuard({ onDetect })],
+          guardConfigs: { canary: { mode: "enforce" } },
+          failureMode: "fail_open",
+          ctx,
+        },
+        async (chunk) => {
+          written.push(chunk);
+        },
+      );
+
+      expect({ prefix, leaked: streamedContent(written).includes(canary) }).toEqual({
+        prefix,
+        leaked: false,
+      });
+      expect(result.decisions.some((d) => d.reason === "canary_leaked")).toBe(true);
+    }
+  });
+}
+
+test("output PII straddling a forced cut is still found; it blocks when it can't be masked", async () => {
+  for (const prefix of PREFIX_LENGTHS) {
+    const text = `${"/".repeat(prefix)}budi@example.com${"/".repeat(100)} done`;
+    const deps = (maskNewOutputPii: boolean) => ({
+      outputGuards: [createPiiIdOutputGuard({ ...DEFAULT_PII_ID_CONFIG, maskNewOutputPii })],
+      guardConfigs: { "pii-id": { mode: "enforce" as const } },
+      failureMode: "fail_open" as const,
+      ctx: makeCtx(),
+    });
+
+    const written: string[] = [];
+    await processStream(contentStream(text), deps(true), async (chunk) => {
+      written.push(chunk);
+    });
+    expect({ prefix, leaked: streamedContent(written).includes("budi@example.com") }).toEqual({
+      prefix,
+      leaked: false,
+    });
+
+    const flagged = await processStream(contentStream(text), deps(false), async () => {});
+    expect({
+      prefix,
+      found: flagged.decisions.some((d) => d.findings?.some((f) => f.type === "OUTPUT_PII")),
+    }).toEqual({ prefix, found: true });
+  }
 });

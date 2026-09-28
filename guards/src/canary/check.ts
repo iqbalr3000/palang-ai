@@ -8,10 +8,22 @@ export interface CanaryConfig {
 }
 
 const CANARY_LENGTH = generateCanary().length;
+// Tail of the text already checked, kept on ctx.metadata between streamed segments.
+const CARRY_KEY = "canaryCarry";
 
 interface Scan {
   decision: Decision;
   text: string;
+}
+
+function leakDecision(action: "block" | "flag"): Decision {
+  return {
+    guard: "canary",
+    action,
+    reason: REASONS.CANARY_LEAKED,
+    findings: [{ type: "CANARY_LEAK" }], // never the token itself
+    latencyMs: 0, // overwritten by the pipeline runner
+  };
 }
 
 function scan(text: string, ctx: GuardContext, config: CanaryConfig): Scan {
@@ -22,14 +34,23 @@ function scan(text: string, ctx: GuardContext, config: CanaryConfig): Scan {
     return { decision: { guard: "canary", action: "allow", latencyMs: 0 }, text };
   }
 
-  const decision: Decision = {
-    guard: "canary",
-    action: config.onDetect,
-    reason: REASONS.CANARY_LEAKED,
-    findings: [{ type: "CANARY_LEAK" }], // never the token itself
-    latencyMs: 0, // overwritten by the pipeline runner
+  return {
+    decision: leakDecision(config.onDetect),
+    text: config.onDetect === "flag" ? text.replace(pattern, "") : text,
   };
-  return { decision, text: config.onDetect === "flag" ? text.replace(pattern, "") : text };
+}
+
+// The holdback buffer cuts mid-token when a long run has no whitespace, so a canary can start in
+// the previous segment. Its start is already sent and can't be stripped, so this always blocks.
+function spansPreviousSegment(text: string, ctx: GuardContext): boolean {
+  const canary = getCanary(ctx);
+  const carried = ctx.metadata[CARRY_KEY];
+  const carry = typeof carried === "string" ? carried : "";
+  const window = carry + text;
+  ctx.metadata[CARRY_KEY] = window.slice(-(CANARY_LENGTH - 1));
+  if (!canary || carry === "") return false;
+  const at = window.toLowerCase().indexOf(canary.toLowerCase());
+  return at !== -1 && at < carry.length;
 }
 
 export function createCanaryOutputGuard(config: CanaryConfig): OutputGuard {
@@ -39,6 +60,7 @@ export function createCanaryOutputGuard(config: CanaryConfig): OutputGuard {
     holdback: CANARY_LENGTH,
 
     async checkText(text, ctx) {
+      if (spansPreviousSegment(text, ctx)) return { decision: leakDecision("block"), text };
       return scan(text, ctx, config);
     },
 

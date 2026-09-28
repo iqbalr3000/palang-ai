@@ -35,3 +35,22 @@ test("throws ToolArgsTooLargeError past the byte cap", () => {
     ToolArgsTooLargeError,
   );
 });
+
+// Regression: the size check re-encoded all arguments so far on every delta, which was quadratic
+// (~18 s for 300 KB streamed 4 bytes at a time).
+test("accumulating many small argument deltas stays linear", () => {
+  const assembler = new ToolCallAssembler();
+  assembler.accumulate({ index: 0, id: "c1", type: "function", function: { name: "f" } });
+  const start = performance.now();
+  for (let i = 0; i < 250_000; i += 4)
+    assembler.accumulate({ index: 0, function: { arguments: "abcd" } });
+  expect(performance.now() - start).toBeLessThan(300);
+});
+
+test("the size cap counts bytes, not characters", () => {
+  const assembler = new ToolCallAssembler({ maxArgsBytes: 10 });
+  assembler.accumulate({ index: 0, function: { arguments: "ééééé" } }); // 5 chars, 10 bytes
+  expect(() => assembler.accumulate({ index: 0, function: { arguments: "a" } })).toThrow(
+    ToolArgsTooLargeError,
+  );
+});

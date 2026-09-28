@@ -5,6 +5,9 @@ export interface GuardRuntimeConfig {
   mode: GuardMode;
   /** No timeout enforced when omitted. */
   timeoutMs?: number;
+  /** Errors and timeouts always block, overriding the tenant's failure mode and monitor mode —
+   * for guards whose failure would leak data (decision 0008). */
+  failClosed?: boolean;
 }
 
 export interface PipelineOptions {
@@ -68,6 +71,9 @@ export async function evaluateGuard(
     return { ...decision, latencyMs };
   } catch {
     const latencyMs = performance.now() - start;
+    if (config.failClosed) {
+      return { guard: name, action: "block", reason: REASONS.GUARD_ERROR, latencyMs };
+    }
     const action = failureMode === "fail_closed" ? "block" : "flag";
     if (config.mode === "monitor" && action === "block") {
       return {

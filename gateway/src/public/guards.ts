@@ -46,7 +46,8 @@ export function buildTenantGuards(
     };
     input.push(createPiiIdInputGuard(config));
     output.push(createPiiIdOutputGuard(config));
-    runtimeConfigs["pii-id"] = { mode: piiConfig.mode };
+    // Failing open would send the unmasked messages upstream (decision 0008).
+    runtimeConfigs["pii-id"] = { mode: piiConfig.mode, failClosed: true };
   }
 
   // After pii-id on purpose: the scan (and any findings) should only ever see masked text.

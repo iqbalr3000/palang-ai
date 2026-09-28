@@ -2,6 +2,7 @@ import type { Context, Next } from "hono";
 import { eq, and, isNull } from "drizzle-orm";
 import { apiKeys, type Db } from "../db/index.js";
 import { sha256Hex } from "./keys.js";
+import type { Logger } from "../log/logger.js";
 
 const LAST_USED_DEBOUNCE_MS = 60_000;
 const lastUsedAt = new Map<string, number>();
@@ -28,16 +29,24 @@ function authUnavailable(c: Context) {
   );
 }
 
-function touchLastUsed(db: Db, keyId: string): void {
+// Drizzle queries are lazy (they run on `.then`), and Bun exits on an unhandled rejection, so
+// this fire-and-forget write needs both the `.then` and the catch.
+function touchLastUsed(db: Db, keyId: string, logger: Logger): void {
   const now = Date.now();
   if (now - (lastUsedAt.get(keyId) ?? 0) < LAST_USED_DEBOUNCE_MS) return;
   lastUsedAt.set(keyId, now);
-  void db.update(apiKeys).set({ lastUsedAt: new Date() }).where(eq(apiKeys.id, keyId));
+  db.update(apiKeys)
+    .set({ lastUsedAt: new Date() })
+    .where(eq(apiKeys.id, keyId))
+    .then(undefined, (error: unknown) => {
+      lastUsedAt.delete(keyId);
+      logger.warn({ err: error }, "updating api key last_used_at failed");
+    });
 }
 
 // Looked up by exact key_hash equality via the DB rather than an in-process string compare —
 // that lookup doesn't reproduce the timing side channel a naive compare would.
-export function createAuthMiddleware(db: Db) {
+export function createAuthMiddleware(db: Db, logger: Logger) {
   return async (c: Context, next: Next) => {
     const header = c.req.header("Authorization");
     if (!header?.startsWith("Bearer ")) return unauthorized(c);
@@ -59,7 +68,7 @@ export function createAuthMiddleware(db: Db) {
 
     c.set("tenantId", key.tenantId);
     c.set("apiKeyId", key.id);
-    touchLastUsed(db, key.id);
+    touchLastUsed(db, key.id, logger);
 
     await next();
   };

@@ -97,3 +97,8 @@ test("tool-policy: a value of the wrong type for its op fails at config load", (
     configSchema.safeParse(toolPolicy([{ path: "currency", op: "in", value: "IDR" }])).success,
   ).toBe(false);
 });
+
+test("server: the admin API binds to loopback unless configured otherwise", () => {
+  const config = configSchema.parse(configWithGuards({}));
+  expect(config.server).toMatchObject({ public_host: "0.0.0.0", admin_host: "127.0.0.1" });
+});

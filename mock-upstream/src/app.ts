@@ -56,8 +56,8 @@ export function createApp(options: MockUpstreamOptions = {}): Hono {
         : null;
     const content = "content" in reply ? reply.content : "";
 
+    const promptTokens = estimatePromptTokens(body.messages);
     if (!body.stream) {
-      const promptTokens = estimatePromptTokens(body.messages);
       return c.json(
         buildCompletion(id, body.model, promptTokens, toolCall ? { toolCall } : { content }),
       );
@@ -111,6 +111,24 @@ export function createApp(options: MockUpstreamOptions = {}): Hono {
       await s.write(
         `data: ${JSON.stringify(buildChunk(id, model, {}, toolCall ? "tool_calls" : "stop"))}\n\n`,
       );
+      // Like OpenAI: a final chunk with empty choices and the usage, only when asked for.
+      if (body.stream_options?.include_usage) {
+        const completionTokens = Math.max(
+          1,
+          Math.ceil((toolCall?.function.arguments ?? content).length / 4),
+        );
+        await s.write(
+          `data: ${JSON.stringify({
+            ...buildChunk(id, model, {}, null),
+            choices: [],
+            usage: {
+              prompt_tokens: promptTokens,
+              completion_tokens: completionTokens,
+              total_tokens: promptTokens + completionTokens,
+            },
+          })}\n\n`,
+        );
+      }
       await s.write("data: [DONE]\n\n");
     });
   });

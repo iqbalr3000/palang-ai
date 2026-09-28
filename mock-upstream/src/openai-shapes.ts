@@ -10,6 +10,7 @@ export interface IncomingRequest {
   model: string;
   messages: IncomingMessage[];
   stream?: boolean;
+  stream_options?: { include_usage?: boolean };
 }
 
 // Rough token estimate — this is a mock server, not a real tokenizer.

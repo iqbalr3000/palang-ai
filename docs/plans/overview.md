@@ -36,6 +36,7 @@ A reverse proxy that sits between an application and its LLM provider. Applicati
     - `admin-api` — the rest of the admin API (TSD §7.4), `/metrics`, audit `content_mode` + retention, pino logging, request body limit, upstream timeout, `ttft_ms` (`spec-admin-api.md`). **Done** — see `docs/plans/roadmap.md`.
     - `dashboard` — Next.js dashboard, 4 pages + password login (TSD §13) (`spec-dashboard.md`). **Done** — see `docs/plans/roadmap.md`.
     - `restructure` (`spec-restructure.md`) — flat repo layout, five workspaces, no Turborepo (`docs/decisions/0007`). Inserted before `launch`. **Done** — see `docs/plans/roadmap.md`.
+    - `hardening` (`spec-hardening.md`) — fixes all 15 findings of the 2026-09-28 security + code review (`docs/decisions/0008`). Before `launch`. Built, pending the user's review.
     - `launch` — `docker compose up` with a seeded demo, README, `LICENSE` (MIT, `docs/decisions/0006`) + third-party attribution, `@palang-ai/guards` npm publish with `examples/` (0002; one package since 0007), benchmark report, dependency audit in CI. Not started. The demo video and blog post are the user's own.
 - **`docs/decisions/`** — decisions made where the spec was ambiguous or a dependency wasn't in TSD §3 (e.g. `0001-lint-tooling.md`).
 

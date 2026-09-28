@@ -31,7 +31,13 @@ beforeAll(async () => {
   });
 
   const config: PalangConfig = {
-    server: { public_port: GATEWAY_PORT, admin_port: 0, max_body_bytes: 1_048_576 },
+    server: {
+      public_port: GATEWAY_PORT,
+      admin_port: 0,
+      max_body_bytes: 1_048_576,
+      public_host: "0.0.0.0",
+      admin_host: "127.0.0.1",
+    },
     audit: { content_mode: "redacted", retention_days: 30 },
     models: { path: "./models" },
     tenants: [

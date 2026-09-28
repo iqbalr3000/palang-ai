@@ -4,7 +4,7 @@ import { z } from "zod";
 const envSchema = z.object({
   PALANG_ADMIN_URL: z.string().url().default("http://localhost:8081"),
   PALANG_ADMIN_TOKEN: z.string().min(1),
-  DASHBOARD_PASSWORD: z.string().min(1),
+  DASHBOARD_PASSWORD: z.string().min(12, "must be at least 12 characters"),
 });
 
 export type DashboardEnv = z.infer<typeof envSchema>;

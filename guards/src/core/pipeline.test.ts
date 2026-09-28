@@ -167,4 +167,33 @@ describe("runInputPipeline", () => {
 
     expect(seenByNext).toBe("[MASKED]");
   });
+
+  test("failClosed: an error blocks despite fail_open and monitor mode", async () => {
+    for (const mode of ["enforce", "monitor"] as const) {
+      const after = fakeGuard("after", "allow");
+      const result = await runInputPipeline(
+        [fakeGuard("pii", "allow", { throws: true }), after],
+        makeCtx(),
+        {
+          failureMode: "fail_open",
+          guards: { pii: { mode, failClosed: true }, after: { mode: "enforce" } },
+        },
+      );
+      expect(result.blocked).toMatchObject({
+        guard: "pii",
+        action: "block",
+        reason: "guard_error",
+      });
+      expect(result.blocked?.wouldBlock).toBeUndefined();
+      expect(after.calls).toBe(0);
+    }
+  });
+
+  test("failClosed doesn't change a guard's normal decisions in monitor mode", async () => {
+    const result = await runInputPipeline([fakeGuard("pii", "block")], makeCtx(), {
+      failureMode: "fail_open",
+      guards: { pii: { mode: "monitor", failClosed: true } },
+    });
+    expect(result.decisions[0]).toMatchObject({ action: "flag", wouldBlock: true });
+  });
 });

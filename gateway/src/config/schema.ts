@@ -104,6 +104,9 @@ export const configSchema = z.object({
   server: z.object({
     public_port: z.number().int().positive(),
     admin_port: z.number().int().positive(),
+    public_host: z.string().min(1).default("0.0.0.0"),
+    // Loopback by default: the admin API must not be reachable from outside unless asked for.
+    admin_host: z.string().min(1).default("127.0.0.1"),
     max_body_bytes: z.number().int().positive().default(1_048_576),
   }),
   audit: z.object({

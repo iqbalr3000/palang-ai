@@ -21,10 +21,14 @@ const NPWP15_PLAIN = /\b\d{15}\b/g;
 // run counts too), a phone is read out of a longer run ("5200 8283 9981 7031" → "0 8283 9981 7031")
 // and, being checked before CARD, wins the overlap. The "@" lookahead stops it swallowing an
 // email's local part the same way.
-const PHONE_CANDIDATE = /(?<!\d[\s.-]?)(?:\+62|62|0)[\s.-]?8(?:[\s.-]?\d){8,11}(?!\d)(?!\S*@)/g;
+const PHONE_CANDIDATE =
+  /(?<!\d[\s.-]?)(?:\+62|62|0)[\s.-]?8(?:[\s.-]?\d){8,11}(?!\d)(?!\S{0,64}@)/g;
 // Restricted to actual email-safe characters (not "any non-whitespace") — a naive `[^\s@]+`
-// swallows surrounding JSON punctuation (`{"email":"x@y.com"}`) as part of the match.
-const EMAIL_CANDIDATE = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
+// swallows surrounding JSON punctuation (`{"email":"x@y.com"}`) as part of the match. Bounded to
+// RFC 5321 lengths, and the lookbehind only starts a match at the beginning of a run: unbounded,
+// this was quadratic on long runs without "@" (minutes of CPU at the 1 MB body limit).
+const EMAIL_CANDIDATE =
+  /(?<![A-Za-z0-9._%+-])[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9.-]{1,253}\.[A-Za-z]{2,63}/g;
 // 13-19 digits, optionally grouped with spaces/dashes (how card numbers are usually written).
 const CARD_CANDIDATE = /\b(?:\d[ -]?){12,18}\d\b/g;
 
@@ -37,18 +41,18 @@ function findCandidates(text: string, type: PiiEntityType, pattern: RegExp): Can
   return candidates;
 }
 
-function overlaps(a: { start: number; end: number }, b: { start: number; end: number }): boolean {
-  return a.start < b.end && b.start < a.end;
-}
-
 // Entity types are checked in priority order (NIK, NPWP, PHONE_ID, EMAIL, CARD) so a more
 // specific, structurally validated type wins over a looser one matching the same digits — a real
 // NIK is also a valid CARD pattern. Once a span is accepted, overlapping candidates are discarded.
 export function detectPii(text: string): PiiMatch[] {
   const accepted: PiiMatch[] = [];
+  // Marks characters already claimed by an accepted span. Checking a candidate costs its own
+  // length; comparing against every accepted span was quadratic on text with thousands of matches.
+  const claimed = new Uint8Array(text.length);
 
   function tryAccept(candidate: Candidate, normalized: string): void {
-    if (accepted.some((a) => overlaps(a, candidate))) return;
+    for (let i = candidate.start; i < candidate.end; i++) if (claimed[i]) return;
+    claimed.fill(1, candidate.start, candidate.end);
     accepted.push({
       type: candidate.type,
       start: candidate.start,

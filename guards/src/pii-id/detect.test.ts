@@ -85,3 +85,31 @@ test("phones right after punctuation or with a +62 prefix are still found", () =
   const matches = detectPii("HP:081234567890, WA +62 812-3456-7890");
   expect(matches.map((m) => m.normalized)).toEqual(["+6281234567890", "+6281234567890"]);
 });
+
+// Regression: an unbounded email pattern made this quadratic (~1.3 s at 40 KB, minutes at the
+// gateway's 1 MB body limit), stalling every request on the event loop.
+test("worst-case 1 MB inputs are detected in linear time", () => {
+  const MB = 1_000_000;
+  const adversarial = [
+    "a".repeat(MB), // long local-part run, no @
+    "1".repeat(MB),
+    "1-".repeat(MB / 2),
+    "QUJD".repeat(MB / 4),
+    `${"a".repeat(MB)}@${"b".repeat(100)}`, // @ but no TLD
+    "0812345678".repeat(MB / 10), // phone-shaped run for the @ lookahead
+    "a@".repeat(MB / 2),
+  ];
+  for (const text of adversarial) {
+    const start = performance.now();
+    detectPii(text);
+    expect(performance.now() - start).toBeLessThan(1500);
+  }
+});
+
+test("bounded email pattern still finds real addresses, including after punctuation", () => {
+  const text = "cc: budi.santoso+tag@mail.example.co.id, (siti@example.com)";
+  expect(detectPii(text).map((m) => m.value)).toEqual([
+    "budi.santoso+tag@mail.example.co.id",
+    "siti@example.com",
+  ]);
+});

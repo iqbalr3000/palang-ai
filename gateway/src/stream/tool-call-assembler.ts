@@ -17,7 +17,11 @@ interface Accumulated {
   id: string;
   name: string;
   arguments: string;
+  // Counted per delta: re-encoding the whole string on every delta was quadratic.
+  argumentBytes: number;
 }
+
+const encoder = new TextEncoder();
 
 const DEFAULT_MAX_ARGS_BYTES = 256 * 1024;
 
@@ -32,7 +36,7 @@ export class ToolCallAssembler {
   accumulate(delta: ToolCallDelta): void {
     let call = this.calls.get(delta.index);
     if (!call) {
-      call = { id: "", name: "", arguments: "" };
+      call = { id: "", name: "", arguments: "", argumentBytes: 0 };
       this.calls.set(delta.index, call);
     }
 
@@ -40,7 +44,8 @@ export class ToolCallAssembler {
     if (delta.function?.name) call.name = delta.function.name;
     if (delta.function?.arguments) {
       call.arguments += delta.function.arguments;
-      if (new TextEncoder().encode(call.arguments).length > this.maxArgsBytes) {
+      call.argumentBytes += encoder.encode(delta.function.arguments).length;
+      if (call.argumentBytes > this.maxArgsBytes) {
         throw new ToolArgsTooLargeError(delta.index);
       }
     }

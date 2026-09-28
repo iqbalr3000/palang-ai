@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { endSession, startSession } from "@/lib/auth";
 import { dashboardEnv } from "@/lib/env";
+import { createLoginThrottle, type LoginThrottle } from "@/lib/login-throttle";
 import { passwordMatches } from "@/lib/session";
 
 export interface LoginState {
@@ -11,17 +12,28 @@ export interface LoginState {
 }
 
 const FAILED_LOGIN_DELAY_MS = 500;
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// Shared across Next's module instances in this process, like the session denylist.
+const throttle: LoginThrottle = ((
+  globalThis as { __palangLoginThrottle?: LoginThrottle }
+).__palangLoginThrottle ??= createLoginThrottle());
 
 export async function login(_state: LoginState, formData: FormData): Promise<LoginState> {
+  const expected = dashboardEnv().DASHBOARD_PASSWORD;
+  const slot = throttle.reserve(Date.now());
+  if ("rejected" in slot) {
+    return { error: "Too many sign-in attempts. Try again in a moment." };
+  }
+  await sleep(slot.waitMs);
+
   const password = formData.get("password");
-  if (
-    typeof password !== "string" ||
-    !(await passwordMatches(password, dashboardEnv().DASHBOARD_PASSWORD))
-  ) {
-    // Slows down guessing; v0.1 has no lockout.
-    await new Promise((resolve) => setTimeout(resolve, FAILED_LOGIN_DELAY_MS));
+  if (typeof password !== "string" || !(await passwordMatches(password, expected))) {
+    throttle.recordFailure(Date.now());
+    await sleep(FAILED_LOGIN_DELAY_MS);
     return { error: "Wrong password." };
   }
+  throttle.recordSuccess();
   const secure = (await headers()).get("x-forwarded-proto") === "https";
   await startSession(secure);
   redirect("/");

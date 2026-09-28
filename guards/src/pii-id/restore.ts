@@ -1,3 +1,4 @@
+import { REASONS } from "../core/index.js";
 import type { Decision, Finding, GuardContext, OutputGuard, ToolCall } from "../core/index.js";
 import { detectPii } from "./detect.js";
 import { getOrCreatePlaceholder } from "./vault.js";
@@ -10,6 +11,10 @@ const PLACEHOLDER_PATTERN = /\[[A-Z_]+_\d+\]/g;
 const HOLDBACK = 32;
 
 const METADATA_RESTORED_KEY = "piiRestoredPlaceholders";
+// Tail of the raw text already scanned, kept on ctx.metadata between streamed segments. Long
+// enough for realistic emails, the longest entity.
+const CARRY_KEY = "piiCarry";
+const CARRY_LENGTH = 128;
 
 function trackRestored(ctx: GuardContext, placeholder: string): void {
   let restored = ctx.metadata[METADATA_RESTORED_KEY] as Set<string> | undefined;
@@ -75,7 +80,41 @@ function restoreAndScan(
   return result + raw.slice(cursor);
 }
 
-function buildDecision(findings: Finding[]): Decision {
+// The holdback buffer cuts mid-token when a long run has no whitespace, so PII can start in the
+// previous segment. It's flagged like any output PII; if it should have been masked, the start is
+// already sent, so the response is blocked instead.
+function scanAcrossSegments(
+  raw: string,
+  ctx: GuardContext,
+  config: PiiIdConfig,
+  findings: Finding[],
+): boolean {
+  const carried = ctx.metadata[CARRY_KEY];
+  const carry = typeof carried === "string" ? carried : "";
+  const window = carry + raw;
+  ctx.metadata[CARRY_KEY] = window.slice(-CARRY_LENGTH);
+  if (carry === "") return false;
+
+  const entities = new Set<string>(config.entities);
+  const crossing = detectPii(window).filter(
+    (m) => entities.has(m.type) && m.start < carry.length && m.end > carry.length,
+  );
+  for (const match of crossing) {
+    findings.push({ type: "OUTPUT_PII", meta: { entityType: match.type } });
+  }
+  return crossing.length > 0 && config.maskNewOutputPii;
+}
+
+function buildDecision(findings: Finding[], block = false): Decision {
+  if (block) {
+    return {
+      guard: "pii-id",
+      action: "block",
+      reason: REASONS.OUTPUT_PII_DETECTED,
+      findings,
+      latencyMs: 0, // overwritten by the pipeline runner
+    };
+  }
   return {
     guard: "pii-id",
     // Restoring known placeholders is the expected happy path (`allow`), not a `modify` in the
@@ -95,8 +134,9 @@ export function createPiiIdOutputGuard(config: PiiIdConfig): OutputGuard {
 
     async checkText(text: string, ctx: GuardContext) {
       const findings: Finding[] = [];
+      const block = scanAcrossSegments(text, ctx, config, findings);
       const result = restoreAndScan(text, ctx, config, findings);
-      return { decision: buildDecision(findings), text: result };
+      return { decision: buildDecision(findings, block), text: result };
     },
 
     async checkToolCall(call: ToolCall, ctx: GuardContext) {

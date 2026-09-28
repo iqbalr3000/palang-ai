@@ -1,5 +1,7 @@
 // How far back from the normal cut to look for a safe boundary before giving up and splitting.
 const MAX_BOUNDARY_SCAN = 256;
+// Longest placeholder the pii-id guard produces; a "[" further back than this can't start one.
+const MAX_PLACEHOLDER_LENGTH = 32;
 
 const isWhitespace = (char: string | undefined): boolean => char !== undefined && /\s/.test(char);
 const isDigit = (char: string | undefined): boolean =>
@@ -57,7 +59,7 @@ export class HoldbackBuffer {
     // "[NIK_ ... [2]" — the lone "]" belongs to "[2]", not to "[NIK_"). LIFO stack matching
     // resolves that correctly, the same way any bracket-matching scan does.
     const openStack: number[] = [];
-    for (let i = 0; i < releasePoint; i++) {
+    for (let i = Math.max(0, releasePoint - MAX_PLACEHOLDER_LENGTH); i < releasePoint; i++) {
       if (this.buffer[i] === "[") openStack.push(i);
       else if (this.buffer[i] === "]") openStack.pop();
     }

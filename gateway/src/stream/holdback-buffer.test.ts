@@ -128,3 +128,22 @@ test("a token with no safe boundary within the cap is still released, not held f
 test("no holdback (no output guards) releases everything immediately", () => {
   expect(new HoldbackBuffer(0).append("budi@exam")).toBe("budi@exam");
 });
+
+// Regression: an unclosed "[" used to hold everything after it until the stream ended, and the
+// buffer was rescanned from the start on every append (quadratic).
+test("an unclosed '[' far back doesn't stall the stream", () => {
+  const buffer = new HoldbackBuffer(32);
+  buffer.append("see [");
+  let released = "";
+  for (let i = 0; i < 100; i++) released += buffer.append("more text ");
+  expect(released.length).toBeGreaterThan(900);
+  expect(released + buffer.flush()).toBe(`see [${"more text ".repeat(100)}`);
+});
+
+test("appending after an unclosed '[' stays linear", () => {
+  const buffer = new HoldbackBuffer(32);
+  buffer.append("[");
+  const start = performance.now();
+  for (let i = 0; i < 128_000; i += 8) buffer.append("abcdefg ");
+  expect(performance.now() - start).toBeLessThan(200);
+});

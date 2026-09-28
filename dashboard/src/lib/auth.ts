@@ -3,7 +3,13 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
 import { dashboardEnv } from "./env";
-import { SESSION_COOKIE, SESSION_TTL_MS, createSessionToken, verifySessionToken } from "./session";
+import {
+  SESSION_COOKIE,
+  SESSION_TTL_MS,
+  createSessionToken,
+  revokeSessionToken,
+  verifySessionToken,
+} from "./session";
 
 /** Every data read and Server Action goes through this; the proxy's check is only optimistic. */
 export const requireSession = cache(async (): Promise<void> => {
@@ -28,5 +34,8 @@ export async function startSession(secure: boolean): Promise<void> {
 }
 
 export async function endSession(): Promise<void> {
-  (await cookies()).delete(SESSION_COOKIE);
+  const jar = await cookies();
+  const token = jar.get(SESSION_COOKIE)?.value;
+  if (token) await revokeSessionToken(token, dashboardEnv().PALANG_ADMIN_TOKEN);
+  jar.delete(SESSION_COOKIE);
 }

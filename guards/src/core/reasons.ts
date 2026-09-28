@@ -5,6 +5,8 @@ export const REASONS = {
   TOOL_CONSTRAINT_VIOLATED: "tool_constraint_violated",
   INVALID_TOOL_ARGUMENTS: "invalid_tool_arguments",
   CANARY_LEAKED: "canary_leaked",
+  OUTPUT_PII_DETECTED: "output_pii_detected",
+  TOOL_ARGUMENTS_TOO_LARGE: "tool_arguments_too_large",
 } as const;
 
 export type Reason = (typeof REASONS)[keyof typeof REASONS];

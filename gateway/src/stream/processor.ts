@@ -7,6 +7,7 @@ import type {
   OutputGuard,
   ToolCall,
 } from "@palang-ai/guards";
+import { REASONS } from "@palang-ai/guards";
 import { HoldbackBuffer } from "./holdback-buffer.js";
 import { ToolCallAssembler, ToolArgsTooLargeError } from "./tool-call-assembler.js";
 import { runOutputGuardText, runOutputGuardToolCall } from "./run-output-guard.js";
@@ -30,6 +31,17 @@ export interface StreamProcessorDeps {
 export interface StreamResult {
   decisions: Decision[];
   blocked: Decision | null;
+  /** The upstream's usage chunk, when it sent one (`stream_options.include_usage`). */
+  usage?: unknown;
+}
+
+// Delta fields other than content and tool calls (`role`, `refusal`, …) carry nothing guards
+// inspect and are forwarded as they arrive; the OpenAI SDKs require `role` on the first chunk.
+function passthroughDelta(delta: object): Record<string, unknown> | null {
+  const rest = Object.fromEntries(
+    Object.entries(delta).filter(([key]) => key !== "content" && key !== "tool_calls"),
+  );
+  return Object.keys(rest).length > 0 ? rest : null;
 }
 
 interface Meta {
@@ -66,6 +78,7 @@ export async function processStream(
   const finishedChoices = new Set<number>();
   const decisions: Decision[] = [];
   let blocked: Decision | null = null;
+  let usage: unknown;
   let meta: Meta = { id: "", model: "", created: 0 };
 
   function getBuffer(index: number): HoldbackBuffer {
@@ -152,7 +165,8 @@ export async function processStream(
     const remaining = getBuffer(choiceIndex).flush();
     if (!(await emitTextChunk(choiceIndex, remaining))) return false;
 
-    for (let toolCall of getAssembler(choiceIndex).finalize()) {
+    for (const [toolCallIndex, assembled] of getAssembler(choiceIndex).finalize().entries()) {
+      let toolCall = assembled;
       deps.rawSink?.toolCall(choiceIndex, toolCall);
       let choiceBlocked = false;
       for (const guard of deps.outputGuards) {
@@ -175,7 +189,14 @@ export async function processStream(
       }
       if (choiceBlocked) return false;
       await write(
-        `data: ${JSON.stringify(buildChunk(meta, choiceIndex, { tool_calls: [toolCall] }, null))}\n\n`,
+        `data: ${JSON.stringify(
+          buildChunk(
+            meta,
+            choiceIndex,
+            { tool_calls: [{ index: toolCallIndex, ...toolCall }] },
+            null,
+          ),
+        )}\n\n`,
       );
     }
 
@@ -209,10 +230,17 @@ export async function processStream(
       meta = { id: chunk.id, model: chunk.model, created: chunk.created };
 
       for (const choice of chunk.choices ?? []) {
+        const passthrough = passthroughDelta(choice.delta);
+        if (passthrough) {
+          await write(
+            `data: ${JSON.stringify(buildChunk(meta, choice.index, passthrough, null))}\n\n`,
+          );
+        }
+
         if (choice.delta.content) {
           deps.rawSink?.text(choice.index, choice.delta.content);
           const released = getBuffer(choice.index).append(choice.delta.content);
-          if (!(await emitTextChunk(choice.index, released))) return { decisions, blocked };
+          if (!(await emitTextChunk(choice.index, released))) return { decisions, blocked, usage };
         }
 
         if (choice.delta.tool_calls) {
@@ -222,8 +250,15 @@ export async function processStream(
               assembler.accumulate(delta);
             } catch (error) {
               if (error instanceof ToolArgsTooLargeError) {
+                blocked = {
+                  guard: "stream",
+                  action: "block",
+                  reason: REASONS.TOOL_ARGUMENTS_TOO_LARGE,
+                  latencyMs: 0,
+                };
+                decisions.push(blocked);
                 await writeToolArgsTooLarge();
-                return { decisions, blocked };
+                return { decisions, blocked, usage };
               }
               throw error;
             }
@@ -232,7 +267,7 @@ export async function processStream(
 
         if (choice.finish_reason) {
           if (!(await finishChoice(choice.index, choice.finish_reason))) {
-            return { decisions, blocked };
+            return { decisions, blocked, usage };
           }
         }
       }
@@ -240,6 +275,7 @@ export async function processStream(
       // Forwarded after per-choice processing, never instead of it — a usage chunk can carry a
       // non-empty `choices` too, and skipping straight past those would bypass every output guard.
       if (chunk.usage) {
+        usage = chunk.usage;
         await write(
           `data: ${JSON.stringify({
             id: meta.id,
@@ -258,7 +294,7 @@ export async function processStream(
     const pendingChoices = new Set([...buffersByChoice.keys(), ...assemblersByChoice.keys()]);
     for (const choiceIndex of pendingChoices) {
       if (finishedChoices.has(choiceIndex)) continue;
-      if (!(await finishChoice(choiceIndex, null))) return { decisions, blocked };
+      if (!(await finishChoice(choiceIndex, null))) return { decisions, blocked, usage };
     }
 
     await write("data: [DONE]\n\n");
@@ -266,5 +302,5 @@ export async function processStream(
     reader.releaseLock();
   }
 
-  return { decisions, blocked };
+  return { decisions, blocked, usage };
 }

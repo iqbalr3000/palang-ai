@@ -13,7 +13,7 @@ import {
 import type { PalangConfig, TenantConfig } from "../config/schema.js";
 import { createAuthMiddleware } from "../auth/middleware.js";
 import { UpstreamTimeoutError, callUpstream } from "../upstream/adapter.js";
-import { processStream } from "../stream/processor.js";
+import { processStream, type StreamResult } from "../stream/processor.js";
 import type { AuditQueue } from "../audit/queue.js";
 import { ResponseCapture } from "../audit/content.js";
 import { createRecorder, finalActionFor, type RequestOutcome } from "../audit/recorder.js";
@@ -40,19 +40,32 @@ export interface PublicAppDeps {
   logger?: Logger;
 }
 
+// Rate-limit hints stay useful to clients; anything else (encodings fetch already undid, provider
+// internals) is dropped.
+function forwardableErrorHeaders(upstream: Headers): Headers {
+  const headers = new Headers();
+  upstream.forEach((value, name) => {
+    if (name === "content-type" || name === "retry-after" || name.startsWith("x-ratelimit-")) {
+      headers.set(name, value);
+    }
+  });
+  return headers;
+}
+
 function findTenant(config: PalangConfig, tenantId: string): TenantConfig | undefined {
   return config.tenants.find((t) => t.id === tenantId);
 }
 
 export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variables }> {
   const app = new Hono<{ Variables: Variables }>();
-  const auth = createAuthMiddleware(deps.db);
+  const logger = deps.logger ?? createLogger("silent");
+  const auth = createAuthMiddleware(deps.db, logger);
   const tenantGuards = buildAllTenantGuards(deps.config.tenants, deps.classifiers ?? new Map());
   const metrics = deps.metrics ?? createGatewayMetrics(deps.auditQueue);
   const record = createRecorder({
     auditQueue: deps.auditQueue,
     metrics,
-    logger: deps.logger ?? createLogger("silent"),
+    logger,
     contentMode: deps.config.audit.content_mode,
   });
   const limitBody = bodyLimit({
@@ -87,7 +100,13 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
     if (!tenant) return c.json({ error: { message: "Unknown tenant" } }, 401);
     const guards = tenantGuards.get(tenant.id)!;
 
-    const parsed = chatCompletionRequestSchema.safeParse(await c.req.json());
+    let requestJson: unknown;
+    try {
+      requestJson = await c.req.json();
+    } catch {
+      return c.json({ error: { message: "Body is not valid JSON", code: "invalid_request" } }, 400);
+    }
+    const parsed = chatCompletionRequestSchema.safeParse(requestJson);
     if (!parsed.success) {
       return c.json({ error: { message: "Invalid request body", code: "invalid_request" } }, 400);
     }
@@ -201,7 +220,7 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
       );
       return new Response(upstreamResponse.body, {
         status: upstreamResponse.status,
-        headers: upstreamResponse.headers,
+        headers: forwardableErrorHeaders(upstreamResponse.headers),
       });
     }
 
@@ -212,31 +231,42 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
       // provisional — a guard block is signaled in-band as an error event instead. The real
       // outcome is only known once the stream ends, which is when it's actually recorded below.
       c.header("x-palang-decision", "allow");
+      c.header("Content-Type", "text/event-stream");
+      c.header("Cache-Control", "no-cache");
+      c.header("X-Accel-Buffering", "no"); // keeps nginx from buffering the whole stream
       return stream(c, async (s) => {
         let firstWriteAt: number | undefined;
-        const result = await processStream(
-          upstreamResponse.body!,
-          {
-            outputGuards: guards.output,
-            guardConfigs: guards.runtimeConfigs,
-            failureMode: tenant.failure_mode,
-            ctx,
-            rawSink: response ?? undefined,
-          },
-          async (chunk) => {
-            firstWriteAt ??= performance.now();
-            await s.write(chunk);
-          },
-        );
-        record(
-          outcome({
-            blocked: result.blocked,
-            statusCode: 200,
-            decisions: [...pipelineResult.decisions, ...result.decisions],
-            latencyUpstreamMs,
-            ttftMs: firstWriteAt === undefined ? undefined : firstWriteAt - requestStart,
-          }),
-        );
+        let result: StreamResult | undefined;
+        try {
+          result = await processStream(
+            upstreamResponse.body!,
+            {
+              outputGuards: guards.output,
+              guardConfigs: guards.runtimeConfigs,
+              failureMode: tenant.failure_mode,
+              ctx,
+              rawSink: response ?? undefined,
+            },
+            async (chunk) => {
+              firstWriteAt ??= performance.now();
+              await s.write(chunk);
+            },
+          );
+        } finally {
+          // Every stream is recorded, including one cut short by the client (499, nginx's
+          // "client closed request") or by the upstream.
+          const statusCode = result ? 200 : c.req.raw.signal.aborted ? 499 : 502;
+          record(
+            outcome({
+              blocked: result?.blocked ?? null,
+              statusCode,
+              decisions: [...pipelineResult.decisions, ...(result?.decisions ?? [])],
+              latencyUpstreamMs,
+              ttftMs: firstWriteAt === undefined ? undefined : firstWriteAt - requestStart,
+              usage: result?.usage,
+            }),
+          );
+        }
       });
     }
 
@@ -282,6 +312,11 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
       }),
     );
     return c.json(json);
+  });
+
+  app.onError((error, c) => {
+    logger.error({ err: error }, "unhandled error");
+    return c.json({ error: { message: "Internal error", code: "internal_error" } }, 500);
   });
 
   return app;

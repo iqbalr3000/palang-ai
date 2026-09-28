@@ -3,6 +3,7 @@ import { Hono } from "hono";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { createDb, apiKeys, type Db } from "../db/index.js";
 import { createAuthMiddleware } from "./middleware.js";
+import { createLogger } from "../log/logger.js";
 import { generateApiKey } from "./keys.js";
 
 const databaseUrl = process.env.DATABASE_URL;
@@ -16,7 +17,7 @@ beforeAll(async () => {
 
 function buildApp() {
   const app = new Hono<{ Variables: { tenantId: string; apiKeyId: string } }>();
-  app.get("/protected", createAuthMiddleware(db), (c) =>
+  app.get("/protected", createAuthMiddleware(db, createLogger("silent")), (c) =>
     c.json({ tenantId: c.get("tenantId"), apiKeyId: c.get("apiKeyId") }),
   );
   return app;
@@ -84,7 +85,9 @@ test("DB unreachable during lookup is 503 auth_unavailable, not a crash or a 401
   } as unknown as Db;
 
   const app = new Hono<{ Variables: { tenantId: string; apiKeyId: string } }>();
-  app.get("/protected", createAuthMiddleware(brokenDb), (c) => c.json({ ok: true }));
+  app.get("/protected", createAuthMiddleware(brokenDb, createLogger("silent")), (c) =>
+    c.json({ ok: true }),
+  );
 
   const res = await app.request("/protected", {
     headers: { Authorization: "Bearer plg_test_whatever" },

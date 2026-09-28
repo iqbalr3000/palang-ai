@@ -305,7 +305,8 @@ guards:
 A few things worth knowing:
 
 - **`failure_mode`** decides what happens when a guard errors or times out: `fail_closed` blocks
-  the request, `fail_open` lets it through with a flag.
+  the request, `fail_open` lets it through with a flag. The one exception is `pii-id`: if masking
+  fails, the request is always blocked, so personal data is never sent unmasked.
 - **`tool-policy`** checks rules top to bottom and the first match wins. Constraint types are
   strict, so `"1000"` (a string) never satisfies `lte: 1000000`.
 - **`injection`** has a false-positive rate that is still too high to block on without tuning
@@ -350,7 +351,7 @@ skip the file. Template: [`.env.example`](.env.example).
 |---|:---:|---|---|
 | `DATABASE_URL` | ✅ | gateway, migrations | Postgres 16 connection string |
 | `PALANG_ADMIN_TOKEN` | ✅ | gateway, dashboard | Admin API token; also signs dashboard sessions |
-| `DASHBOARD_PASSWORD` | ✅ | dashboard | Sign-in password |
+| `DASHBOARD_PASSWORD` | ✅ | dashboard | Sign-in password, at least 12 characters |
 | `UPSTREAM_BASE_URL`, `UPSTREAM_API_KEY` | ✅ | gateway | Your model provider, as referenced from `palang.yaml` |
 | `PALANG_CONFIG` | | gateway | Config file path (default `./palang.yaml`) |
 | `LOG_LEVEL` | | gateway | Log level (default `info`) |
@@ -358,10 +359,10 @@ skip the file. Template: [`.env.example`](.env.example).
 
 If a required variable is missing, the app stops at startup and names it.
 
-| Port | Serves |
-|---|---|
-| `8080` | Your app's API: `/v1/chat/completions`, `/v1/models`, plus `/healthz` and `/readyz` |
-| `8081` | Admin API and Prometheus `/metrics` (both need the admin token) |
+| Port | Listens on | Serves |
+|---|---|---|
+| `8080` | all interfaces (`server.public_host`) | Your app's API: `/v1/chat/completions`, `/v1/models`, plus `/healthz` and `/readyz` |
+| `8081` | `127.0.0.1` only (`server.admin_host`) | Admin API and Prometheus `/metrics` (both need the admin token) |
 
 <details>
 <summary><b>Audit log and stored content</b></summary>
@@ -383,12 +384,14 @@ Events older than `audit.retention_days` (default 30) are deleted daily.
 Until container images are published, run `bun run gateway` and `bun run dashboard` under your
 process manager of choice (systemd, pm2, and so on). Before real users hit it:
 
-- [ ] **Keep port `8081` private.** The admin API and `/metrics` must not be reachable from the
-      internet.
+- [ ] **Keep port `8081` private.** It only listens on `127.0.0.1` by default. If the dashboard
+      or Prometheus runs on another machine, set `server.admin_host` to a private address, never
+      a public one.
 - [ ] **Put TLS in front** with a reverse proxy, and have it send `X-Forwarded-Proto: https` so
       dashboard session cookies are marked `Secure`.
 - [ ] **Use strong secrets.** Keep the generated `PALANG_ADMIN_TOKEN` and set a real
-      `DASHBOARD_PASSWORD`.
+      `DASHBOARD_PASSWORD` (12+ characters). Repeated failed sign-ins are slowed down, but a
+      strong password is still what protects the dashboard.
 - [ ] **Use a managed or backed-up Postgres 16**, and set `audit.retention_days` to what your
       policy allows.
 - [ ] **Wire up health checks and metrics:** `/readyz` on `8080` (fails when the database is

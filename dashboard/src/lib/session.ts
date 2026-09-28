@@ -22,15 +22,48 @@ async function sessionKey(adminToken: string): Promise<CryptoKey> {
   ]);
 }
 
-/** `<expiresAtMs>.<base64url HMAC of expiresAtMs>` */
+// Logged-out session ids, until their token would have expired anyway. On globalThis because Next
+// can load this module more than once per process (proxy, server components, actions). Lost on
+// restart, when tokens still expire within SESSION_TTL_MS.
+const revoked: Map<string, number> = ((
+  globalThis as { __palangRevokedSessions?: Map<string, number> }
+).__palangRevokedSessions ??= new Map());
+
+/** `<expiresAtMs>.<id>.<base64url HMAC of "expiresAtMs.id">` */
 export async function createSessionToken(adminToken: string, now = Date.now()): Promise<string> {
-  const expiresAt = String(now + SESSION_TTL_MS);
+  const payload = `${now + SESSION_TTL_MS}.${toBase64Url(crypto.getRandomValues(new Uint8Array(16)).buffer)}`;
   const signature = await crypto.subtle.sign(
     "HMAC",
     await sessionKey(adminToken),
-    encoder.encode(expiresAt),
+    encoder.encode(payload),
   );
-  return `${expiresAt}.${toBase64Url(signature)}`;
+  return `${payload}.${toBase64Url(signature)}`;
+}
+
+interface ParsedToken {
+  expiresAt: number;
+  id: string;
+}
+
+async function parseVerified(token: string, adminToken: string): Promise<ParsedToken | null> {
+  const [expiresAt, id, signature, ...rest] = token.split(".");
+  if (!expiresAt || !id || !signature || rest.length > 0 || !/^\d+$/.test(expiresAt)) return null;
+  // subtle.verify compares in constant time.
+  const valid = await crypto.subtle.verify(
+    "HMAC",
+    await sessionKey(adminToken),
+    Buffer.from(signature, "base64url"),
+    encoder.encode(`${expiresAt}.${id}`),
+  );
+  return valid ? { expiresAt: Number(expiresAt), id } : null;
+}
+
+export async function revokeSessionToken(token: string, adminToken: string): Promise<void> {
+  const parsed = await parseVerified(token, adminToken);
+  if (!parsed) return;
+  const now = Date.now();
+  for (const [id, expiresAt] of revoked) if (expiresAt <= now) revoked.delete(id);
+  revoked.set(parsed.id, parsed.expiresAt);
 }
 
 export async function verifySessionToken(
@@ -38,16 +71,8 @@ export async function verifySessionToken(
   adminToken: string,
   now = Date.now(),
 ): Promise<boolean> {
-  const [expiresAt, signature, ...rest] = token.split(".");
-  if (!expiresAt || !signature || rest.length > 0 || !/^\d+$/.test(expiresAt)) return false;
-  if (Number(expiresAt) <= now) return false;
-  // subtle.verify compares in constant time.
-  return crypto.subtle.verify(
-    "HMAC",
-    await sessionKey(adminToken),
-    Buffer.from(signature, "base64url"),
-    encoder.encode(expiresAt),
-  );
+  const parsed = await parseVerified(token, adminToken);
+  return parsed !== null && parsed.expiresAt > now && !revoked.has(parsed.id);
 }
 
 /** Constant-time: both sides are hashed to equal length and compared with HMAC verify. */
