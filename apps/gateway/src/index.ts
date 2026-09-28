@@ -1,57 +1,55 @@
 import { createDb } from "@palang-ai/db";
-import { loadConfig, ConfigError } from "./config/loader.js";
+import { loadConfig, loadEnv, ConfigError } from "./config/index.js";
 import { AuditQueue } from "./audit/queue.js";
+import { startRetention } from "./audit/retention.js";
 import { createPublicApp } from "./public/app.js";
 import { createAdminApp } from "./admin/app.js";
 import { loadClassifiers } from "./classifier/load.js";
+import { createGatewayMetrics } from "./metrics/gateway.js";
+import { createLogger } from "./log/logger.js";
 
 async function main(): Promise<void> {
   let config;
+  let env;
   try {
     config = await loadConfig();
+    env = loadEnv();
   } catch (error) {
     console.error(error instanceof ConfigError ? error.message : error);
     process.exit(1);
   }
-
-  const databaseUrl = process.env.DATABASE_URL;
-  if (!databaseUrl) {
-    console.error("DATABASE_URL is required");
-    process.exit(1);
-  }
-  const adminToken = process.env.PALANG_ADMIN_TOKEN;
-  if (!adminToken) {
-    console.error("PALANG_ADMIN_TOKEN is required");
-    process.exit(1);
-  }
+  const logger = createLogger(env.logLevel);
 
   let classifiers;
   try {
     classifiers = await loadClassifiers(config);
   } catch (error) {
-    console.error(error instanceof Error ? error.message : error);
+    logger.fatal(error instanceof Error ? error.message : String(error));
     process.exit(1);
   }
   for (const modelId of classifiers.keys()) {
-    console.log(`[gateway] injection classifier loaded: ${modelId}`);
+    logger.info({ model: modelId }, "injection classifier loaded");
   }
 
-  const db = createDb(databaseUrl);
+  const db = createDb(env.databaseUrl);
   const auditQueue = new AuditQueue(db);
+  const metrics = createGatewayMetrics(auditQueue);
+  const stopRetention = startRetention(db, config.audit.retention_days, logger);
 
-  const publicApp = createPublicApp({ db, config, auditQueue, classifiers });
-  const adminApp = createAdminApp({ db, config, adminToken });
+  const publicApp = createPublicApp({ db, config, auditQueue, classifiers, metrics, logger });
+  const adminApp = createAdminApp({ db, config, adminToken: env.adminToken, metrics });
 
   const publicServer = Bun.serve({ port: config.server.public_port, fetch: publicApp.fetch });
   const adminServer = Bun.serve({ port: config.server.admin_port, fetch: adminApp.fetch });
 
-  console.log(`[gateway] public API on :${config.server.public_port}`);
-  console.log(`[gateway] admin API on :${config.server.admin_port}`);
+  logger.info({ port: config.server.public_port }, "public API listening");
+  logger.info({ port: config.server.admin_port }, "admin API listening");
 
   const shutdown = async () => {
-    console.log("[gateway] shutting down...");
+    logger.info("shutting down");
     publicServer.stop();
     adminServer.stop();
+    stopRetention();
     await auditQueue.shutdown(5000);
     process.exit(0);
   };

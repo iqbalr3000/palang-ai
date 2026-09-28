@@ -11,7 +11,7 @@ test("loads and validates the real palang.example.yaml, interpolating env vars",
     new URL("../../../../palang.example.yaml", import.meta.url).pathname,
   );
 
-  expect(config.server).toEqual({ public_port: 8080, admin_port: 8081 });
+  expect(config.server).toEqual({ public_port: 8080, admin_port: 8081, max_body_bytes: 1_048_576 });
   expect(config.tenants[0]?.upstream.base_url).toBe("https://api.openai.com/v1");
   expect(config.tenants[0]?.guards["pii-id"]?.entities).toEqual([
     "NIK",

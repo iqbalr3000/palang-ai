@@ -5,6 +5,7 @@ import type {
   GuardContext,
   GuardRuntimeConfig,
   OutputGuard,
+  ToolCall,
 } from "@palang-ai/core";
 import { HoldbackBuffer } from "./holdback-buffer.js";
 import { ToolCallAssembler, ToolArgsTooLargeError } from "./tool-call-assembler.js";
@@ -12,11 +13,18 @@ import { runOutputGuardText, runOutputGuardToolCall } from "./run-output-guard.j
 import { blockedErrorBody } from "../public/errors.js";
 import type { StreamChunk } from "./types.js";
 
+/** Receives the model's raw output, before any output guard touches it (audit content). */
+export interface RawResponseSink {
+  text(choiceIndex: number, text: string): void;
+  toolCall(choiceIndex: number, call: ToolCall): void;
+}
+
 export interface StreamProcessorDeps {
   outputGuards: OutputGuard[];
   guardConfigs: Record<string, GuardRuntimeConfig>;
   failureMode: FailureMode;
   ctx: GuardContext;
+  rawSink?: RawResponseSink;
 }
 
 export interface StreamResult {
@@ -145,6 +153,7 @@ export async function processStream(
     if (!(await emitTextChunk(choiceIndex, remaining))) return false;
 
     for (let toolCall of getAssembler(choiceIndex).finalize()) {
+      deps.rawSink?.toolCall(choiceIndex, toolCall);
       let choiceBlocked = false;
       for (const guard of deps.outputGuards) {
         if (!guard.checkToolCall) continue;
@@ -201,6 +210,7 @@ export async function processStream(
 
       for (const choice of chunk.choices ?? []) {
         if (choice.delta.content) {
+          deps.rawSink?.text(choice.index, choice.delta.content);
           const released = getBuffer(choice.index).append(choice.delta.content);
           if (!(await emitTextChunk(choice.index, released))) return { decisions, blocked };
         }

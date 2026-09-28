@@ -16,6 +16,8 @@ export interface AuditEventInput {
   latencyUpstreamMs?: number;
   ttftMs?: number;
   usage?: unknown;
+  requestContent?: unknown;
+  responseContent?: unknown;
 }
 
 export interface AuditQueueOptions {
@@ -45,6 +47,7 @@ function roundLatencies(event: AuditEventInput): AuditEventInput {
 export class AuditQueue {
   private queue: AuditEventInput[] = [];
   private droppedTotal = 0;
+  private flushedTotal = 0;
   private readonly maxSize: number;
   private readonly flushBatchSize: number;
   private readonly flushTimer: ReturnType<typeof setInterval>;
@@ -65,6 +68,10 @@ export class AuditQueue {
 
   get droppedCount(): number {
     return this.droppedTotal;
+  }
+
+  get flushedCount(): number {
+    return this.flushedTotal;
   }
 
   get pendingCount(): number {
@@ -93,6 +100,7 @@ export class AuditQueue {
   private async insert(batch: AuditEventInput[]): Promise<void> {
     try {
       await this.db.insert(auditEvents).values(batch);
+      this.flushedTotal += batch.length;
     } catch {
       this.droppedTotal += batch.length;
     }

@@ -89,6 +89,7 @@ const tenantSchema = z.object({
     type: z.literal("openai-compatible"),
     base_url: z.string().url(),
     api_key: z.string(),
+    timeout_ms: z.number().int().positive().default(120_000),
   }),
   allowed_models: z.array(z.string()),
   guards: z.object({
@@ -103,6 +104,7 @@ export const configSchema = z.object({
   server: z.object({
     public_port: z.number().int().positive(),
     admin_port: z.number().int().positive(),
+    max_body_bytes: z.number().int().positive().default(1_048_576),
   }),
   audit: z.object({
     content_mode: z.enum(["none", "redacted", "hash"]).default("redacted"),

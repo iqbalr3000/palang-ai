@@ -2,23 +2,31 @@ import { test, expect, beforeAll } from "bun:test";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { createDb } from "@palang-ai/db";
 import { createAdminApp } from "./app.js";
+import { AuditQueue } from "../audit/queue.js";
+import { createGatewayMetrics } from "../metrics/gateway.js";
 import type { PalangConfig } from "../config/schema.js";
 
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) throw new Error("DATABASE_URL is required to run apps/gateway admin tests");
 
 const db = createDb(databaseUrl);
+const metrics = createGatewayMetrics(new AuditQueue(db));
 const ADMIN_TOKEN = "test-admin-token";
 
 const config: PalangConfig = {
-  server: { public_port: 8080, admin_port: 8081 },
+  server: { public_port: 8080, admin_port: 8081, max_body_bytes: 1_048_576 },
   audit: { content_mode: "redacted", retention_days: 30 },
   models: { path: "./models" },
   tenants: [
     {
       id: "demo",
       failure_mode: "fail_closed",
-      upstream: { type: "openai-compatible", base_url: "http://localhost:9090/v1", api_key: "x" },
+      upstream: {
+        type: "openai-compatible",
+        base_url: "http://localhost:9090/v1",
+        api_key: "x",
+        timeout_ms: 120_000,
+      },
       allowed_models: ["mock-echo"],
       guards: {},
     },
@@ -30,7 +38,7 @@ beforeAll(async () => {
 });
 
 function buildApp() {
-  return createAdminApp({ db, config, adminToken: ADMIN_TOKEN });
+  return createAdminApp({ db, config, adminToken: ADMIN_TOKEN, metrics });
 }
 
 test("create key: requires admin auth", async () => {

@@ -31,8 +31,11 @@ A reverse proxy that sits between an application and its LLM provider. Applicati
   - `gateway-core` (`spec-gateway-core.md`) — monorepo scaffold, passthrough proxy, auth, config, audit queue, minimal admin key API. **Done** — see `docs/plans/roadmap.md`.
   - `pii-guard` (`spec-pii-guard.md`) — Indonesian PII detection/masking + stream holdback buffer; standalone/in-process usage is in scope (0002). **Done** — see `docs/plans/roadmap.md`.
   - `injection-guard` (`spec-injection-guard.md`) — prompt-injection detection (heuristics → opt-in classifier; LLM judge deferred) + eval harness; standalone/in-process usage is in scope (0002). **Done** — see `docs/plans/roadmap.md`.
-  - `tool-policy` — tool-call policy, canary, output PII detection; standalone/in-process usage is in scope for tool-policy (0002) — canary's fit TBD, it's more tightly coupled to a request/response cycle. In planning (`spec-tool-policy.md`). Resolves the open question carried from `pii-guard`'s review.
-  - `dashboard-launch` — dashboard, packaging, `docker compose up`, release, **and** the `@palang-ai/core`/`@palang-ai/guards` npm publish (0002). Not started.
+  - `tool-policy` (`spec-tool-policy.md`) — tool-call policy, canary, output PII detection (resolves the open question carried from `pii-guard`); standalone/in-process usage is in scope (0002). **Done** — see `docs/plans/roadmap.md`.
+  - TSD M5 (`dashboard-launch`) was split into three features on 2026-09-28, in this order:
+    - `admin-api` — the rest of the admin API (TSD §7.4), `/metrics`, audit `content_mode` + retention, pino logging, request body limit, upstream timeout, `ttft_ms` (`spec-admin-api.md`). In progress.
+    - `dashboard` — Next.js dashboard, 4 pages + password login (TSD §13). Not started.
+    - `launch` — `docker compose up` with a seeded demo, README, `LICENSE` (MIT, `docs/decisions/0006`) + third-party attribution, `@palang-ai/core`/`@palang-ai/guards` npm publish with `examples/` (0002), benchmark report, dependency audit in CI. Not started. The demo video and blog post are the user's own.
 - **`docs/decisions/`** — decisions made where the spec was ambiguous or a dependency wasn't in TSD §3 (e.g. `0001-lint-tooling.md`).
 
 ## Not yet scoped

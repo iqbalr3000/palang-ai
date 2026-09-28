@@ -88,6 +88,26 @@ Feature order comes from `docs/TSD.md` §15; see `docs/plans/overview.md` for th
   the integer columns (events silently dropped) and flush/shutdown not waiting for in-flight
   inserts.
 
+## `tool-policy`
+
+*Spec: `spec-tool-policy.md`.*
+
+- `packages/guards/tool-policy`: glob rules (first match wins, else `default`), strict typed
+  argument constraints on dot paths — a failed constraint blocks with no fall-through — and
+  malformed arguments blocked; findings never carry argument values. Constraint types and regexes
+  are validated at config load.
+- `packages/guards/canary`: token injected into the system message, checked case-insensitively in
+  output text and tool-call arguments (`block` terminates, `flag` strips). Stored on
+  `ctx.metadata`, since the pipeline runner hands guards a copy of ctx.
+- Output PII: `pii-id` now detects on the model's raw text before restore, in one pass — closes
+  `pii-guard`'s open question about raw values that match the vault.
+- Holdback buffer only cuts at safe whitespace, so canaries, emails and grouped numbers reach
+  output guards whole — before this, streaming `OUTPUT_PII` detection effectively never fired.
+- `PHONE_ID` no longer matches inside longer or grouped digit runs (PII eval: `PHONE_ID`
+  precision 77.4% → 100%, `CARD` recall 72.4% → 98.1%).
+- Acceptance (TSD §15 M4): `mock-tool-call` and `mock-leak-canary` blocked/flagged as configured,
+  streaming and non-streaming, enforce and monitor (16 e2e cases).
+
 ## Platform foundation
 
 *Cross-cutting — not owned by a single feature spec.*
@@ -105,6 +125,11 @@ Feature order comes from `docs/TSD.md` §15; see `docs/plans/overview.md` for th
 Same history as above, dated against the actual commit that shipped it (`git log`), newest first.
 
 ### 2026-09-28
+
+**`72d3a67` — feat: implement tool-policy — tool-call policy, canary, and streaming-safe output
+PII**
+The whole `tool-policy` feature (TSD §15 M4): tool-call policy with constraints, canary, output PII
+provenance, the holdback buffer's safe cut, and the `PHONE_ID` boundary fix.
 
 **`19bef40` — feat: implement injection-guard — L1 heuristics, opt-in L2 classifier, gateway
 wiring, and eval harness**

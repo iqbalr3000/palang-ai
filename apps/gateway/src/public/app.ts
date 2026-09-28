@@ -1,14 +1,19 @@
 import { Hono } from "hono";
+import { bodyLimit } from "hono/body-limit";
 import { stream } from "hono/streaming";
 import { sql } from "drizzle-orm";
 import type { Db } from "@palang-ai/db";
-import type { InjectionClassifier } from "@palang-ai/guards";
+import { getCanary, type InjectionClassifier } from "@palang-ai/guards";
 import { matchGlob, runInputPipeline, type GuardContext } from "@palang-ai/core";
 import type { PalangConfig, TenantConfig } from "../config/schema.js";
 import { createAuthMiddleware } from "../auth/middleware.js";
-import { callUpstream } from "../upstream/adapter.js";
+import { UpstreamTimeoutError, callUpstream } from "../upstream/adapter.js";
 import { processStream } from "../stream/processor.js";
 import type { AuditQueue } from "../audit/queue.js";
+import { ResponseCapture } from "../audit/content.js";
+import { createRecorder, finalActionFor, type RequestOutcome } from "../audit/recorder.js";
+import { createGatewayMetrics, type GatewayMetrics } from "../metrics/gateway.js";
+import { createLogger, type Logger } from "../log/logger.js";
 import { chatCompletionRequestSchema } from "./request-schema.js";
 import { blockedErrorBody } from "./errors.js";
 import { buildAllTenantGuards } from "./guards.js";
@@ -25,6 +30,9 @@ export interface PublicAppDeps {
   auditQueue: AuditQueue;
   /** Keyed by model id, loaded at boot (`loadClassifiers`). Only needed if a tenant enables L2. */
   classifiers?: ReadonlyMap<string, InjectionClassifier>;
+  /** Shared with the admin app's `/metrics`; a private instance when omitted (tests). */
+  metrics?: GatewayMetrics;
+  logger?: Logger;
 }
 
 function findTenant(config: PalangConfig, tenantId: string): TenantConfig | undefined {
@@ -35,6 +43,18 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
   const app = new Hono<{ Variables: Variables }>();
   const auth = createAuthMiddleware(deps.db);
   const tenantGuards = buildAllTenantGuards(deps.config.tenants, deps.classifiers ?? new Map());
+  const metrics = deps.metrics ?? createGatewayMetrics(deps.auditQueue);
+  const record = createRecorder({
+    auditQueue: deps.auditQueue,
+    metrics,
+    logger: deps.logger ?? createLogger("silent"),
+    contentMode: deps.config.audit.content_mode,
+  });
+  const limitBody = bodyLimit({
+    maxSize: deps.config.server.max_body_bytes,
+    onError: (c) =>
+      c.json({ error: { message: "Request body too large", code: "request_too_large" } }, 413),
+  });
 
   app.get("/healthz", (c) => c.text("ok"));
 
@@ -56,7 +76,7 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
     });
   });
 
-  app.post("/v1/chat/completions", auth, async (c) => {
+  app.post("/v1/chat/completions", limitBody, auth, async (c) => {
     const requestStart = performance.now();
     const tenant = findTenant(deps.config, c.get("tenantId"));
     if (!tenant) return c.json({ error: { message: "Unknown tenant" } }, 401);
@@ -92,6 +112,7 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
       signal: c.req.raw.signal,
       metadata: {},
     };
+    const response = deps.config.audit.content_mode === "none" ? null : new ResponseCapture();
 
     const guardsStart = performance.now();
     const pipelineResult = await runInputPipeline(guards.input, ctx, {
@@ -100,20 +121,32 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
     });
     const latencyGuardsMs = performance.now() - guardsStart;
 
+    // Everything an outcome shares; each exit adds what it knows.
+    const outcome = (
+      rest: Pick<RequestOutcome, "blocked" | "statusCode" | "decisions"> & Partial<RequestOutcome>,
+    ): RequestOutcome => ({
+      id: requestId,
+      tenantId: tenant.id,
+      apiKeyId,
+      model: body.model,
+      stream: body.stream ?? false,
+      latencyTotalMs: performance.now() - requestStart,
+      latencyGuardsMs,
+      messages: ctx.messages,
+      response,
+      canary: getCanary(ctx),
+      ...rest,
+    });
+
     if (pipelineResult.blocked) {
-      deps.auditQueue.enqueue({
-        id: requestId,
-        tenantId: tenant.id,
-        apiKeyId,
-        model: body.model,
-        stream: body.stream ?? false,
-        finalAction: "block",
-        blockedBy: pipelineResult.blocked.guard,
-        statusCode: 400,
-        decisions: pipelineResult.decisions,
-        latencyTotalMs: performance.now() - requestStart,
-        latencyGuardsMs,
-      });
+      record(
+        outcome({
+          blocked: pipelineResult.blocked,
+          statusCode: 400,
+          decisions: pipelineResult.decisions,
+          response: null,
+        }),
+      );
       return c.json(blockedErrorBody(requestId, pipelineResult.blocked), 400);
     }
 
@@ -121,42 +154,46 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
     let upstreamResponse: Response;
     try {
       upstreamResponse = await callUpstream(
-        { baseUrl: tenant.upstream.base_url, apiKey: tenant.upstream.api_key },
+        {
+          baseUrl: tenant.upstream.base_url,
+          apiKey: tenant.upstream.api_key,
+          timeoutMs: tenant.upstream.timeout_ms,
+        },
         { ...body, messages: ctx.messages }, // input guards mutate ctx.messages in place
         c.req.raw.signal,
       );
-    } catch {
-      deps.auditQueue.enqueue({
-        id: requestId,
-        tenantId: tenant.id,
-        apiKeyId,
-        model: body.model,
-        stream: body.stream ?? false,
-        finalAction: "allow",
-        statusCode: 502,
-        decisions: pipelineResult.decisions,
-        latencyTotalMs: performance.now() - requestStart,
-        latencyGuardsMs,
-      });
-      return c.json({ error: { message: "Upstream request failed", code: "upstream_error" } }, 502);
+    } catch (error) {
+      const timedOut = error instanceof UpstreamTimeoutError;
+      const status = timedOut ? 504 : 502;
+      metrics.recordUpstreamError(tenant.id);
+      record(
+        outcome({
+          blocked: null,
+          statusCode: status,
+          decisions: pipelineResult.decisions,
+          response: null,
+        }),
+      );
+      return c.json(
+        timedOut
+          ? { error: { message: "Upstream timed out", code: "upstream_timeout" } }
+          : { error: { message: "Upstream request failed", code: "upstream_error" } },
+        status,
+      );
     }
     const latencyUpstreamMs = performance.now() - upstreamStart;
 
     if (!upstreamResponse.ok) {
       // no guard restore on error bodies — forwarded as-is
-      deps.auditQueue.enqueue({
-        id: requestId,
-        tenantId: tenant.id,
-        apiKeyId,
-        model: body.model,
-        stream: body.stream ?? false,
-        finalAction: "allow",
-        statusCode: upstreamResponse.status,
-        decisions: pipelineResult.decisions,
-        latencyTotalMs: performance.now() - requestStart,
-        latencyGuardsMs,
-        latencyUpstreamMs,
-      });
+      record(
+        outcome({
+          blocked: null,
+          statusCode: upstreamResponse.status,
+          decisions: pipelineResult.decisions,
+          latencyUpstreamMs,
+          response: null,
+        }),
+      );
       return new Response(upstreamResponse.body, {
         status: upstreamResponse.status,
         headers: upstreamResponse.headers,
@@ -168,9 +205,10 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
     if (body.stream) {
       // Headers (and the 200 status) are already committed once the SSE body starts, so this is
       // provisional — a guard block is signaled in-band as an error event instead. The real
-      // outcome is only known once the stream ends, which is when it's actually audited below.
+      // outcome is only known once the stream ends, which is when it's actually recorded below.
       c.header("x-palang-decision", "allow");
       return stream(c, async (s) => {
+        let firstWriteAt: number | undefined;
         const result = await processStream(
           upstreamResponse.body!,
           {
@@ -178,25 +216,22 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
             guardConfigs: guards.runtimeConfigs,
             failureMode: tenant.failure_mode,
             ctx,
+            rawSink: response ?? undefined,
           },
           async (chunk) => {
+            firstWriteAt ??= performance.now();
             await s.write(chunk);
           },
         );
-        deps.auditQueue.enqueue({
-          id: requestId,
-          tenantId: tenant.id,
-          apiKeyId,
-          model: body.model,
-          stream: true,
-          finalAction: result.blocked ? "block" : "allow",
-          blockedBy: result.blocked?.guard,
-          statusCode: 200,
-          decisions: [...pipelineResult.decisions, ...result.decisions],
-          latencyTotalMs: performance.now() - requestStart,
-          latencyGuardsMs,
-          latencyUpstreamMs,
-        });
+        record(
+          outcome({
+            blocked: result.blocked,
+            statusCode: 200,
+            decisions: [...pipelineResult.decisions, ...result.decisions],
+            latencyUpstreamMs,
+            ttftMs: firstWriteAt === undefined ? undefined : firstWriteAt - requestStart,
+          }),
+        );
       });
     }
 
@@ -204,6 +239,11 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
       choices?: NonStreamingChoice[];
       usage?: unknown;
     };
+    // Captured before the output guards restore placeholders in place.
+    (json.choices ?? []).forEach((choice, index) => {
+      if (choice.message?.content) response?.text(index, choice.message.content);
+      for (const call of choice.message?.tool_calls ?? []) response?.toolCall(index, call);
+    });
 
     const outputResult = await applyOutputGuardsToChoices(
       json.choices ?? [],
@@ -215,38 +255,27 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
     const allDecisions = [...pipelineResult.decisions, ...outputResult.decisions];
 
     if (outputResult.blocked) {
-      deps.auditQueue.enqueue({
-        id: requestId,
-        tenantId: tenant.id,
-        apiKeyId,
-        model: body.model,
-        stream: false,
-        finalAction: "block",
-        blockedBy: outputResult.blocked.guard,
-        statusCode: 400,
-        decisions: allDecisions,
-        latencyTotalMs: performance.now() - requestStart,
-        latencyGuardsMs,
-        latencyUpstreamMs,
-      });
+      record(
+        outcome({
+          blocked: outputResult.blocked,
+          statusCode: 400,
+          decisions: allDecisions,
+          latencyUpstreamMs,
+        }),
+      );
       return c.json(blockedErrorBody(requestId, outputResult.blocked), 400);
     }
 
-    c.header("x-palang-decision", "allow");
-    deps.auditQueue.enqueue({
-      id: requestId,
-      tenantId: tenant.id,
-      apiKeyId,
-      model: body.model,
-      stream: false,
-      finalAction: "allow",
-      statusCode: 200,
-      decisions: allDecisions,
-      latencyTotalMs: performance.now() - requestStart,
-      latencyGuardsMs,
-      latencyUpstreamMs,
-      usage: json.usage,
-    });
+    c.header("x-palang-decision", finalActionFor(allDecisions, null));
+    record(
+      outcome({
+        blocked: null,
+        statusCode: 200,
+        decisions: allDecisions,
+        latencyUpstreamMs,
+        usage: json.usage,
+      }),
+    );
     return c.json(json);
   });
 
