@@ -42,11 +42,11 @@ Your user gets back  →  "Status untuk 3171011506900001: aktif."
 
 | | |
 |---|---|
-| 🔒 **PII masking** | NIK, NPWP, phone numbers, emails and card numbers are masked before they reach the model and restored in the reply, streaming included. |
-| 🛡️ **Injection detection** | Flags or blocks prompt injection in user and tool messages, in English and Indonesian. |
-| 🧰 **Tool-call policy** | Allows only the tools you list, with limits on their arguments. |
-| 🕵️ **Leak detection** | Catches your system prompt showing up in the output. |
-| 📊 **Observability** | Every request lands in an audit log, a dashboard and Prometheus metrics. |
+| **PII masking** | NIK, NPWP, phone numbers, emails and card numbers are masked before they reach the model and restored in the reply, streaming included. |
+| **Injection detection** | Flags or blocks prompt injection in user and tool messages, in English and Indonesian. |
+| **Tool-call policy** | Allows only the tools you list, with limits on their arguments. |
+| **Leak detection** | Catches your system prompt showing up in the output. |
+| **Observability** | Every request lands in an audit log, a dashboard and Prometheus metrics. |
 
 Every guard can run in `monitor` mode (log only) before you `enforce` it.
 
