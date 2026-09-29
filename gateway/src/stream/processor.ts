@@ -10,11 +10,10 @@ import type {
 import { REASONS } from "@palang-ai/guards";
 import { HoldbackBuffer } from "./holdback-buffer.js";
 import { ToolCallAssembler, ToolArgsTooLargeError } from "./tool-call-assembler.js";
-import { runOutputGuardText, runOutputGuardToolCall } from "./run-output-guard.js";
+import { runTextGuards, runToolCallGuards, type OutputGuardChain } from "./run-output-guard.js";
 import { blockedErrorBody } from "../public/errors.js";
 import { streamChunkSchema, type StreamChunk, type StreamDelta } from "./types.js";
 
-/** Receives the model's raw output, before any output guard touches it (audit content). */
 export interface RawResponseSink {
   text(choiceIndex: number, text: string): void;
   toolCall(choiceIndex: number, call: ToolCall): void;
@@ -31,16 +30,12 @@ export interface StreamProcessorDeps {
 export interface StreamResult {
   decisions: Decision[];
   blocked: Decision | null;
-  /** The upstream's usage chunk, when it sent one (`stream_options.include_usage`). */
   usage?: unknown;
 }
 
-// Text the guards inspect (content, refusal, tool calls) and legacy `function_call`, which no
-// guard inspects and requests can't ask for any more, never pass through as-is.
 const GUARDED_DELTA_KEYS = new Set(["content", "refusal", "tool_calls", "function_call"]);
 
-// Other delta fields (`role`, …) are forwarded as they arrive; the OpenAI SDKs require `role` on
-// the first chunk.
+// The OpenAI SDKs require `role` on the first chunk, so the rest of the delta is forwarded as-is.
 function passthroughDelta(delta: StreamDelta): Record<string, unknown> | null {
   const rest = Object.fromEntries(
     Object.entries(delta).filter(([key]) => !GUARDED_DELTA_KEYS.has(key)),
@@ -59,7 +54,7 @@ function buildChunk(
   choiceIndex: number,
   delta: Record<string, unknown>,
   finishReason: string | null,
-): Omit<StreamChunk, "choices"> & { object: string; choices: unknown[] } {
+) {
   return {
     id: meta.id,
     object: "chat.completion.chunk",
@@ -69,17 +64,23 @@ function buildChunk(
   };
 }
 
-// Decoupled from Hono on purpose — the caller supplies `write`, so this is testable without any
-// HTTP machinery.
+const sse = (payload: unknown): string => `data: ${JSON.stringify(payload)}\n\n`;
+const SSE_DONE = "data: [DONE]\n\n";
+
 export async function processStream(
   upstreamBody: ReadableStream<Uint8Array>,
   deps: StreamProcessorDeps,
   write: (chunk: string) => Promise<void>,
 ): Promise<StreamResult> {
+  const chain: OutputGuardChain = {
+    guards: deps.outputGuards,
+    configs: deps.guardConfigs,
+    failureMode: deps.failureMode,
+    ctx: deps.ctx,
+  };
   const holdbackSize = Math.max(0, ...deps.outputGuards.map((g) => g.holdback ?? 0));
   const buffersByChoice = new Map<number, HoldbackBuffer>();
   const assemblersByChoice = new Map<number, ToolCallAssembler>();
-  // Refusals are short: collected per choice and checked whole when the choice finishes.
   const refusalsByChoice = new Map<number, string>();
   const finishedChoices = new Set<number>();
   const decisions: Decision[] = [];
@@ -105,132 +106,72 @@ export async function processStream(
     return assembler;
   }
 
-  function guardConfigFor(name: string): GuardRuntimeConfig {
-    const config = deps.guardConfigs[name];
-    if (!config) throw new Error(`No runtime config for guard "${name}"`);
-    return config;
+  async function writeBlocked(decision: Decision): Promise<void> {
+    blocked = decision;
+    await write(sse(blockedErrorBody(deps.ctx.requestId, decision)));
+    await write(SSE_DONE);
   }
 
-  /** Runs `text` through every active `checkText` guard in order; returns null (and has already
-   * written the block response) if a guard blocks. */
-  async function runTextThroughGuards(text: string, choiceIndex: number): Promise<string | null> {
-    let current = text;
-    for (const guard of deps.outputGuards) {
-      if (!guard.checkText) continue;
-      const { decision, text: next } = await runOutputGuardText(
-        guard,
-        current,
-        deps.ctx,
-        guardConfigFor(guard.name),
-        deps.failureMode,
-        choiceIndex,
-      );
-      decisions.push(decision);
-      current = next;
-      if (decision.action === "block") {
-        blocked = decision;
-        await writeBlocked(decision);
-        return null;
-      }
+  async function guardText(text: string, choiceIndex: number): Promise<string | null> {
+    const result = await runTextGuards(chain, text, choiceIndex);
+    decisions.push(...result.decisions);
+    if (result.blocked) {
+      await writeBlocked(result.blocked);
+      return null;
     }
-    return current;
+    return result.value;
   }
 
   async function emitTextChunk(choiceIndex: number, text: string): Promise<boolean> {
     if (!text) return true;
-    const restored = await runTextThroughGuards(text, choiceIndex);
-    if (restored === null) return false;
-    if (restored) {
-      await write(
-        `data: ${JSON.stringify(buildChunk(meta, choiceIndex, { content: restored }, null))}\n\n`,
-      );
-    }
+    const guarded = await guardText(text, choiceIndex);
+    if (guarded === null) return false;
+    if (guarded) await write(sse(buildChunk(meta, choiceIndex, { content: guarded }, null)));
     return true;
   }
 
-  async function writeBlocked(decision: Decision): Promise<void> {
-    await write(`data: ${JSON.stringify(blockedErrorBody(deps.ctx.requestId, decision))}\n\n`);
-    await write("data: [DONE]\n\n");
-  }
-
-  async function writeToolArgsTooLarge(): Promise<void> {
-    await write(
-      `data: ${JSON.stringify({
-        error: {
-          message: "Tool call arguments exceeded the size cap",
-          code: "tool_arguments_too_large",
-        },
-      })}\n\n`,
-    );
-    await write("data: [DONE]\n\n");
-  }
-
-  /** Flushes a choice's buffered text and assembled tool calls through the output guards and emits
-   * its finish chunk. Returns false (having already written the block response) if a guard
-   * blocked. Also used at stream end to flush any choice that never received a finish_reason. */
   async function finishChoice(choiceIndex: number, finishReason: string | null): Promise<boolean> {
-    const remaining = getBuffer(choiceIndex).flush();
-    if (!(await emitTextChunk(choiceIndex, remaining))) return false;
+    if (!(await emitTextChunk(choiceIndex, getBuffer(choiceIndex).flush()))) return false;
 
     const refusal = refusalsByChoice.get(choiceIndex);
     if (refusal) {
-      const checked = await runTextThroughGuards(refusal, choiceIndex);
-      if (checked === null) return false;
-      await write(
-        `data: ${JSON.stringify(buildChunk(meta, choiceIndex, { refusal: checked }, null))}\n\n`,
-      );
+      const guarded = await guardText(refusal, choiceIndex);
+      if (guarded === null) return false;
+      await write(sse(buildChunk(meta, choiceIndex, { refusal: guarded }, null)));
     }
 
     for (const [toolCallIndex, assembled] of getAssembler(choiceIndex).finalize().entries()) {
-      let toolCall = assembled;
-      deps.rawSink?.toolCall(choiceIndex, toolCall);
-      let choiceBlocked = false;
-      for (const guard of deps.outputGuards) {
-        if (!guard.checkToolCall) continue;
-        const { decision, call } = await runOutputGuardToolCall(
-          guard,
-          toolCall,
-          deps.ctx,
-          guardConfigFor(guard.name),
-          deps.failureMode,
-        );
-        decisions.push(decision);
-        toolCall = call;
-        if (decision.action === "block") {
-          blocked = decision;
-          await writeBlocked(decision);
-          choiceBlocked = true;
-          break;
-        }
+      deps.rawSink?.toolCall(choiceIndex, assembled);
+      const result = await runToolCallGuards(chain, assembled);
+      decisions.push(...result.decisions);
+      if (result.blocked) {
+        await writeBlocked(result.blocked);
+        return false;
       }
-      if (choiceBlocked) return false;
       await write(
-        `data: ${JSON.stringify(
+        sse(
           buildChunk(
             meta,
             choiceIndex,
-            { tool_calls: [{ index: toolCallIndex, ...toolCall }] },
+            { tool_calls: [{ index: toolCallIndex, ...result.value }] },
             null,
           ),
-        )}\n\n`,
+        ),
       );
     }
 
-    await write(`data: ${JSON.stringify(buildChunk(meta, choiceIndex, {}, finishReason))}\n\n`);
+    await write(sse(buildChunk(meta, choiceIndex, {}, finishReason)));
     finishedChoices.add(choiceIndex);
     return true;
   }
 
-  // TS's lib.dom types `TextDecoderStream.writable` as `WritableStream<BufferSource>`, which
-  // doesn't structurally match `ReadableWritablePair<string, Uint8Array>` even though this is
-  // exactly the standard, correct way to decode a fetch body — a known lib.dom typing gap, not a
-  // real mismatch.
+  // lib.dom types TextDecoderStream's writable as WritableStream<BufferSource>, which doesn't
+  // match what pipeThrough expects here even though it's correct at runtime.
   const eventStream = upstreamBody
     .pipeThrough(new TextDecoderStream() as ReadableWritablePair<string, Uint8Array>)
     .pipeThrough(new EventSourceParserStream());
   const reader = eventStream.getReader();
-  // An early return (a block, oversized tool arguments, an error) cancels the body. On Bun that
-  // doesn't close the connection; the caller also aborts the upstream fetch.
+  // On Bun, cancelling the body doesn't close the connection; the caller also aborts the fetch.
   let consumedToEnd = false;
 
   try {
@@ -243,21 +184,17 @@ export async function processStream(
       try {
         json = JSON.parse(value.data);
       } catch {
-        continue; // ignore lines that aren't valid JSON
+        continue;
       }
       const parsed = streamChunkSchema.safeParse(json);
-      if (!parsed.success) continue; // e.g. a provider-specific chunk without choices we can read
+      if (!parsed.success) continue;
       const chunk: StreamChunk = parsed.data;
 
       meta = { id: chunk.id, model: chunk.model, created: chunk.created };
 
       for (const choice of chunk.choices ?? []) {
         const passthrough = passthroughDelta(choice.delta);
-        if (passthrough) {
-          await write(
-            `data: ${JSON.stringify(buildChunk(meta, choice.index, passthrough, null))}\n\n`,
-          );
-        }
+        if (passthrough) await write(sse(buildChunk(meta, choice.index, passthrough, null)));
 
         if (choice.delta.refusal) {
           refusalsByChoice.set(
@@ -278,18 +215,24 @@ export async function processStream(
             try {
               assembler.accumulate(delta);
             } catch (error) {
-              if (error instanceof ToolArgsTooLargeError) {
-                blocked = {
-                  guard: "stream",
-                  action: "block",
-                  reason: REASONS.TOOL_ARGUMENTS_TOO_LARGE,
-                  latencyMs: 0,
-                };
-                decisions.push(blocked);
-                await writeToolArgsTooLarge();
-                return { decisions, blocked, usage };
-              }
-              throw error;
+              if (!(error instanceof ToolArgsTooLargeError)) throw error;
+              blocked = {
+                guard: "stream",
+                action: "block",
+                reason: REASONS.TOOL_ARGUMENTS_TOO_LARGE,
+                latencyMs: 0,
+              };
+              decisions.push(blocked);
+              await write(
+                sse({
+                  error: {
+                    message: "Tool call arguments exceeded the size cap",
+                    code: "tool_arguments_too_large",
+                  },
+                }),
+              );
+              await write(SSE_DONE);
+              return { decisions, blocked, usage };
             }
           }
         }
@@ -301,25 +244,22 @@ export async function processStream(
         }
       }
 
-      // Forwarded after per-choice processing, never instead of it — a usage chunk can carry a
-      // non-empty `choices` too, and skipping straight past those would bypass every output guard.
+      // A usage chunk can also carry choices, so it's forwarded only after they've been guarded.
       if (chunk.usage) {
         usage = chunk.usage;
         await write(
-          `data: ${JSON.stringify({
+          sse({
             id: meta.id,
             object: "chat.completion.chunk",
             created: meta.created,
             model: meta.model,
             choices: [],
             usage: chunk.usage,
-          })}\n\n`,
+          }),
         );
       }
     }
 
-    // Upstream ended (or sent [DONE]) before some choice's finish_reason ever arrived — flush what
-    // it was still holding instead of silently dropping it.
     const pendingChoices = new Set([
       ...buffersByChoice.keys(),
       ...assemblersByChoice.keys(),
@@ -330,7 +270,7 @@ export async function processStream(
       if (!(await finishChoice(choiceIndex, null))) return { decisions, blocked, usage };
     }
 
-    await write("data: [DONE]\n\n");
+    await write(SSE_DONE);
     consumedToEnd = true;
   } finally {
     if (consumedToEnd) reader.releaseLock();

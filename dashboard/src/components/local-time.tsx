@@ -1,6 +1,5 @@
 "use client";
 
-// The server doesn't know the viewer's time zone, so timestamps are formatted in the browser.
 export function LocalTime({ iso, dateOnly = false }: { iso: string; dateOnly?: boolean }) {
   const date = new Date(iso);
   const text = dateOnly

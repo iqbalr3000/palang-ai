@@ -1,5 +1,4 @@
-// Scoped to `vault` alone, never guard-instance state — guard instances are shared across
-// concurrent requests, so per-request counters can't live there.
+// Numbering derives from the vault, not guard state: guard instances are shared across requests.
 export function getOrCreatePlaceholder(
   vault: Map<string, string>,
   type: string,

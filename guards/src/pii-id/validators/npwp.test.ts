@@ -6,8 +6,8 @@ test("valid: 15 digits", () => {
 });
 
 test("invalid: wrong length", () => {
-  expect(validateNpwp15("12345678901234")).toBe(false); // 14
-  expect(validateNpwp15("1234567890123456")).toBe(false); // 16 — that's NIK-shaped, not this
+  expect(validateNpwp15("12345678901234")).toBe(false);
+  expect(validateNpwp15("1234567890123456")).toBe(false);
 });
 
 test("invalid: non-digit characters", () => {

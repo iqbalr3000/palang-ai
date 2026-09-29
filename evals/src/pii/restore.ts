@@ -4,26 +4,23 @@ import {
   DEFAULT_PII_ID_CONFIG,
   createPiiIdInputGuard,
   createPiiIdOutputGuard,
+  getRestoredPlaceholders,
 } from "@palang-ai/guards";
 import { createApp } from "@palang-ai/mock-upstream";
 import { z } from "zod";
 import { PII_TYPES, type PiiSample, type PiiType } from "../dataset/pii-schema.js";
 
-// mock-echo streams 8-char chunks; mock-split-placeholder 1-char, splitting every placeholder.
 export const RESTORE_SCENARIOS = ["mock-echo", "mock-split-placeholder"] as const;
 export type RestoreScenario = (typeof RESTORE_SCENARIOS)[number];
 
 export interface RestoreReport {
-  /** Samples where masking produced at least one placeholder — the only ones restore applies to. */
   samples: number;
   succeeded: number;
   successRate: number | null;
-  /** Vault entries never restored in the output, per entity type. */
   restoreMiss: Record<PiiType | "total", number>;
 }
 
 const PLACEHOLDER = /\[([A-Z_]+)_\d+\]/g;
-const RESTORED_KEY = "piiRestoredPlaceholders"; // written by the pii-id output guard
 
 const chunkSchema = z.object({
   choices: z.array(z.object({ delta: z.object({ content: z.string().optional() }) })).optional(),
@@ -64,7 +61,6 @@ async function roundTrip(sample: PiiSample, scenario: RestoreScenario): Promise<
   };
   await inputGuard.check(ctx);
   const masked = ctx.messages[0]?.content ?? "";
-  // Success is judged against the vault's normalized values, which is what restore returns.
   const expected = masked.replace(PLACEHOLDER, (p) => ctx.piiVault.get(p) ?? p);
 
   const response = await upstream.fetch(
@@ -90,13 +86,12 @@ async function roundTrip(sample: PiiSample, scenario: RestoreScenario): Promise<
     },
   );
 
-  const restored = ctx.metadata[RESTORED_KEY];
-  const restoredSet = restored instanceof Set ? restored : new Set<unknown>();
+  const restored = getRestoredPlaceholders(ctx);
   const placeholders = [...ctx.piiVault.keys()];
   return {
     placeholders,
     success: result.blocked === null && streamedContent(written) === expected,
-    missed: placeholders.filter((p) => !restoredSet.has(p)),
+    missed: placeholders.filter((p) => !restored.has(p)),
   };
 }
 

@@ -110,11 +110,8 @@ test("streaming: openai SDK reassembles the same echoed content", async () => {
   expect(content).toBe("streamed via the real sdk");
 });
 
-// NOTE: `expect(promise).rejects.toThrow()` is unreliable here when run after the streaming
-// test earlier in this file (passes in isolation, silently resolves instead of rejecting when
-// run as part of the full suite — a Bun test-runner quirk, not a server bug: manually replaying
-// the same request outside the test runner, and this same assertion via `.catch()` below, both
-// behave correctly). Asserting on the caught error directly sidesteps it.
+// Not `.rejects.toThrow()`: after the streaming test above, a Bun test-runner quirk makes it
+// resolve instead of reject.
 test("model not in the tenant's allowlist is rejected with 400", async () => {
   const error = await openai.chat.completions
     .create({ model: "not-allowed-model", messages: [{ role: "user", content: "hi" }] })

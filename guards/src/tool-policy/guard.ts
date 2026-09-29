@@ -9,11 +9,10 @@ function decision(action: "allow" | "block", reason?: string, findings?: Finding
     action,
     reason,
     findings,
-    latencyMs: 0, // overwritten by the pipeline runner
+    latencyMs: 0,
   };
 }
 
-/** Throws if a `regex` constraint doesn't compile — config errors surface at startup. */
 export function createToolPolicyOutputGuard(config: ToolPolicyConfig): OutputGuard {
   const regexes = config.rules.map((rule) =>
     (rule.constraints ?? []).map((c) => (c.op === "regex" ? new RegExp(c.value) : undefined)),

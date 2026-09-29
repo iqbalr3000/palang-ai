@@ -55,7 +55,6 @@ test("every session gets its own id", async () => {
   expect(a).not.toBe(b);
 });
 
-// Regression: logout used to only delete the browser's cookie; a copied cookie stayed valid.
 test("a revoked session no longer verifies, other sessions still do", async () => {
   const revoked = await createSessionToken(TOKEN, NOW);
   const other = await createSessionToken(TOKEN, NOW);

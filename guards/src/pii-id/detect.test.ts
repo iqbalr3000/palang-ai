@@ -46,7 +46,6 @@ test("detects a Luhn-valid card number and does not flag a random 16-digit non-c
 });
 
 test("does not flag a plausible-looking but structurally invalid NIK", () => {
-  // province 00 is not a real province code
   const text = "nomor acak 0071011506900001 doang";
   const matches = detectPii(text);
   expect(matches.find((m) => m.type === "NIK")).toBeUndefined();
@@ -86,17 +85,15 @@ test("phones right after punctuation or with a +62 prefix are still found", () =
   expect(matches.map((m) => m.normalized)).toEqual(["+6281234567890", "+6281234567890"]);
 });
 
-// Regression: an unbounded email pattern made this quadratic (~1.3 s at 40 KB, minutes at the
-// gateway's 1 MB body limit), stalling every request on the event loop.
 test("worst-case 1 MB inputs are detected in linear time", () => {
   const MB = 1_000_000;
   const adversarial = [
-    "a".repeat(MB), // long local-part run, no @
+    "a".repeat(MB),
     "1".repeat(MB),
     "1-".repeat(MB / 2),
     "QUJD".repeat(MB / 4),
-    `${"a".repeat(MB)}@${"b".repeat(100)}`, // @ but no TLD
-    "0812345678".repeat(MB / 10), // phone-shaped run for the @ lookahead
+    `${"a".repeat(MB)}@${"b".repeat(100)}`,
+    "0812345678".repeat(MB / 10),
     "a@".repeat(MB / 2),
   ];
   for (const text of adversarial) {

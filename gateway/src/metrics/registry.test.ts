@@ -4,7 +4,7 @@ import { Counter, Histogram, ObservedCounter, renderMetrics } from "./registry.j
 test("counters sum per label set, in Prometheus text format", () => {
   const counter = new Counter("palang_requests_total", "Requests.");
   counter.inc({ tenant: "demo", action: "allow" });
-  counter.inc({ action: "allow", tenant: "demo" }); // same series, labels in another order
+  counter.inc({ action: "allow", tenant: "demo" });
   counter.inc({ tenant: "demo", action: "block" }, 3);
 
   expect(renderMetrics([counter])).toBe(

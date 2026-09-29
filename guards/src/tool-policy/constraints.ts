@@ -2,7 +2,6 @@ import type { Primitive, ToolConstraint } from "./config.js";
 
 const MISSING = Symbol("missing");
 
-/** Dot path into parsed arguments; numeric segments index arrays (`items.0.id`). */
 export function resolvePath(root: unknown, path: string): unknown {
   let current: unknown = root;
   for (const segment of path.split(".")) {
@@ -27,7 +26,6 @@ function isPrimitive(value: unknown): value is Primitive {
 const sameType = (a: Primitive, b: Primitive): boolean =>
   (a === null) === (b === null) && typeof a === typeof b;
 
-/** A missing path or a type mismatch fails the constraint — nothing is coerced. */
 export function constraintPasses(
   constraint: ToolConstraint,
   args: unknown,

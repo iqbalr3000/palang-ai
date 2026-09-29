@@ -46,7 +46,6 @@ export function summarize(c: Confusion): Metrics {
   };
 }
 
-/** Nearest-rank percentile; `p` in 0..100. */
 export function percentile(values: number[], p: number): number {
   if (values.length === 0) return 0;
   const sorted = [...values].sort((a, b) => a - b);

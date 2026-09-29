@@ -1,16 +1,17 @@
+import { z } from "zod";
 import { lastUserContent } from "./mock-echo.js";
 import type { Scenario } from "./types.js";
 
-// Scripted by the last user message: `{"name": ..., "arguments": {...} | "raw string"}`. A string
-// is sent verbatim, so tests can exercise malformed arguments.
+const scriptSchema = z.object({ name: z.string(), arguments: z.unknown() });
+
+// String arguments are sent verbatim, so tests can exercise malformed JSON.
 export const mockToolCall: Scenario = {
   reply(messages) {
-    const script: unknown = JSON.parse(lastUserContent(messages));
-    if (typeof script !== "object" || script === null || !("name" in script)) {
+    const parsed = scriptSchema.safeParse(JSON.parse(lastUserContent(messages)));
+    if (!parsed.success) {
       throw new Error('mock-tool-call expects {"name", "arguments"} as the last user message');
     }
-    const { name, arguments: args } = script as { name: unknown; arguments?: unknown };
-    if (typeof name !== "string") throw new Error("mock-tool-call: name must be a string");
+    const { name, arguments: args } = parsed.data;
     return {
       toolCall: { name, arguments: typeof args === "string" ? args : JSON.stringify(args ?? {}) },
     };

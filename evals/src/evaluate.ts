@@ -1,3 +1,4 @@
+import { DEFAULT_INJECTION_CONFIG } from "@palang-ai/guards";
 import { CATEGORIES, LANGS, type Category, type Lang, type Sample } from "./dataset/schema.js";
 import type { Layer } from "./layers.js";
 import {
@@ -9,7 +10,10 @@ import {
   type Metrics,
 } from "./metrics.js";
 
-export const THRESHOLDS = { flag: 0.5, block: 0.85 } as const;
+export const THRESHOLDS = {
+  flag: DEFAULT_INJECTION_CONFIG.flagThreshold,
+  block: DEFAULT_INJECTION_CONFIG.blockThreshold,
+} as const;
 export type ThresholdName = keyof typeof THRESHOLDS;
 
 export interface ScoredSample {

@@ -11,7 +11,6 @@ export interface SplitReport {
 
 export interface InjectionReport {
   thresholds: typeof THRESHOLDS;
-  /** Null when only L1 ran. */
   classifier: { model: string; dtype: "fp32" | "q8" } | null;
   splits: Partial<Record<Split, SplitReport>>;
 }
@@ -20,7 +19,6 @@ export interface EvalReport {
   generatedAt: string;
   gitSha: string;
   dirty: boolean;
-  /** Null when that suite wasn't run (`--suite`). */
   injection: InjectionReport | null;
   pii: PiiReport | null;
 }
@@ -57,7 +55,6 @@ function langTable(layer: LayerReport): string[] {
   ];
 }
 
-// Injection categories only have positives (recall matters); benign ones only negatives (FPR).
 function categoryTable(layer: LayerReport): string[] {
   const rows: string[] = [];
   for (const name of Object.keys(THRESHOLDS) as ThresholdName[]) {

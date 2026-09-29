@@ -223,7 +223,7 @@ test("tool calls are assembled, run through checkToolCall, and emitted once (not
       return !!choices[0]?.delta.tool_calls;
     },
   );
-  expect(toolCallEvents).toHaveLength(1); // emitted once, assembled — not once per delta fragment
+  expect(toolCallEvents).toHaveLength(1);
 });
 
 test("usage chunks are forwarded unchanged", async () => {
@@ -328,7 +328,6 @@ test("a guard that blocks stops the stream with the same error shape as a non-st
   expect(events.at(-1)).toBe("[DONE]");
 });
 
-// Upstream chunks of `size` characters, like a real model stream.
 function contentStream(text: string, size = 8): ReadableStream<Uint8Array> {
   const chunk = (delta: Record<string, unknown>, finish: string | null = null) => ({
     id: "1",
@@ -354,9 +353,7 @@ function streamedContent(written: string[]): string {
     .join("");
 }
 
-// Regression: past 256 characters without whitespace the holdback buffer cuts anyway, which used
-// to split a token across two checkText calls so neither saw it whole. Every prefix length puts
-// the cut at a different spot in the token.
+// Past 256 chars without whitespace the buffer cuts mid-token; each prefix length moves the cut.
 const PREFIX_LENGTHS = Array.from({ length: 321 }, (_, i) => 200 + i);
 
 for (const onDetect of ["block", "flag"] as const) {

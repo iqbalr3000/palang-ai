@@ -14,7 +14,7 @@ export interface LoginState {
 const FAILED_LOGIN_DELAY_MS = 500;
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// Shared across Next's module instances in this process, like the session denylist.
+// On globalThis: Next can load this module more than once per process.
 const throttle: LoginThrottle = ((
   globalThis as { __palangLoginThrottle?: LoginThrottle }
 ).__palangLoginThrottle ??= createLoginThrottle());

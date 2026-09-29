@@ -6,21 +6,21 @@ import type { PiiIdConfig } from "./config.js";
 
 const PLACEHOLDER_PATTERN = /\[[A-Z_]+_\d+\]/g;
 
-// `OutputGuard.holdback` is fixed once on the guard object, before any request's vault exists, so
-// it can't be computed from placeholder counts — this cap covers any realistic case.
 const HOLDBACK = 32;
 
-const METADATA_RESTORED_KEY = "piiRestoredPlaceholders";
-// Tail of the raw text already scanned, kept on ctx.metadata between streamed segments. Long
-// enough for realistic emails, the longest entity.
+const RESTORED_KEY = "piiRestoredPlaceholders";
 const CARRY_KEY = "piiCarry";
 const CARRY_LENGTH = 128;
 
+export function getRestoredPlaceholders(ctx: GuardContext): ReadonlySet<string> {
+  return (ctx.metadata[RESTORED_KEY] as Set<string> | undefined) ?? new Set();
+}
+
 function trackRestored(ctx: GuardContext, placeholder: string): void {
-  let restored = ctx.metadata[METADATA_RESTORED_KEY] as Set<string> | undefined;
+  let restored = ctx.metadata[RESTORED_KEY] as Set<string> | undefined;
   if (!restored) {
     restored = new Set();
-    ctx.metadata[METADATA_RESTORED_KEY] = restored;
+    ctx.metadata[RESTORED_KEY] = restored;
   }
   restored.add(placeholder);
 }
@@ -30,10 +30,8 @@ interface Span {
   end: number;
 }
 
-// One pass over the model's raw text: known placeholders are restored, and PII the model wrote
-// out itself is flagged (optionally masked). Detecting on the raw text is what tells the two apart
-// — placeholders aren't PII-shaped, and the model never saw the real values, so a raw value is a
-// leak even when it equals one in the vault. A second pass would restore the masks right back.
+// One pass: a second would restore freshly masked output right back. Raw PII here is a leak
+// even if it's in the vault, since the model never saw real values.
 function restoreAndScan(
   raw: string,
   ctx: GuardContext,
@@ -80,9 +78,7 @@ function restoreAndScan(
   return result + raw.slice(cursor);
 }
 
-// The holdback buffer cuts mid-token when a long run has no whitespace, so PII can start in the
-// previous segment. It's flagged like any output PII; if it should have been masked, the start is
-// already sent, so the response is blocked instead.
+// PII may start in the already-sent previous segment; if it needed masking, block instead.
 function scanAcrossSegments(
   raw: string,
   ctx: GuardContext,
@@ -90,7 +86,7 @@ function scanAcrossSegments(
   findings: Finding[],
   choice: number,
 ): boolean {
-  const key = `${CARRY_KEY}:${choice}`; // per choice: with n > 1, choices' segments interleave
+  const key = `${CARRY_KEY}:${choice}`;
   const carried = ctx.metadata[key];
   const carry = typeof carried === "string" ? carried : "";
   const window = carry + raw;
@@ -114,17 +110,14 @@ function buildDecision(findings: Finding[], block = false): Decision {
       action: "block",
       reason: REASONS.OUTPUT_PII_DETECTED,
       findings,
-      latencyMs: 0, // overwritten by the pipeline runner
+      latencyMs: 0,
     };
   }
   return {
     guard: "pii-id",
-    // Restoring known placeholders is the expected happy path (`allow`), not a `modify` in the
-    // policy sense the way masking is — only an unexpected finding (unknown placeholder, new
-    // output PII) is worth flagging.
     action: findings.length > 0 ? "flag" : "allow",
     findings,
-    latencyMs: 0, // overwritten by the pipeline runner
+    latencyMs: 0,
   };
 }
 

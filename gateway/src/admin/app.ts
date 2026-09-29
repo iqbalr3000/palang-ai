@@ -56,10 +56,11 @@ const createKeyBodySchema = z.object({
 export function createAdminApp(deps: AdminAppDeps): Hono {
   const app = new Hono();
   const auth = createAdminAuthMiddleware(deps.adminToken);
+  const hasTenant = (id: string) => deps.config.tenants.some((t) => t.id === id);
 
   app.post("/admin/tenants/:id/keys", auth, async (c) => {
     const tenantId = c.req.param("id");
-    if (!tenantId || !deps.config.tenants.some((t) => t.id === tenantId)) {
+    if (!tenantId || !hasTenant(tenantId)) {
       return c.json({ error: { message: `Unknown tenant "${tenantId}"` } }, 404);
     }
 
@@ -74,7 +75,6 @@ export function createAdminApp(deps: AdminAppDeps): Hono {
       .values({ tenantId, name: parsed.data.name, prefix: key.prefix, keyHash: key.hash })
       .returning();
 
-    // returned once — only the hash is ever persisted
     return c.json(
       {
         id: row?.id,
@@ -136,7 +136,7 @@ export function createAdminApp(deps: AdminAppDeps): Hono {
 
   app.get("/admin/tenants/:id/keys", auth, async (c) => {
     const tenantId = c.req.param("id");
-    if (!tenantId || !deps.config.tenants.some((t) => t.id === tenantId)) {
+    if (!tenantId || !hasTenant(tenantId)) {
       return c.json({ error: { message: `Unknown tenant "${tenantId}"` } }, 404);
     }
     const keys = await deps.db

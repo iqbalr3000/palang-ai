@@ -1,4 +1,3 @@
-// Cf = Unicode "format" characters: zero-width, bidi controls, soft hyphen, BOM, and tag characters.
 const INVISIBLE_CHARS = /\p{Cf}/gu;
 const BASE64_SEGMENT = /[A-Za-z0-9+/]{24,}={0,2}/g;
 const NON_TEXT_CONTROL = /(?![\n\r\t])\p{Cc}/u;
@@ -28,9 +27,8 @@ function toScanForm(text: string): string {
   return text.toLowerCase().replace(/\s+/g, " ").trim();
 }
 
-/** First element is the normalized input; the rest are normalized base64-decoded segments. */
 export function normalizeForInjectionScan(text: string): string[] {
-  // Base64 is case-sensitive, so segments are extracted before lowercasing.
+  // Base64 is case-sensitive: extract segments before lowercasing.
   const cleaned = text.normalize("NFKC").replace(INVISIBLE_CHARS, "");
   const targets = [toScanForm(cleaned)];
 

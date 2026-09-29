@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 
-// A plain <select> so filter forms work as GET forms without client JS.
 export function NativeSelect({ className, ...props }: React.ComponentProps<"select">) {
   return (
     <select

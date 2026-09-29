@@ -18,7 +18,7 @@ const MOCK_UPSTREAM_PORT = 19097;
 const HANGING_UPSTREAM_PORT = 19098;
 const GATEWAY_PORT = 18088;
 const ADMIN_TOKEN = "admin-e2e-token";
-const RUN = crypto.randomUUID().slice(0, 8); // tenant ids unique per run: the DB is shared
+const RUN = crypto.randomUUID().slice(0, 8);
 const T = {
   plain: `adm-plain-${RUN}`,
   monitor: `adm-monitor-${RUN}`,
@@ -57,7 +57,6 @@ beforeAll(async () => {
       port: MOCK_UPSTREAM_PORT,
       fetch: createMockUpstreamApp({ chunkDelayMs: 0 }).fetch,
     }),
-    // Never answers — for the upstream timeout.
     Bun.serve({ port: HANGING_UPSTREAM_PORT, fetch: () => new Promise<Response>(() => {}) }),
   );
 
@@ -66,7 +65,7 @@ beforeAll(async () => {
     audit: { content_mode: "redacted" },
     models: { path: "./models" },
     tenants: [
-      tenant(T.plain, {}), // no pii-id: storage redaction must still apply
+      tenant(T.plain, {}),
       tenant(T.monitor, { injection: { mode: "monitor" } }),
       tenant(T.canary, { canary: { mode: "enforce", on_detect: "block" } }),
       tenant(T.slow, {}, HANGING_UPSTREAM_PORT),
@@ -91,7 +90,6 @@ beforeAll(async () => {
     keys.set(t.id, key.plaintext);
   }
 
-  // Traffic the admin endpoints below report on.
   await chat(T.plain, [{ role: "user", content: `NIK saya ${NIK}` }]);
   await chat(T.plain, [{ role: "user", content: "halo" }], true);
   await chat(T.monitor, [{ role: "user", content: ATTACK }]);
@@ -123,7 +121,7 @@ function chat(
     headers: { authorization: `Bearer ${keys.get(tenantId)}`, "content-type": "application/json" },
     body: JSON.stringify({ model, messages, stream }),
   }).then(async (res) => {
-    await res.arrayBuffer(); // drain, so a stream is fully processed (and recorded)
+    await res.arrayBuffer();
     return res;
   });
 }

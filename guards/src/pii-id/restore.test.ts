@@ -1,6 +1,6 @@
 import { test, expect } from "bun:test";
 import type { GuardContext, ToolCall } from "../core/index.js";
-import { createPiiIdOutputGuard } from "./restore.js";
+import { createPiiIdOutputGuard, getRestoredPlaceholders } from "./restore.js";
 import { DEFAULT_PII_ID_CONFIG } from "./config.js";
 
 function makeCtx(vaultEntries: [string, string][] = []): GuardContext {
@@ -40,7 +40,7 @@ test("restores multiple placeholders", async () => {
 
 test("unknown placeholder is left as-is and flagged", async () => {
   const guard = createPiiIdOutputGuard(DEFAULT_PII_ID_CONFIG);
-  const ctx = makeCtx(); // empty vault
+  const ctx = makeCtx();
 
   const { text, decision } = await guard.checkText!("value: [NIK_1]", ctx);
 
@@ -52,11 +52,11 @@ test("unknown placeholder is left as-is and flagged", async () => {
 
 test("new PII in output not present in input is flagged OUTPUT_PII, left unmasked by default", async () => {
   const guard = createPiiIdOutputGuard(DEFAULT_PII_ID_CONFIG);
-  const ctx = makeCtx(); // model produced this PII itself, nothing was masked from input
+  const ctx = makeCtx();
 
   const { text, decision } = await guard.checkText!("call me at 081234567890", ctx);
 
-  expect(text).toBe("call me at 081234567890"); // unmasked — mask_new_output_pii defaults false
+  expect(text).toBe("call me at 081234567890");
   expect(decision.findings).toContainEqual(expect.objectContaining({ type: "OUTPUT_PII" }));
 });
 
@@ -108,12 +108,12 @@ test("restored placeholders are tracked on ctx.metadata for restore_miss reporti
   const guard = createPiiIdOutputGuard(DEFAULT_PII_ID_CONFIG);
   const ctx = makeCtx([
     ["[NIK_1]", "3171011506900001"],
-    ["[EMAIL_1]", "budi@example.com"], // never appears in output
+    ["[EMAIL_1]", "budi@example.com"],
   ]);
 
   await guard.checkText!("your id is [NIK_1]", ctx);
 
-  const restored = ctx.metadata["piiRestoredPlaceholders"] as Set<string>;
+  const restored = getRestoredPlaceholders(ctx);
   expect(restored.has("[NIK_1]")).toBe(true);
   expect(restored.has("[EMAIL_1]")).toBe(false);
 });
@@ -128,7 +128,6 @@ test("raw PII the model wrote itself is flagged even when it equals a vault valu
   const guard = createPiiIdOutputGuard(DEFAULT_PII_ID_CONFIG);
   const ctx = makeCtx([["[NIK_1]", "3171011506900001"]]);
 
-  // The input was masked, so a raw copy can only have come from elsewhere (context, memory).
   const { text, decision } = await guard.checkText!("NIK: 3171011506900001", ctx);
 
   expect(text).toBe("NIK: 3171011506900001");

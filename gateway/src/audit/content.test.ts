@@ -13,7 +13,7 @@ test("redaction masks raw PII as [TYPE], keeps placeholders, and hides the canar
 
 const messages: ChatMessage[] = [
   { role: "system", content: `Be nice. Marker: ${CANARY}` },
-  { role: "user", content: "my email is budi@example.com" }, // a tenant without pii-id: still raw
+  { role: "user", content: "my email is budi@example.com" },
   {
     role: "assistant",
     content: null,

@@ -25,8 +25,6 @@ test("after that, attempts are spaced out further and further, globally", () => 
   expect(waits).toEqual([{ waitMs: 0 }, { waitMs: 1000 }, { waitMs: 3000 }]);
 });
 
-// Regression: spacing used to count only failures already recorded, so a burst of parallel
-// attempts all reserved a free slot before the first one had failed.
 test("a burst of simultaneous attempts is throttled before any of them fails", () => {
   const throttle = createLoginThrottle();
   const burst: Reservation[] = Array.from({ length: 100 }, () => throttle.reserve(0));

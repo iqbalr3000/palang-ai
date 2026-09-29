@@ -19,5 +19,5 @@ test("increments N per type independently", () => {
   getOrCreatePlaceholder(vault, "EMAIL", "budi@example.com");
   getOrCreatePlaceholder(vault, "EMAIL", "siti@example.com");
   const nikPlaceholder = getOrCreatePlaceholder(vault, "NIK", "3171011506900001");
-  expect(nikPlaceholder).toBe("[NIK_1]"); // NIK's own counter, unaffected by EMAIL's count
+  expect(nikPlaceholder).toBe("[NIK_1]");
 });

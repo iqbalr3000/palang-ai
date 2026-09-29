@@ -1,4 +1,5 @@
 import { and, desc, eq, gte, lt, sql, type SQL } from "drizzle-orm";
+import { z } from "zod";
 import { apiKeys, auditEvents, type Db } from "../db/index.js";
 import type { FinalAction } from "@palang-ai/guards";
 
@@ -24,7 +25,7 @@ const toNullableNumber = (value: unknown): number | null =>
 
 export async function queryStats(db: Db, window: Window) {
   const where = windowFilter(window);
-  // Only ever one of two literals, so sql.raw is safe here.
+  // One of two literals, so sql.raw below is safe.
   const unit = window.to.getTime() - window.from.getTime() <= TWO_DAYS_MS ? "hour" : "day";
   const decision = sql`jsonb_array_elements(${auditEvents.decisions}) as d`;
 
@@ -120,12 +121,9 @@ export interface EventFilter {
   limit: number;
 }
 
-// Postgres keeps microseconds; a JS Date would round them off and skip or repeat rows at a page
-// boundary, so the cursor carries the timestamp as Postgres formats it.
-export interface EventCursor {
-  createdAt: string;
-  id: string;
-}
+// Postgres text, not a Date: a Date drops microseconds and breaks paging.
+const cursorSchema = z.object({ createdAt: z.string(), id: z.string() });
+export type EventCursor = z.infer<typeof cursorSchema>;
 
 export function encodeCursor(cursor: EventCursor): string {
   return Buffer.from(JSON.stringify(cursor)).toString("base64url");
@@ -133,21 +131,11 @@ export function encodeCursor(cursor: EventCursor): string {
 
 export function decodeCursor(value: string): EventCursor | null {
   try {
-    const parsed: unknown = JSON.parse(Buffer.from(value, "base64url").toString());
-    if (
-      typeof parsed === "object" &&
-      parsed !== null &&
-      "createdAt" in parsed &&
-      "id" in parsed &&
-      typeof parsed.createdAt === "string" &&
-      typeof parsed.id === "string"
-    ) {
-      return { createdAt: parsed.createdAt, id: parsed.id };
-    }
+    const parsed = cursorSchema.safeParse(JSON.parse(Buffer.from(value, "base64url").toString()));
+    return parsed.success ? parsed.data : null;
   } catch {
-    // fall through
+    return null;
   }
-  return null;
 }
 
 const listColumns = {
@@ -167,7 +155,6 @@ const listColumns = {
   latencyUpstreamMs: auditEvents.latencyUpstreamMs,
   ttftMs: auditEvents.ttftMs,
   usage: auditEvents.usage,
-  // Left-joined: which key made the request (never the key itself, only its name and prefix).
   keyName: apiKeys.name,
   keyPrefix: apiKeys.prefix,
   keyRevokedAt: apiKeys.revokedAt,
@@ -209,7 +196,6 @@ function eventJson(row: EventRow) {
     latency_upstream_ms: row.latencyUpstreamMs,
     ttft_ms: row.ttftMs,
     usage: row.usage,
-    // name and prefix are NOT NULL, so a null name means the left join found no key.
     api_key:
       row.apiKeyId && row.keyName !== null
         ? {

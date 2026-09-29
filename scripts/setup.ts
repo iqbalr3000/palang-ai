@@ -1,5 +1,3 @@
-// First-run setup: creates .env (with generated secrets) and palang.yaml from their templates.
-// Never overwrites a file that already exists.
 import { chmodSync, existsSync } from "node:fs";
 import { join } from "node:path";
 
@@ -15,7 +13,7 @@ async function createFrom(template: string, target: string, fill?: (text: string
   }
   const text = await Bun.file(join(root, template)).text();
   await Bun.write(targetPath, fill ? fill(text) : text);
-  if (fill) chmodSync(targetPath, 0o600); // holds generated secrets: owner-only
+  if (fill) chmodSync(targetPath, 0o600);
   console.log(`✓ created ${target} from ${template}`);
   return true;
 }

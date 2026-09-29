@@ -35,15 +35,11 @@ export interface PublicAppDeps {
   db: Db;
   config: PalangConfig;
   auditQueue: AuditQueue;
-  /** Keyed by model id, loaded at boot (`loadClassifiers`). Only needed if a tenant enables L2. */
   classifiers?: ReadonlyMap<string, InjectionClassifier>;
-  /** Shared with the admin app's `/metrics`; a private instance when omitted (tests). */
   metrics?: GatewayMetrics;
   logger?: Logger;
 }
 
-// Rate-limit hints stay useful to clients; anything else (encodings fetch already undid, provider
-// internals) is dropped.
 function forwardableErrorHeaders(upstream: Headers): Headers {
   const headers = new Headers();
   upstream.forEach((value, name) => {
@@ -54,9 +50,7 @@ function forwardableErrorHeaders(upstream: Headers): Headers {
   return headers;
 }
 
-// What goes to the provider: the messages as the input guards left them (mutated in place), no
-// logprobs (they'd return raw tokens past the output guards), and, when the tenant runs pii-id,
-// every other string masked too — `user`, message names, `prediction`, tool descriptions.
+// logprobs would leak raw tokens past the output guards.
 function upstreamBody(
   body: ChatCompletionRequest,
   ctx: GuardContext,
@@ -130,7 +124,6 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
       return c.json({ error: { message: "Invalid request body", code: "invalid_request" } }, 400);
     }
     const body = parsed.data;
-    // The deprecated functions API returns `function_call`, which no output guard inspects.
     if ("functions" in body || "function_call" in body) {
       return c.json(
         {
@@ -143,7 +136,7 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
         400,
       );
     }
-    const requestId = crypto.randomUUID(); // also the audit_events primary key — must stay a real uuid
+    const requestId = crypto.randomUUID();
     const apiKeyId = c.get("apiKeyId");
 
     if (!tenant.allowed_models.some((pattern) => matchGlob(pattern, body.model))) {
@@ -177,7 +170,6 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
     });
     const latencyGuardsMs = performance.now() - guardsStart;
 
-    // Everything an outcome shares; each exit adds what it knows.
     const outcome = (
       rest: Pick<RequestOutcome, "blocked" | "statusCode" | "decisions"> & Partial<RequestOutcome>,
     ): RequestOutcome => ({
@@ -207,8 +199,8 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
     }
 
     const upstreamStart = performance.now();
-    // Bun doesn't close the connection when a response body is cancelled, only when the fetch is
-    // aborted: without this, a stream ended early keeps the provider generating.
+    // Bun only closes the upstream connection on abort, not when the body is cancelled; without
+    // this, a stream ended early keeps the provider generating.
     const upstreamAbort = new AbortController();
     let upstreamResponse: Response;
     try {
@@ -243,7 +235,6 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
     const latencyUpstreamMs = performance.now() - upstreamStart;
 
     if (!upstreamResponse.ok) {
-      // no guard restore on error bodies — forwarded as-is
       record(
         outcome({
           blocked: null,
@@ -262,9 +253,7 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
     c.header("x-palang-request-id", requestId);
 
     if (body.stream) {
-      // Headers (and the 200 status) are already committed once the SSE body starts, so this is
-      // provisional — a guard block is signaled in-band as an error event instead. The real
-      // outcome is only known once the stream ends, which is when it's actually recorded below.
+      // Provisional: headers go out before the verdict, so a block arrives in-band as an SSE error.
       c.header("x-palang-decision", "allow");
       c.header("Content-Type", "text/event-stream");
       c.header("Cache-Control", "no-cache");
@@ -289,8 +278,7 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
           );
         } finally {
           upstreamAbort.abort();
-          // Every stream is recorded, including one cut short by the client (499, nginx's
-          // "client closed request") or by the upstream.
+          // 499: nginx's "client closed request".
           const statusCode = result ? 200 : c.req.raw.signal.aborted ? 499 : 502;
           record(
             outcome({
@@ -328,17 +316,15 @@ export function createPublicApp(deps: PublicAppDeps): Hono<{ Variables: Variable
     json.choices.forEach((choice, index) => {
       if (choice.message?.content) response?.text(index, choice.message.content);
       for (const call of choice.message?.tool_calls ?? []) response?.toolCall(index, call);
-      // Legacy functions output; requests can't ask for it, so it's never passed on unguarded.
       if (choice.message) delete choice.message.function_call;
     });
 
-    const outputResult = await applyOutputGuardsToChoices(
-      json.choices,
-      guards.output,
-      guards.runtimeConfigs,
-      tenant.failure_mode,
+    const outputResult = await applyOutputGuardsToChoices(json.choices, {
+      guards: guards.output,
+      configs: guards.runtimeConfigs,
+      failureMode: tenant.failure_mode,
       ctx,
-    );
+    });
     const allDecisions = [...pipelineResult.decisions, ...outputResult.decisions];
 
     if (outputResult.blocked) {

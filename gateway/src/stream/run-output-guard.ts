@@ -8,9 +8,26 @@ import type {
   ToolCall,
 } from "@palang-ai/guards";
 
-// Adapts checkText/checkToolCall's `{ decision, text|call }` shape into evaluateGuard's, capturing
-// the modified text/call via closure since evaluateGuard only ever sees the Decision half.
-export async function runOutputGuardText(
+export interface OutputGuardChain {
+  guards: OutputGuard[];
+  configs: Record<string, GuardRuntimeConfig>;
+  failureMode: FailureMode;
+  ctx: GuardContext;
+}
+
+export interface ChainResult<T> {
+  value: T;
+  decisions: Decision[];
+  blocked: Decision | null;
+}
+
+function configFor(chain: OutputGuardChain, name: string): GuardRuntimeConfig {
+  const config = chain.configs[name];
+  if (!config) throw new Error(`No runtime config for guard "${name}"`);
+  return config;
+}
+
+async function runOutputGuardText(
   guard: OutputGuard,
   text: string,
   ctx: GuardContext,
@@ -34,7 +51,7 @@ export async function runOutputGuardText(
   return { decision, text: resultText };
 }
 
-export async function runOutputGuardToolCall(
+async function runOutputGuardToolCall(
   guard: OutputGuard,
   call: ToolCall,
   ctx: GuardContext,
@@ -55,4 +72,54 @@ export async function runOutputGuardToolCall(
     },
   );
   return { decision, call: resultCall };
+}
+
+export async function runTextGuards(
+  chain: OutputGuardChain,
+  text: string,
+  choice: number,
+): Promise<ChainResult<string>> {
+  const decisions: Decision[] = [];
+  let current = text;
+  for (const guard of chain.guards) {
+    if (!guard.checkText) continue;
+    const result = await runOutputGuardText(
+      guard,
+      current,
+      chain.ctx,
+      configFor(chain, guard.name),
+      chain.failureMode,
+      choice,
+    );
+    decisions.push(result.decision);
+    current = result.text;
+    if (result.decision.action === "block") {
+      return { value: current, decisions, blocked: result.decision };
+    }
+  }
+  return { value: current, decisions, blocked: null };
+}
+
+export async function runToolCallGuards(
+  chain: OutputGuardChain,
+  call: ToolCall,
+): Promise<ChainResult<ToolCall>> {
+  const decisions: Decision[] = [];
+  let current = call;
+  for (const guard of chain.guards) {
+    if (!guard.checkToolCall) continue;
+    const result = await runOutputGuardToolCall(
+      guard,
+      current,
+      chain.ctx,
+      configFor(chain, guard.name),
+      chain.failureMode,
+    );
+    decisions.push(result.decision);
+    current = result.call;
+    if (result.decision.action === "block") {
+      return { value: current, decisions, blocked: result.decision };
+    }
+  }
+  return { value: current, decisions, blocked: null };
 }

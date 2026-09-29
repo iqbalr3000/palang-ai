@@ -1,8 +1,5 @@
 import { z } from "zod";
 
-// .passthrough() at every level keeps unrecognized fields intact for the upstream call. Everything
-// the guards read is validated here, so a malformed request fails as a 400 instead of crashing a
-// guard midway.
 const toolCallSchema = z
   .object({
     id: z.string(),

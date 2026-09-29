@@ -39,8 +39,6 @@ function appendPreserveHint(messages: ChatMessage[]): void {
   messages.unshift({ role: "system", content: PRESERVE_HINT_TEXT });
 }
 
-/** Masks PII in every string of `value` (objects and arrays walked recursively) with the given
- * vault, so the same value gets the same placeholder as in the messages. Returns a copy. */
 export function maskPiiDeep(
   value: unknown,
   vault: Map<string, string>,
@@ -69,8 +67,7 @@ export function createPiiIdInputGuard(config: PiiIdConfig): InputGuard {
     async check(ctx: GuardContext): Promise<Decision> {
       const findings: Finding[] = [];
 
-      for (let i = 0; i < ctx.messages.length; i++) {
-        const message = ctx.messages[i]!;
+      for (const [i, message] of ctx.messages.entries()) {
         if (!config.roles.includes(message.role)) continue;
 
         if (message.content) {
@@ -98,7 +95,7 @@ export function createPiiIdInputGuard(config: PiiIdConfig): InputGuard {
         guard: "pii-id",
         action: findings.length > 0 ? "modify" : "allow",
         findings,
-        latencyMs: 0, // overwritten by the pipeline runner
+        latencyMs: 0,
       };
     },
   };

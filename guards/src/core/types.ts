@@ -3,7 +3,6 @@ export type GuardMode = "enforce" | "monitor";
 export type Role = "system" | "user" | "assistant" | "tool";
 export type FailureMode = "fail_open" | "fail_closed";
 
-// "modify" is a per-guard signal, never a pipeline-level outcome.
 export type FinalAction = "allow" | "flag" | "block";
 
 export interface ChatMessage {
@@ -28,7 +27,7 @@ export interface Decision {
   score?: number;
   findings?: Finding[];
   latencyMs: number;
-  wouldBlock?: boolean; // set by the pipeline runner, not the guard
+  wouldBlock?: boolean;
 }
 
 export interface Finding {
@@ -36,7 +35,7 @@ export interface Finding {
   messageIndex?: number;
   start?: number;
   end?: number;
-  meta?: Record<string, unknown>; // never raw values
+  meta?: Record<string, unknown>;
 }
 
 export interface GuardContext {
@@ -44,8 +43,8 @@ export interface GuardContext {
   tenantId: string;
   model: string;
   stream: boolean;
-  messages: ChatMessage[]; // input guards may mutate
-  piiVault: Map<string, string>; // placeholder -> original; NEVER log or persist
+  messages: ChatMessage[];
+  piiVault: Map<string, string>; // placeholder -> original; never log or persist
   signal: AbortSignal;
   metadata: Record<string, unknown>;
 }
@@ -59,18 +58,14 @@ export interface InputGuard {
 export interface OutputGuard {
   name: string;
   phase: "output";
-  /** Called on text segments released by the holdback buffer. May return modified text. */
-  /** `choice` is the response choice the text belongs to (0 unless the request set `n` > 1). */
   checkText?(
     text: string,
     ctx: GuardContext,
     choice?: number,
   ): Promise<{ decision: Decision; text: string }>;
-  /** Called once per fully assembled tool call. May return a modified call. */
   checkToolCall?(
     call: ToolCall,
     ctx: GuardContext,
   ): Promise<{ decision: Decision; call: ToolCall }>;
-  /** Max characters this guard needs held back to detect split patterns. */
   holdback?: number;
 }

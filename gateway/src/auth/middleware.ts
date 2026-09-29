@@ -20,8 +20,6 @@ function unauthorized(c: Context) {
   );
 }
 
-// Distinguished from an actually-invalid key so an operator can tell "DB is down" apart from
-// "this caller has a bad key" from the response alone.
 function authUnavailable(c: Context) {
   return c.json(
     { error: { message: "Auth temporarily unavailable", code: "auth_unavailable" } },
@@ -29,8 +27,8 @@ function authUnavailable(c: Context) {
   );
 }
 
-// Drizzle queries are lazy (they run on `.then`), and Bun exits on an unhandled rejection, so
-// this fire-and-forget write needs both the `.then` and the catch.
+// Drizzle queries only run on `.then`, and Bun exits on an unhandled rejection: this
+// fire-and-forget write needs both.
 function touchLastUsed(db: Db, keyId: string, logger: Logger): void {
   const now = Date.now();
   if (now - (lastUsedAt.get(keyId) ?? 0) < LAST_USED_DEBOUNCE_MS) return;
@@ -44,8 +42,6 @@ function touchLastUsed(db: Db, keyId: string, logger: Logger): void {
     });
 }
 
-// Looked up by exact key_hash equality via the DB rather than an in-process string compare —
-// that lookup doesn't reproduce the timing side channel a naive compare would.
 export function createAuthMiddleware(db: Db, logger: Logger) {
   return async (c: Context, next: Next) => {
     const header = c.req.header("Authorization");

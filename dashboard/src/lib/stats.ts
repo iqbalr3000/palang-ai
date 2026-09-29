@@ -22,7 +22,6 @@ function truncate(ms: number, bucket: Stats["bucket"]): number {
   return date.getTime();
 }
 
-/** One point per bucket across the whole window, so quiet periods show as zero, not as gaps. */
 export function toSeries(stats: Stats): SeriesPoint[] {
   const counts = new Map<number, SeriesPoint>();
   const step = STEP_MS[stats.bucket];

@@ -68,7 +68,6 @@ export const rot13: Transform = (text, lang) => {
 export const reversed: Transform = (text, lang) =>
   `${REVERSED_LEAD_IN[lang]}${[...text].reverse().join("")}`;
 
-// Test adds transforms that normalization doesn't handle, so the report isn't only easy cases.
 export const TRANSFORMS = {
   dev: [base64, zeroWidth, fullwidth, leet],
   test: [base64, zeroWidth, spaced, homoglyph, rot13, reversed],

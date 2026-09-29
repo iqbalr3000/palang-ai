@@ -13,9 +13,7 @@ export interface SpanMetrics {
 export type SpanMetricsByType = Record<PiiType | "overall", SpanMetrics>;
 
 export interface DetectionReport {
-  /** Positives + hard negatives: the formats the detector claims to handle. */
   supported: SpanMetricsByType;
-  /** Also counts `unsupported_format` samples. */
   withUnsupported: SpanMetricsByType;
   hardNegatives: { samples: number; withAnyDetection: number; byType: Record<PiiType, number> };
   latencyMs: { p50: number; p95: number };

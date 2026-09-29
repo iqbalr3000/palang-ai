@@ -17,7 +17,7 @@ interface Accumulated {
   id: string;
   name: string;
   arguments: string;
-  // Counted per delta: re-encoding the whole string on every delta was quadratic.
+  // Tracked incrementally; re-encoding the whole string per delta is quadratic.
   argumentBytes: number;
 }
 
@@ -52,8 +52,6 @@ export class ToolCallAssembler {
   }
 
   finalize(): ToolCall[] {
-    // Sorted by index explicitly — Map iteration order follows insertion order, which is the
-    // order deltas arrived in, not necessarily numeric index order.
     return [...this.calls.entries()]
       .sort(([a], [b]) => a - b)
       .map(([, call]) => ({

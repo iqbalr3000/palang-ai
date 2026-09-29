@@ -6,8 +6,7 @@ export function isTheme(value: unknown): value is Theme {
   return THEMES.some((t) => t === value);
 }
 
-// Self-contained on purpose (only globals, no imports or outer variables): its source is inlined
-// into the <head> script below, so first paint and later changes run the very same code.
+// Must stay self-contained (globals only): its source is inlined into THEME_BOOTSTRAP.
 function resolveAndApply(stored: string | null): void {
   const theme = stored === "light" || stored === "dark" ? stored : "system";
   const dark =
@@ -26,10 +25,8 @@ export function readStoredTheme(): Theme {
     const stored = localStorage.getItem(THEME_STORAGE_KEY);
     return isTheme(stored) ? stored : "system";
   } catch {
-    return "system"; // storage blocked (e.g. Safari with site data disabled)
+    return "system";
   }
 }
 
-// Runs before the page paints, so a stored choice never flashes the wrong theme. Only the storage
-// read is guarded: if it throws, the system preference still applies.
 export const THEME_BOOTSTRAP = `(${resolveAndApply.toString()})((function(){try{return localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)})}catch(e){return null}})())`;

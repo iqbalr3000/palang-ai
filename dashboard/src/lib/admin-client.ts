@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-// Response shapes of the gateway's admin API (gateway/src/admin). Validated, not trusted.
-
 const actionSchema = z.enum(["allow", "flag", "block"]);
 export type Action = z.infer<typeof actionSchema>;
 
@@ -55,7 +53,6 @@ const eventSchema = z.object({
   latency_upstream_ms: z.number().nullable(),
   ttft_ms: z.number().nullable(),
   usage: z.unknown(),
-  // Optional: a gateway older than the dashboard doesn't send it.
   api_key: z
     .object({ id: z.string(), name: z.string(), prefix: z.string(), revoked: z.boolean() })
     .nullish(),

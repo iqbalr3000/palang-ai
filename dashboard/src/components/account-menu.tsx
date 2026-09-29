@@ -29,7 +29,6 @@ export function AccountMenu() {
 
   return (
     <DropdownMenu>
-      {/* Avatar only on small screens, where the sidebar is a top bar. */}
       <DropdownMenuTrigger className="flex cursor-pointer items-center gap-2.5 rounded-md p-2 text-left outline-none transition-colors hover:bg-accent focus-visible:ring-[3px] focus-visible:ring-ring/50 data-[state=open]:bg-accent md:w-full">
         <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary text-sm font-semibold text-primary-foreground">
           A
@@ -70,7 +69,6 @@ export function AccountMenu() {
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
-        {/* A real form submit: works without JS, and the server action does the redirect. */}
         <form action={logout}>
           <DropdownMenuItem variant="destructive" asChild>
             <button type="submit" className="w-full">

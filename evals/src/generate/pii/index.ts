@@ -93,7 +93,7 @@ const CLOSERS: Record<Lang, string[]> = {
 interface Clause {
   template: string;
   value: string;
-  type: PiiType | null; // null: a non-PII distractor
+  type: PiiType | null;
 }
 
 function shuffle<T>(rng: Rng, items: T[]): T[] {
@@ -105,7 +105,6 @@ function shuffle<T>(rng: Rng, items: T[]): T[] {
   return result;
 }
 
-/** Joins clauses into one sentence, recording where each PII value lands. */
 function compose(lang: Lang, clauses: Clause[], rng: Rng): { text: string; spans: PiiSpan[] } {
   let text = pick(rng, OPENERS[lang]);
   const spans: PiiSpan[] = [];

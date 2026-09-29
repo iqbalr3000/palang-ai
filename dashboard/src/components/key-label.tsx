@@ -1,6 +1,5 @@
 import type { AuditEvent } from "@/lib/admin-client";
 
-// Name and prefix only; the full key is never stored.
 export function KeyLabel({ apiKey }: { apiKey: AuditEvent["api_key"] }) {
   if (!apiKey) return <span className="text-muted-foreground">Unknown</span>;
   return (

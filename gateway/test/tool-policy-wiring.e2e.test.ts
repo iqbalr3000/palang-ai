@@ -98,7 +98,6 @@ afterAll(async () => {
 
 interface Outcome {
   status: number;
-  /** Non-streaming body, or the streamed events folded into one object. */
   errorCode: string | null;
   content: string;
   toolCalls: { name: string; arguments: string }[];
@@ -181,7 +180,7 @@ async function latestDecisions(tenantId: string): Promise<unknown> {
 }
 
 for (const stream of [false, true]) {
-  const blockedStatus = stream ? 200 : 400; // a stream's headers are sent before the verdict
+  const blockedStatus = stream ? 200 : 400;
 
   describe(stream ? "streaming" : "non-streaming", () => {
     test("tool-policy: an allowed call within its constraints goes through intact", async () => {

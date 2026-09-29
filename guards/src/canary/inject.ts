@@ -1,11 +1,10 @@
 import type { Decision, GuardContext, InputGuard } from "../core/index.js";
 
 const PREFIX = "plg-canary-";
-// Lives on ctx.metadata, not a ctx field: the pipeline runner hands each guard a shallow copy of
-// ctx, so only mutations to shared objects reach the output guards.
+// On ctx.metadata: each guard gets a shallow copy of ctx.
 const METADATA_KEY = "canary";
 
-/** `plg-canary-<16 hex>`, with at least one letter so no PII detector can read it as a number. */
+// At least one hex letter, so no PII detector reads it as a number.
 export function generateCanary(): string {
   let hex: string;
   do {

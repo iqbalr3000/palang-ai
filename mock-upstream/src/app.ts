@@ -6,7 +6,7 @@ import {
   buildCompletion,
   buildCompletionId,
   estimatePromptTokens,
-  type IncomingRequest,
+  incomingRequestSchema,
   type MockToolCall,
 } from "./openai-shapes.js";
 
@@ -22,7 +22,6 @@ function chunkContent(content: string, chunkSize: number): string[] {
 }
 
 export interface MockUpstreamOptions {
-  /** Pause before each streamed chunk. The default makes streaming observable over a real socket. */
   chunkDelayMs?: number;
 }
 
@@ -31,14 +30,14 @@ export function createApp(options: MockUpstreamOptions = {}): Hono {
   const app = new Hono();
 
   app.post("/v1/chat/completions", async (c) => {
-    const body = (await c.req.json()) as Partial<IncomingRequest>;
-
-    if (!Array.isArray(body.messages) || body.messages.length === 0) {
-      return c.json({ error: { message: "messages is required" } }, 400);
+    const parsed = incomingRequestSchema.safeParse(await c.req.json().catch(() => null));
+    if (!parsed.success) {
+      return c.json(
+        { error: { message: "model and a non-empty messages array are required" } },
+        400,
+      );
     }
-    if (typeof body.model !== "string") {
-      return c.json({ error: { message: "model is required" } }, 400);
-    }
+    const body = parsed.data;
 
     const scenario = resolveScenario(body.model);
     if (!scenario) {
@@ -111,7 +110,6 @@ export function createApp(options: MockUpstreamOptions = {}): Hono {
       await s.write(
         `data: ${JSON.stringify(buildChunk(id, model, {}, toolCall ? "tool_calls" : "stop"))}\n\n`,
       );
-      // Like OpenAI: a final chunk with empty choices and the usage, only when asked for.
       if (body.stream_options?.include_usage) {
         const completionTokens = Math.max(
           1,

@@ -1,4 +1,3 @@
-import { join } from "node:path";
 import {
   AutoModelForSequenceClassification,
   AutoTokenizer,
@@ -13,13 +12,11 @@ const WINDOW_TOKENS = 512;
 const CLS_AND_SEP_TOKENS = 2;
 const OVERLAP_TOKENS = 64;
 const DEFAULT_MAX_WINDOWS = 8;
-// ~4 chars/token: enough to fill the default 8 windows.
 const DEFAULT_MAX_INPUT_CHARS = 16_384;
 
 export interface TransformersClassifierOptions {
   modelsPath: string;
   modelId?: string;
-  /** `q8` loads `onnx/model_quantized.onnx`. */
   dtype?: "fp32" | "q8";
   threads?: number;
   maxWindows?: number;
@@ -56,7 +53,7 @@ export async function createTransformersClassifier(
     });
   } catch (error) {
     throw new Error(
-      `classifier model "${modelId}" could not be loaded from ${join(options.modelsPath)} — ` +
+      `classifier model "${modelId}" could not be loaded from ${options.modelsPath} — ` +
         `run \`bun run --filter @palang-ai/gateway download-model\` first`,
       { cause: error },
     );

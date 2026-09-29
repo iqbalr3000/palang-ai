@@ -35,11 +35,11 @@ test("invalid: does not start with 8 after the prefix", () => {
 });
 
 test("invalid: too short after the prefix", () => {
-  expect(normalizePhoneId("08123456")).toEqual({ valid: false }); // only 7 after the 0
+  expect(normalizePhoneId("08123456")).toEqual({ valid: false });
 });
 
 test("invalid: too long after the prefix", () => {
-  expect(normalizePhoneId("0812345678901234")).toEqual({ valid: false }); // 13 after the 0
+  expect(normalizePhoneId("0812345678901234")).toEqual({ valid: false });
 });
 
 test("invalid: no recognizable prefix", () => {

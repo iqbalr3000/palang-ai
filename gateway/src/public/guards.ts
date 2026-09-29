@@ -17,8 +17,6 @@ export interface TenantGuards {
   runtimeConfigs: Record<string, GuardRuntimeConfig>;
 }
 
-/** Builds the guard instances active for one tenant, straight from its config block — a guard
- * with no config for this tenant simply isn't included (not disabled-but-present). */
 export function buildTenantGuards(
   tenant: TenantConfig,
   classifiers: ReadonlyMap<string, InjectionClassifier>,
@@ -27,8 +25,7 @@ export function buildTenantGuards(
   const output: OutputGuard[] = [];
   const runtimeConfigs: Record<string, GuardRuntimeConfig> = {};
 
-  // Order matters (TSD §2): input canary → pii-id → injection; output canary → pii-id →
-  // tool-policy, so policy constraints see restored values.
+  // Order matters: injection scans only masked text, and tool-policy sees restored values.
   const canaryConfig = tenant.guards.canary;
   if (canaryConfig) {
     input.push(createCanaryInputGuard());
@@ -46,11 +43,10 @@ export function buildTenantGuards(
     };
     input.push(createPiiIdInputGuard(config));
     output.push(createPiiIdOutputGuard(config));
-    // Failing open would send the unmasked messages upstream (decision 0008).
+    // Failing open would send unmasked messages upstream.
     runtimeConfigs["pii-id"] = { mode: piiConfig.mode, failClosed: true };
   }
 
-  // After pii-id on purpose: the scan (and any findings) should only ever see masked text.
   const injectionConfig = tenant.guards.injection;
   if (injectionConfig) {
     let classifier: InjectionClassifier | undefined;
@@ -92,7 +88,6 @@ export function buildTenantGuards(
   return { input, output, runtimeConfigs };
 }
 
-// Built once at boot — tenant config doesn't change at runtime.
 export function buildAllTenantGuards(
   tenants: TenantConfig[],
   classifiers: ReadonlyMap<string, InjectionClassifier>,

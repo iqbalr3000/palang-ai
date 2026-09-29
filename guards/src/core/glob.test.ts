@@ -14,5 +14,5 @@ test("wildcard suffix", () => {
 
 test("regex special characters in pattern are treated literally", () => {
   expect(matchGlob("gpt-4.5", "gpt-4.5")).toBe(true);
-  expect(matchGlob("gpt-4.5", "gpt-4X5")).toBe(false); // "." must not act as regex any-char
+  expect(matchGlob("gpt-4.5", "gpt-4X5")).toBe(false);
 });

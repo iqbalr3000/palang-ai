@@ -14,9 +14,9 @@ function detector(predictions: Record<string, PiiSpan[]>) {
 test("a span counts only on an exact type + start + end match", () => {
   const d = detector({
     a: [
-      { type: "NIK", start: 0, end: 16 }, // exact
-      { type: "PHONE_ID", start: 20, end: 31 }, // off by one at the end
-      { type: "CARD", start: 40, end: 56 }, // right span, wrong type
+      { type: "NIK", start: 0, end: 16 },
+      { type: "PHONE_ID", start: 20, end: 31 },
+      { type: "CARD", start: 40, end: 56 },
     ],
   });
   const samples = [

@@ -3,10 +3,6 @@ export interface TokenWindow {
   end: number;
 }
 
-/**
- * Sliding windows over `tokenCount` tokens. Only the first `maxWindows` are returned: text beyond
- * them goes unscanned, which bounds the cost of a very large tool result.
- */
 export function planWindows(
   tokenCount: number,
   size: number,

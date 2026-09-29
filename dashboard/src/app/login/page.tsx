@@ -2,7 +2,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { LoginForm } from "./login-form";
 import logo from "@/assets/logo.png";
 
-// Always the logo's navy, in both color schemes: the logo artwork has that background baked in.
 export default function LoginPage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-2 bg-brand-navy p-4">

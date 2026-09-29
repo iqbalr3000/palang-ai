@@ -3,7 +3,7 @@ import { generateApiKey, sha256Hex } from "./keys.js";
 
 test("generated key matches plg_<env>_<random> shape and has >=32 bytes of randomness", async () => {
   const key = await generateApiKey("prod");
-  expect(key.plaintext).toMatch(/^plg_prod_[0-9a-f]{64}$/); // 32 bytes = 64 hex chars
+  expect(key.plaintext).toMatch(/^plg_prod_[0-9a-f]{64}$/);
   expect(key.prefix).toBe(key.plaintext.slice(0, 12));
 });
 

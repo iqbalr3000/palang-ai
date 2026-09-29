@@ -6,7 +6,7 @@ export interface UpstreamConfig {
 
 export class UpstreamTimeoutError extends Error {}
 
-/** The timeout covers the wait for response headers only; a long stream isn't cut off. */
+/** The timeout covers response headers only, so a long stream isn't cut off. */
 export async function callUpstream(
   config: UpstreamConfig,
   body: unknown,

@@ -3,7 +3,7 @@ import { HoldbackBuffer } from "./holdback-buffer.js";
 
 test("releases all but the last H characters", () => {
   const buffer = new HoldbackBuffer(5);
-  const released = buffer.append("hello world"); // 11 chars, hold back last 5 ("world")
+  const released = buffer.append("hello world");
   expect(released).toBe("hello ");
 });
 
@@ -18,7 +18,6 @@ test("accumulates across multiple appends", () => {
   released += buffer.append("ab");
   released += buffer.append("cd");
   released += buffer.append("ef");
-  // buffer so far: "abcdef" (6 chars), holding back last 3 at each step
   expect(released + buffer.flush()).toBe("abcdef");
 });
 
@@ -26,11 +25,11 @@ test("flush releases everything remaining", () => {
   const buffer = new HoldbackBuffer(5);
   buffer.append("hello world");
   expect(buffer.flush()).toBe("world");
-  expect(buffer.flush()).toBe(""); // nothing left the second time
+  expect(buffer.flush()).toBe("");
 });
 
 test("never splits a placeholder even when it straddles the holdback boundary", () => {
-  const buffer = new HoldbackBuffer(4); // shorter than "[NIK_1]" (7 chars)
+  const buffer = new HoldbackBuffer(4);
   let released = "";
   released += buffer.append("your id is [NIK");
   released += buffer.append("_1] thanks");
@@ -40,7 +39,6 @@ test("never splits a placeholder even when it straddles the holdback boundary", 
 
 test("an unclosed bracket further back than H still gets held, not split", () => {
   const buffer = new HoldbackBuffer(2);
-  // "[EMAIL_1" is 8 chars, well past a holdback of 2 — must still not be split
   const released = buffer.append("value [EMAIL_1");
   expect(released).toBe("value ");
 });
@@ -69,7 +67,7 @@ test("random chunk splits of the same text always reassemble identically", () =>
     "Nomor identitas Anda adalah [NIK_1] dan email [EMAIL_1], terima kasih sudah menghubungi kami hari ini.";
 
   for (let trial = 0; trial < 50; trial++) {
-    const buffer = new HoldbackBuffer(8); // e.g. holdback(config) for pii-id
+    const buffer = new HoldbackBuffer(8);
     let cursor = 0;
     let released = "";
     while (cursor < original.length) {
@@ -129,8 +127,6 @@ test("no holdback (no output guards) releases everything immediately", () => {
   expect(new HoldbackBuffer(0).append("budi@exam")).toBe("budi@exam");
 });
 
-// Regression: an unclosed "[" used to hold everything after it until the stream ended, and the
-// buffer was rescanned from the start on every append (quadratic).
 test("an unclosed '[' far back doesn't stall the stream", () => {
   const buffer = new HoldbackBuffer(32);
   buffer.append("see [");

@@ -9,7 +9,6 @@ export interface RequestOutcome extends Omit<
   "finalAction" | "blockedBy" | "requestContent" | "responseContent"
 > {
   blocked: Decision | null;
-  /** Messages as sent upstream (after the input pipeline). */
   messages: ChatMessage[];
   response: ResponseCapture | null;
   canary: string | undefined;
@@ -22,7 +21,6 @@ export function finalActionFor(decisions: Decision[], blocked: Decision | null):
 
 export type RecordRequest = (outcome: RequestOutcome) => void;
 
-/** The one place a finished request is accounted for: audit row, metrics, and a log line. */
 export function createRecorder(deps: {
   auditQueue: AuditQueue;
   metrics: GatewayMetrics;

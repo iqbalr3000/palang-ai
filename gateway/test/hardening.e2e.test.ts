@@ -16,7 +16,7 @@ const MOCK_PORT = 19201;
 const SLOW_MOCK_PORT = 19202;
 const FAILING_UPSTREAM_PORT = 19203;
 const GATEWAY_PORT = 18201;
-const RUN = crypto.randomUUID().slice(0, 8); // the DB is shared across runs
+const RUN = crypto.randomUUID().slice(0, 8);
 const T = { main: `hard-${RUN}`, slow: `hard-slow-${RUN}`, failing: `hard-fail-${RUN}` };
 
 const db = createDb(databaseUrl);
@@ -39,8 +39,6 @@ beforeAll(async () => {
   servers.push(
     Bun.serve({ port: MOCK_PORT, fetch: createMockUpstreamApp({ chunkDelayMs: 0 }).fetch }),
     Bun.serve({ port: SLOW_MOCK_PORT, fetch: createMockUpstreamApp({ chunkDelayMs: 20 }).fetch }),
-    // A provider error the way OpenAI sends one: gzip-compressed, with rate-limit and internal
-    // headers.
     Bun.serve({
       port: FAILING_UPSTREAM_PORT,
       fetch: () =>
@@ -116,7 +114,6 @@ const client = () =>
     baseURL: `http://localhost:${GATEWAY_PORT}/v1`,
   });
 
-// #4 — the official SDK's stream helpers need `role` on the first delta and `index` on tool calls.
 test("the OpenAI SDK's stream helper accumulates a text stream", async () => {
   const done = await client()
     .beta.chat.completions.stream({
@@ -144,7 +141,6 @@ test("the OpenAI SDK's stream helper accumulates streamed tool calls", async () 
   ]);
 });
 
-// #7
 test("streams are served as text/event-stream and unbuffered", async () => {
   const res = await post(T.main, {
     model: "mock-echo",
@@ -157,7 +153,6 @@ test("streams are served as text/event-stream and unbuffered", async () => {
   await res.text();
 });
 
-// #8
 test("using a key records last_used_at", async () => {
   await post(T.main, { model: "mock-echo", messages: [{ role: "user", content: "hi" }] }).then(
     (r) => r.text(),
@@ -170,7 +165,6 @@ test("using a key records last_used_at", async () => {
   expect(row?.lastUsedAt).toBeInstanceOf(Date);
 });
 
-// #9
 test("a stream the client abandons is still recorded, as 499", async () => {
   const controller = new AbortController();
   const res = await post(
@@ -217,14 +211,12 @@ test("streamed usage is stored with the audit row", async () => {
   expect(row?.usage).toMatchObject({ total_tokens: expect.any(Number) });
 });
 
-// #10
 test("a body that isn't JSON gets a 400, not a 500", async () => {
   const res = await post(T.main, "{bad json");
   expect(res.status).toBe(400);
   expect(await res.json()).toMatchObject({ error: { code: "invalid_request" } });
 });
 
-// #11
 test("upstream errors keep rate-limit headers and drop the rest", async () => {
   const res = await post(T.failing, {
     model: "mock-echo",

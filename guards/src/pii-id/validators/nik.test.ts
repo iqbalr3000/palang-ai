@@ -15,14 +15,14 @@ test("invalid: province code not in the whitelist", () => {
 });
 
 test("invalid: day out of range for both male (01-31) and female (41-71) encodings", () => {
-  expect(validateNik("3171013206900001")).toBe(false); // 32
-  expect(validateNik("3171017206900001")).toBe(false); // 72
-  expect(validateNik("3171010006900001")).toBe(false); // 00
+  expect(validateNik("3171013206900001")).toBe(false);
+  expect(validateNik("3171017206900001")).toBe(false);
+  expect(validateNik("3171010006900001")).toBe(false);
 });
 
 test("invalid: month out of range", () => {
-  expect(validateNik("3171011513900001")).toBe(false); // month 13
-  expect(validateNik("3171011500900001")).toBe(false); // month 00
+  expect(validateNik("3171011513900001")).toBe(false);
+  expect(validateNik("3171011500900001")).toBe(false);
 });
 
 test("invalid: serial is 0000", () => {
@@ -30,8 +30,8 @@ test("invalid: serial is 0000", () => {
 });
 
 test("invalid: wrong length", () => {
-  expect(validateNik("317101150690001")).toBe(false); // 15 digits
-  expect(validateNik("31710115069000011")).toBe(false); // 17 digits
+  expect(validateNik("317101150690001")).toBe(false);
+  expect(validateNik("31710115069000011")).toBe(false);
 });
 
 test("invalid: non-digit characters", () => {

@@ -89,7 +89,6 @@ test("non-streaming: PII round-trips, and the audit row's decisions carry no raw
     messages: [{ role: "user", content: original }],
   });
 
-  // The caller gets the real values back — restoring is the point.
   expect(completion.choices[0]?.message.content).toBe(original);
 
   await auditQueue.flush();
@@ -117,6 +116,5 @@ test("streaming: PII round-trips through mock-split-placeholder via the real gat
     content += chunk.choices[0]?.delta.content ?? "";
   }
 
-  // restored to the vault's normalized form, not the caller's original spelling
   expect(content).toBe("hubungi saya di +6281234567890 ya");
 });

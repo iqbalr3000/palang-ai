@@ -3,16 +3,13 @@ import { REASONS } from "./reasons.js";
 
 export interface GuardRuntimeConfig {
   mode: GuardMode;
-  /** No timeout enforced when omitted. */
   timeoutMs?: number;
-  /** Errors and timeouts always block, overriding the tenant's failure mode and monitor mode —
-   * for guards whose failure would leak data (decision 0008). */
+  /** Errors and timeouts always block, even in monitor mode. */
   failClosed?: boolean;
 }
 
 export interface PipelineOptions {
   failureMode: FailureMode;
-  /** Runtime config per guard, keyed by `guard.name`. */
   guards: Record<string, GuardRuntimeConfig>;
 }
 
@@ -23,9 +20,8 @@ export interface PipelineResult {
 
 class GuardTimeoutError extends Error {}
 
-// Enforced by racing the guard's promise, not cancelling it — an unresponsive guard's work may
-// continue in the background, but the pipeline moves on. `fn` still gets a combined `AbortSignal`
-// so well-behaved guards can stop early.
+// Races rather than cancels: a stuck guard may keep running in the background. The abort signal
+// lets well-behaved guards stop early.
 async function withTimeout<T>(
   fn: (signal: AbortSignal) => Promise<T>,
   parentSignal: AbortSignal,
@@ -51,7 +47,6 @@ async function withTimeout<T>(
   }
 }
 
-// Generic over the guard call (`fn`) so input and output guard invocations can share this.
 export async function evaluateGuard(
   name: string,
   config: GuardRuntimeConfig,
@@ -88,7 +83,6 @@ export async function evaluateGuard(
   }
 }
 
-// Runs guards sequentially in the given order; short-circuits on the first enforced block.
 export async function runInputPipeline(
   guards: InputGuard[],
   ctx: GuardContext,

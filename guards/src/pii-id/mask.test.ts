@@ -72,7 +72,7 @@ test("only scans configured roles — system excluded by default", async () => {
 
   await guard.check(ctx);
 
-  expect(ctx.messages[0]!.content).toBe("contact: budi@example.com"); // system untouched
+  expect(ctx.messages[0]!.content).toBe("contact: budi@example.com");
   expect(ctx.messages[1]!.content).toBe("contact: [EMAIL_1]");
 });
 
@@ -136,5 +136,5 @@ test("preserve_hint does nothing when no PII was actually found", async () => {
 
   await guard.check(ctx);
 
-  expect(ctx.messages).toHaveLength(1); // no system message was injected
+  expect(ctx.messages).toHaveLength(1);
 });

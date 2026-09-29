@@ -6,10 +6,8 @@ import type { RawResponseSink } from "../stream/processor.js";
 
 export type ContentMode = PalangConfig["audit"]["content_mode"];
 
-// Bounds memory per request (TSD §10.1) — the capture lives as long as the response does.
 const DEFAULT_MAX_CHARS = 64 * 1024;
 
-/** Independent of any guard's config: whatever reaches storage has raw PII and the canary masked. */
 export function redactForStorage(text: string, canary: string | undefined): string {
   const withoutCanary = canary ? text.replace(new RegExp(canary, "gi"), "[CANARY]") : text;
   let result = "";
@@ -26,7 +24,6 @@ interface CapturedChoice {
   tool_calls: { name: string; arguments: string }[];
 }
 
-/** The model's raw output (before restore), for the audit row. */
 export class ResponseCapture implements RawResponseSink {
   private readonly choices: CapturedChoice[] = [];
   private remaining: number;

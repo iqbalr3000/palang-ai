@@ -81,7 +81,6 @@ test("mock-split-placeholder: streams one character per chunk, splitting any [TY
     .map((e) => e.choices[0].delta.content)
     .filter((c) => c !== undefined);
 
-  // every content delta is exactly one character — the placeholder is necessarily split
   expect(contentDeltas.every((c: string) => c.length === 1)).toBe(true);
   expect(contentDeltas.join("")).toBe("your id is [NIK_1] thanks");
 });

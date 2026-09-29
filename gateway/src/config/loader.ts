@@ -15,9 +15,6 @@ function interpolateEnvVars(text: string): string {
   });
 }
 
-/** Loads and validates the config file. Throws `ConfigError` with a readable message on any
- * failure (missing file, invalid YAML, unset `${VAR}`, schema violation) — the caller (gateway
- * boot) decides what to do with that, e.g. exit(1). */
 export async function loadConfig(
   configPath = process.env.PALANG_CONFIG ?? "./palang.yaml",
 ): Promise<PalangConfig> {
@@ -33,7 +30,8 @@ export async function loadConfig(
   try {
     parsed = parseYaml(interpolated);
   } catch (error) {
-    throw new ConfigError(`Could not parse "${configPath}" as YAML: ${(error as Error).message}`);
+    const reason = error instanceof Error ? error.message : String(error);
+    throw new ConfigError(`Could not parse "${configPath}" as YAML: ${reason}`);
   }
 
   const result = configSchema.safeParse(parsed);

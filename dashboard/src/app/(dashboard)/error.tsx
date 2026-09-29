@@ -2,8 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 
-// In production Next replaces server error messages with a generic one; the digest links it to
-// the server log.
 export default function DashboardError({
   error,
   reset,

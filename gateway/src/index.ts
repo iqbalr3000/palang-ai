@@ -1,5 +1,11 @@
 import { createDb } from "./db/index.js";
-import { loadConfig, loadEnv, ConfigError } from "./config/index.js";
+import {
+  loadConfig,
+  loadEnv,
+  ConfigError,
+  type GatewayEnv,
+  type PalangConfig,
+} from "./config/index.js";
 import { AuditQueue } from "./audit/queue.js";
 import { startRetention } from "./audit/retention.js";
 import { createPublicApp } from "./public/app.js";
@@ -11,8 +17,8 @@ import { createLogger } from "./log/logger.js";
 const SHUTDOWN_GRACE_MS = 10_000;
 
 async function main(): Promise<void> {
-  let config;
-  let env;
+  let config: PalangConfig;
+  let env: GatewayEnv;
   try {
     config = await loadConfig();
     env = loadEnv();
@@ -58,7 +64,6 @@ async function main(): Promise<void> {
 
   const shutdown = async () => {
     logger.info("shutting down");
-    // stop() resolves once in-flight responses (streams included) finish, so they're audited.
     const drained = Promise.all([publicServer.stop(), adminServer.stop()]);
     const timedOut = await Promise.race([
       drained.then(() => false),
@@ -69,7 +74,7 @@ async function main(): Promise<void> {
       await Promise.all([publicServer.stop(true), adminServer.stop(true)]);
     }
     stopRetention();
-    await auditQueue.shutdown(5000);
+    await auditQueue.shutdown();
     process.exit(0);
   };
   process.on("SIGTERM", shutdown);

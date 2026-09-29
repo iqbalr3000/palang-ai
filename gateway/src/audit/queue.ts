@@ -30,8 +30,7 @@ const DEFAULT_MAX_SIZE = 10_000;
 const DEFAULT_FLUSH_INTERVAL_MS = 1000;
 const DEFAULT_FLUSH_BATCH_SIZE = 200;
 
-// The latency columns are `integer`; Postgres rejects the fractional values `performance.now()`
-// deltas produce, and a rejected batch is dropped silently.
+// The columns are `integer`: a fractional value fails the whole batch.
 function roundLatencies(event: AuditEventInput): AuditEventInput {
   return {
     ...event,
@@ -42,7 +41,7 @@ function roundLatencies(event: AuditEventInput): AuditEventInput {
   };
 }
 
-// Postgres rejects NUL in text and jsonb (keys included), which would fail the whole batch.
+// Postgres rejects NUL in text and jsonb (keys included).
 function stripNul(value: unknown): unknown {
   if (typeof value === "string") return value.replaceAll("\u0000", "\uFFFD");
   if (Array.isArray(value)) return value.map(stripNul);
@@ -54,8 +53,6 @@ function stripNul(value: unknown): unknown {
   return value;
 }
 
-// enqueue is synchronous and never awaited by the request path — a full queue or a failed flush
-// drops events rather than blocking or retrying.
 export class AuditQueue {
   private queue: AuditEventInput[] = [];
   private droppedTotal = 0;
@@ -63,7 +60,6 @@ export class AuditQueue {
   private readonly maxSize: number;
   private readonly flushBatchSize: number;
   private readonly flushTimer: ReturnType<typeof setInterval>;
-  // Inserts are chained so flush()/shutdown() can wait for one already started by the timer.
   private inFlight: Promise<void> = Promise.resolve();
 
   constructor(
@@ -118,7 +114,6 @@ export class AuditQueue {
         this.droppedTotal++;
         return;
       }
-      // Retry one by one so a single bad row doesn't take the rest of the batch with it.
       for (const event of batch) await this.insert([event]);
     }
   }

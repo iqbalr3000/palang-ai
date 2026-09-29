@@ -17,7 +17,6 @@ test("well-formed tool calls and extra fields pass through untouched", () => {
   expect(parsed).toEqual(body);
 });
 
-// Regression: these made the pii-id guard throw halfway through masking.
 test("malformed tool calls are rejected before any guard sees them", () => {
   for (const tool_calls of [
     [{}],

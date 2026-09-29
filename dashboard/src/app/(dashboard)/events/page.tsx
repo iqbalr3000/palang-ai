@@ -32,7 +32,6 @@ type Params = {
   event?: string;
 };
 
-// `from`/`to` come from <input type="date">; the range is inclusive of the whole `to` day (UTC).
 function dayStart(date: string | undefined, offsetDays = 0): string | undefined {
   if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return undefined;
   const d = new Date(`${date}T00:00:00.000Z`);
@@ -142,7 +141,6 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
               page.events.map((e) => (
                 <TableRow key={e.id} className="relative">
                   <TableCell className="whitespace-nowrap">
-                    {/* The whole row is the link, via the stretched ::after. */}
                     <Link
                       href={href(params, { event: e.id })}
                       scroll={false}

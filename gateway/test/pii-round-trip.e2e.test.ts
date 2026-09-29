@@ -9,8 +9,6 @@ import {
 import { createApp as createMockUpstreamApp } from "@palang-ai/mock-upstream";
 import { processStream } from "../src/stream/processor.js";
 
-// mask -> send (echoed back one char at a time, splitting the placeholder) -> the real stream
-// processor's holdback buffer + output guard restore it -> compare to the original.
 const MOCK_UPSTREAM_PORT = 19093;
 let server: ReturnType<typeof Bun.serve>;
 
@@ -44,7 +42,7 @@ test("PII round-trips through mask -> mock-split-placeholder -> restore, byte fo
   expect(pipelineResult.blocked).toBeNull();
 
   const maskedText = ctx.messages[0]!.content!;
-  expect(maskedText).not.toContain("3171011506900001"); // raw PII never leaves masked
+  expect(maskedText).not.toContain("3171011506900001");
   expect(maskedText).not.toContain("budi@example.com");
   expect(maskedText).toContain("[NIK_1]");
   expect(maskedText).toContain("[EMAIL_1]");
@@ -81,8 +79,5 @@ test("PII round-trips through mask -> mock-split-placeholder -> restore, byte fo
 
   const finalText = events.map((e) => e.choices?.[0]?.delta?.content ?? "").join("");
 
-  // Full round-trip, byte for byte: masked before it ever reaches "upstream", restored before it
-  // reaches back to the caller — restored output legitimately contains the real values (that's
-  // the point), TSD's "no raw PII" acceptance criterion is scoped to logs/audit rows, not this.
   expect(finalText).toBe(originalText);
 });

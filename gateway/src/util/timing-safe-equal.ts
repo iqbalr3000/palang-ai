@@ -1,5 +1,4 @@
-// Always loops to the longer length instead of returning early on a size mismatch — an early
-// return leaks the secret's length via timing, defeating the point of a constant-time compare.
+// No early return on a length mismatch: that would leak the secret's length via timing.
 export function timingSafeEqualString(a: string, b: string): boolean {
   const aBytes = new TextEncoder().encode(a);
   const bBytes = new TextEncoder().encode(b);

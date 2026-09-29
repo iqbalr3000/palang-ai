@@ -22,7 +22,6 @@ for (const scenario of RESTORE_SCENARIOS) {
   test(`${scenario}: masked PII streams back restored, with nothing missed`, async () => {
     const report = await evaluateRestore([withPii, withoutPii], scenario);
 
-    // Only the sample that got masked counts; restore returns the phone's normalized +62 form.
     expect(report).toEqual({
       samples: 1,
       succeeded: 1,

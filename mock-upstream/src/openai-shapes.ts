@@ -1,19 +1,18 @@
-// Minimal OpenAI-compatible chat completion shapes — just enough for the official `openai` SDK
-// and Palang's own gateway to parse. Not a full re-implementation of OpenAI's schema.
+import { z } from "zod";
 
-export interface IncomingMessage {
-  role: string;
-  content: string | null;
-}
+const incomingMessageSchema = z
+  .object({ role: z.string(), content: z.string().nullable() })
+  .passthrough();
 
-export interface IncomingRequest {
-  model: string;
-  messages: IncomingMessage[];
-  stream?: boolean;
-  stream_options?: { include_usage?: boolean };
-}
+export const incomingRequestSchema = z.object({
+  model: z.string(),
+  messages: z.array(incomingMessageSchema).min(1),
+  stream: z.boolean().optional(),
+  stream_options: z.object({ include_usage: z.boolean().optional() }).optional(),
+});
 
-// Rough token estimate — this is a mock server, not a real tokenizer.
+export type IncomingMessage = z.infer<typeof incomingMessageSchema>;
+
 function estimateTokens(text: string): number {
   return Math.max(1, Math.ceil(text.length / 4));
 }

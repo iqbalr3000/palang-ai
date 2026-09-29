@@ -102,7 +102,6 @@ if (suite !== "injection") {
 }
 
 const markdown = renderMarkdown(report);
-// Only a full run is a publishable report; partial runs (tuning, one suite) just print.
 if (suite === "all" && values.split === "all") {
   const variant = report.injection?.classifier ? `-${dtype}` : "-l1";
   const stem = `${report.generatedAt.slice(0, 10)}-${report.gitSha}${report.dirty ? "-dirty" : ""}${variant}`;

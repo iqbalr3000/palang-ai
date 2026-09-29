@@ -32,7 +32,7 @@ const injectionGuardSchema = z.object({
       model: z.string().default(CLASSIFIER_MODEL_ID),
     })
     .default({}),
-  // Accepted so existing configs parse, but enabling it must fail loudly rather than no-op.
+  // Not implemented: accepted so configs parse, but enabling it fails loudly instead of no-op.
   judge: z
     .object({
       enabled: z.boolean().refine((enabled) => !enabled, {
@@ -44,8 +44,6 @@ const injectionGuardSchema = z.object({
 
 const primitiveSchema = z.union([z.string(), z.number(), z.boolean(), z.null()]);
 
-// Mirrors `ToolConstraint` in @palang-ai/guards: each op's value type is checked here so a bad
-// policy fails at config load, not on the first tool call.
 const constraintSchema = z.union([
   z.object({ path: z.string(), op: z.enum(["eq", "neq"]), value: primitiveSchema }),
   z.object({ path: z.string(), op: z.enum(["lt", "lte", "gt", "gte"]), value: z.number() }),
@@ -105,7 +103,6 @@ export const configSchema = z.object({
     public_port: z.number().int().positive(),
     admin_port: z.number().int().positive(),
     public_host: z.string().min(1).default("0.0.0.0"),
-    // Loopback by default: the admin API must not be reachable from outside unless asked for.
     admin_host: z.string().min(1).default("127.0.0.1"),
     max_body_bytes: z.number().int().positive().default(1_048_576),
   }),

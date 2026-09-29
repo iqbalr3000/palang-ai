@@ -3,8 +3,6 @@ import { maskPiiDeep } from "./mask.js";
 
 const ALL = ["NIK", "NPWP", "PHONE_ID", "EMAIL", "CARD"] as const;
 
-// Regression: only messages[].content and tool-call arguments were masked; `user`, message
-// `name`, `prediction` and tool descriptions went to the provider raw.
 test("masks PII in every string of a request-shaped value, reusing the vault", () => {
   const vault = new Map([["[NIK_1]", "3171011506900001"]]);
   const body = {

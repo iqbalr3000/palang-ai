@@ -1,6 +1,3 @@
-// Minimal Prometheus text-format (0.0.4) counters and histograms — enough for TSD §10.4, without
-// pulling in prom-client.
-
 type Labels = Record<string, string>;
 
 function escapeLabel(value: string): string {
@@ -13,7 +10,6 @@ function formatLabels(labels: Labels): string {
   return `{${entries.map(([k, v]) => `${k}="${escapeLabel(v)}"`).join(",")}}`;
 }
 
-// Stable key so the same label set always lands on the same series.
 const seriesKey = (labels: Labels): string =>
   JSON.stringify(Object.entries(labels).sort(([a], [b]) => a.localeCompare(b)));
 
@@ -45,7 +41,6 @@ export class Counter implements Metric {
   }
 }
 
-/** A counter whose value lives elsewhere (e.g. the audit queue) and is read at scrape time. */
 export class ObservedCounter implements Metric {
   constructor(
     private readonly name: string,
@@ -64,7 +59,7 @@ export class ObservedCounter implements Metric {
 
 interface HistogramSeries {
   labels: Labels;
-  buckets: number[]; // cumulative counts, one per bound
+  buckets: number[];
   sum: number;
   count: number;
 }

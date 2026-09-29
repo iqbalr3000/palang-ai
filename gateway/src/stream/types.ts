@@ -1,9 +1,5 @@
 import { z } from "zod";
 
-// What the gateway reads from the provider. Validated, not cast (Working rule 9): a malformed
-// chunk is skipped instead of crashing the stream mid-response. `.passthrough()` keeps fields
-// the gateway doesn't inspect.
-
 const toolCallDeltaSchema = z
   .object({
     index: z.number().int().nonnegative(),

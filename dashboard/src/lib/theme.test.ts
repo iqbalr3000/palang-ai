@@ -1,7 +1,6 @@
 import { afterEach, expect, test } from "bun:test";
 import { THEME_BOOTSTRAP, THEME_STORAGE_KEY } from "./theme";
 
-// A minimal browser: enough for the bootstrap script, which only touches these globals.
 function fakeBrowser(options: {
   stored: string | null;
   systemDark: boolean;
@@ -53,8 +52,6 @@ test("no stored choice follows the system", () => {
   expect(fakeBrowser({ stored: "system", systemDark: false }).dark).toBe(false);
 });
 
-// Regression: the whole script used to sit in one try/catch, so a throwing localStorage skipped
-// the system fallback and a dark-mode OS got the light theme.
 test("blocked storage still follows the system preference", () => {
   expect(fakeBrowser({ stored: null, systemDark: true, storageThrows: true }).dark).toBe(true);
 });

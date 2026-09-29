@@ -1,5 +1,3 @@
-// Pure Web Crypto, so it runs in the proxy, Server Components, and tests alike.
-
 export const SESSION_COOKIE = "palang_session";
 export const SESSION_TTL_MS = 12 * 60 * 60 * 1000;
 
@@ -9,8 +7,7 @@ function toBase64Url(bytes: ArrayBuffer): string {
   return Buffer.from(bytes).toString("base64url");
 }
 
-// Derived from the admin token (high-entropy, already on the server) rather than the password,
-// so a leaked cookie can't be brute-forced back to a weak password.
+// Keyed off the admin token, not the password, so a leaked cookie can't be brute-forced.
 async function sessionKey(adminToken: string): Promise<CryptoKey> {
   const material = await crypto.subtle.digest(
     "SHA-256",
@@ -22,14 +19,11 @@ async function sessionKey(adminToken: string): Promise<CryptoKey> {
   ]);
 }
 
-// Logged-out session ids, until their token would have expired anyway. On globalThis because Next
-// can load this module more than once per process (proxy, server components, actions). Lost on
-// restart, when tokens still expire within SESSION_TTL_MS.
+// On globalThis: Next can load this module more than once per process.
 const revoked: Map<string, number> = ((
   globalThis as { __palangRevokedSessions?: Map<string, number> }
 ).__palangRevokedSessions ??= new Map());
 
-/** `<expiresAtMs>.<id>.<base64url HMAC of "expiresAtMs.id">` */
 export async function createSessionToken(adminToken: string, now = Date.now()): Promise<string> {
   const payload = `${now + SESSION_TTL_MS}.${toBase64Url(crypto.getRandomValues(new Uint8Array(16)).buffer)}`;
   const signature = await crypto.subtle.sign(
@@ -48,7 +42,6 @@ interface ParsedToken {
 async function parseVerified(token: string, adminToken: string): Promise<ParsedToken | null> {
   const [expiresAt, id, signature, ...rest] = token.split(".");
   if (!expiresAt || !id || !signature || rest.length > 0 || !/^\d+$/.test(expiresAt)) return null;
-  // subtle.verify compares in constant time.
   const valid = await crypto.subtle.verify(
     "HMAC",
     await sessionKey(adminToken),
@@ -75,7 +68,6 @@ export async function verifySessionToken(
   return parsed !== null && parsed.expiresAt > now && !revoked.has(parsed.id);
 }
 
-/** Constant-time: both sides are hashed to equal length and compared with HMAC verify. */
 export async function passwordMatches(candidate: string, expected: string): Promise<boolean> {
   const key = await crypto.subtle.importKey(
     "raw",

@@ -17,7 +17,6 @@ export function pick<T>(rng: Rng, items: readonly T[]): T {
   return item;
 }
 
-/** Throws if `make` can't produce `count` distinct texts. */
 export function uniqueSamples<T extends { text: string }>(count: number, make: () => T): T[] {
   const seen = new Map<string, T>();
   const maxAttempts = count * 200;

@@ -6,7 +6,7 @@ test("valid: 16-digit Luhn-valid number", () => {
 });
 
 test("valid: 13-digit (shortest allowed)", () => {
-  expect(validateCard("4222222222222")).toBe(true); // well-known 13-digit Visa test number
+  expect(validateCard("4222222222222")).toBe(true);
 });
 
 test("invalid: fails Luhn", () => {
@@ -14,8 +14,8 @@ test("invalid: fails Luhn", () => {
 });
 
 test("invalid: wrong length", () => {
-  expect(validateCard("411111111111")).toBe(false); // 12 digits
-  expect(validateCard("41111111111111111111")).toBe(false); // 21 digits
+  expect(validateCard("411111111111")).toBe(false);
+  expect(validateCard("41111111111111111111")).toBe(false);
 });
 
 test("invalid: non-digit characters", () => {

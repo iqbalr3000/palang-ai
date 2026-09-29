@@ -1,8 +1,6 @@
 import { NIK_PROVINCE_CODES } from "../data/provinces.js";
 
-// 16 digits: province (1-2) whitelisted, day (7-8) 01-31 or 41-71 (female = real day + 40),
-// month (9-10) 01-12, serial (13-16) != 0000. Kab/kota and kecamatan aren't checked — that data
-// churns too often to whitelist.
+// Women's NIKs add 40 to the birth day.
 export function validateNik(digits: string): boolean {
   if (!/^\d{16}$/.test(digits)) return false;
 

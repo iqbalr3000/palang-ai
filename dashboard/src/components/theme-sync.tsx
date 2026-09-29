@@ -3,8 +3,6 @@
 import { useEffect } from "react";
 import { THEME_STORAGE_KEY, applyTheme, readStoredTheme } from "@/lib/theme";
 
-/** Keeps every page on the right theme after load: OS theme changes and choices made in other
- * tabs. Mounted once, in the root layout. */
 export function ThemeSync() {
   useEffect(() => {
     const media = window.matchMedia("(prefers-color-scheme: dark)");

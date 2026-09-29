@@ -9,8 +9,6 @@ export type CreateKeyState =
   | { status: "created"; name: string; key: string }
   | { status: "error"; message: string };
 
-// The plaintext key only ever travels in this action's return value, straight to the form that
-// shows it once — never a URL, cookie, or log.
 export async function createKey(
   _state: CreateKeyState,
   formData: FormData,

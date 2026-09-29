@@ -95,7 +95,6 @@ test("a failed flush (e.g. DB down) drops the batch instead of throwing", async 
   expect(queue.pendingCount).toBe(0);
 });
 
-// Insert stays in flight until `release()`.
 function gatedDb(): { db: Db; release: () => void; inserted: () => boolean } {
   let done = false;
   let release = (): void => {};

@@ -57,7 +57,6 @@ export default async function KeysPage({
           <CardTitle className="text-base">Create a key for {tenant}</CardTitle>
         </CardHeader>
         <CardContent>
-          {/* Keyed by tenant so a shown key is cleared when switching tenants. */}
           <CreateKeyForm key={tenant} tenant={tenant} />
         </CardContent>
       </Card>

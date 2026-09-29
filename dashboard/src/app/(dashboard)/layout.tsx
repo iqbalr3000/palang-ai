@@ -5,8 +5,6 @@ import { AccountMenu } from "@/components/account-menu";
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col md:flex-row">
-      {/* Small screens: a top bar, brand and account on one row and the nav scrolling on its own
-          row. md and up: a fixed-height sidebar that stays put while the content scrolls. */}
       <aside className="flex flex-wrap items-center justify-between gap-3 border-b bg-sidebar p-4 md:sticky md:top-0 md:h-screen md:w-56 md:shrink-0 md:flex-col md:flex-nowrap md:items-stretch md:justify-start md:gap-4 md:overflow-y-auto md:border-r md:border-b-0">
         <div className="flex items-center gap-2.5 px-2">
           <img src={mark.src} alt="" width={28} height={28} className="rounded-md" />

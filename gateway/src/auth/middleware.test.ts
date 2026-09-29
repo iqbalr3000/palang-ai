@@ -71,8 +71,6 @@ test("revoked key is 401", async () => {
   expect(res.status).toBe(401);
 });
 
-// Decision 0004: auth is NOT DB-outage-resilient (only the audit path is). A DB failure during
-// the lookup must surface as a distinguishable 503, not a crash or a misleading 401.
 test("DB unreachable during lookup is 503 auth_unavailable, not a crash or a 401", async () => {
   const brokenDb = {
     select: () => ({

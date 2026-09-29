@@ -24,7 +24,7 @@ export const apiKeys = pgTable("api_keys", {
 export const auditEvents = pgTable(
   "audit_events",
   {
-    id: uuid("id").primaryKey(), // request id, not auto-generated
+    id: uuid("id").primaryKey(),
     tenantId: text("tenant_id").notNull(),
     apiKeyId: uuid("api_key_id"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),

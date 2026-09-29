@@ -18,7 +18,6 @@ export interface ScoreOptions {
   signal?: AbortSignal;
 }
 
-/** score = max(L1, L2). L2 is skipped when L1 alone already reaches the block threshold. */
 export async function scoreInjection(text: string, options: ScoreOptions): Promise<InjectionScore> {
   const heuristics = scanInjectionHeuristics(text);
   const patterns = [...new Set(heuristics.matches.map((m) => m.id))];
@@ -48,8 +47,7 @@ export function createInjectionInputGuard(
       const findings: Finding[] = [];
       let worst = 0;
 
-      for (let i = 0; i < ctx.messages.length; i++) {
-        const message = ctx.messages[i]!;
+      for (const [i, message] of ctx.messages.entries()) {
         if (!config.roles.includes(message.role) || !message.content) continue;
 
         const result = await scoreInjection(message.content, {
@@ -83,7 +81,7 @@ export function createInjectionInputGuard(
         reason: action === "allow" ? undefined : REASONS.PROMPT_INJECTION_DETECTED,
         score: worst,
         findings,
-        latencyMs: 0, // overwritten by the pipeline runner
+        latencyMs: 0,
       };
     },
   };

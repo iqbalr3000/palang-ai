@@ -3,12 +3,10 @@ import type { Decision, GuardContext, OutputGuard } from "../core/index.js";
 import { generateCanary, getCanary } from "./inject.js";
 
 export interface CanaryConfig {
-  /** `block` terminates the response; `flag` strips the token and lets it continue. */
   onDetect: "block" | "flag";
 }
 
 const CANARY_LENGTH = generateCanary().length;
-// Tail of the text already checked, kept on ctx.metadata between streamed segments.
 const CARRY_KEY = "canaryCarry";
 
 interface Scan {
@@ -21,14 +19,14 @@ function leakDecision(action: "block" | "flag"): Decision {
     guard: "canary",
     action,
     reason: REASONS.CANARY_LEAKED,
-    findings: [{ type: "CANARY_LEAK" }], // never the token itself
-    latencyMs: 0, // overwritten by the pipeline runner
+    findings: [{ type: "CANARY_LEAK" }],
+    latencyMs: 0,
   };
 }
 
 function scan(text: string, ctx: GuardContext, config: CanaryConfig): Scan {
   const canary = getCanary(ctx);
-  // Hex only after a fixed prefix, so the token needs no regex escaping.
+  // Safe unescaped: the token is a fixed prefix plus hex.
   const pattern = canary ? new RegExp(canary, "gi") : null;
   if (!pattern || !pattern.test(text)) {
     return { decision: { guard: "canary", action: "allow", latencyMs: 0 }, text };
@@ -40,10 +38,9 @@ function scan(text: string, ctx: GuardContext, config: CanaryConfig): Scan {
   };
 }
 
-// The holdback buffer cuts mid-token when a long run has no whitespace, so a canary can start in
-// the previous segment. Its start is already sent and can't be stripped, so this always blocks.
+// A canary starting in the already-sent previous segment can't be stripped, so it always blocks.
 function spansPreviousSegment(text: string, ctx: GuardContext, choice: number): boolean {
-  const key = `${CARRY_KEY}:${choice}`; // per choice: with n > 1, choices' segments interleave
+  const key = `${CARRY_KEY}:${choice}`;
   const canary = getCanary(ctx);
   const carried = ctx.metadata[key];
   const carry = typeof carried === "string" ? carried : "";

@@ -11,7 +11,6 @@ import {
   verifySessionToken,
 } from "./session";
 
-/** Every data read and Server Action goes through this; the proxy's check is only optimistic. */
 export const requireSession = cache(async (): Promise<void> => {
   const token = (await cookies()).get(SESSION_COOKIE)?.value;
   if (!token || !(await verifySessionToken(token, dashboardEnv().PALANG_ADMIN_TOKEN))) {

@@ -12,7 +12,7 @@ if (!databaseUrl) throw new Error("DATABASE_URL is required to run gateway e2e t
 
 const UPSTREAM_PORT = 19301;
 const GATEWAY_PORT = 18301;
-const RUN = crypto.randomUUID().slice(0, 8); // the DB is shared across runs
+const RUN = crypto.randomUUID().slice(0, 8);
 const T = { main: `fields-${RUN}`, slash: `fields-slash-${RUN}` };
 
 const db = createDb(databaseUrl);
@@ -20,7 +20,6 @@ let auditQueue: AuditQueue;
 const servers: ReturnType<typeof Bun.serve>[] = [];
 const keys = new Map<string, string>();
 
-// What the fake provider last received, and whether it saw its stream cancelled.
 let lastPath = "";
 let lastBody: Record<string, unknown> = {};
 let streamCancelled = false;
@@ -40,7 +39,6 @@ function canaryIn(body: Record<string, unknown>): string {
   return match[0];
 }
 
-// Behaviour is picked by model name, like mock-upstream.
 function fakeProvider(request: Request, body: Record<string, unknown>): Response {
   const model = String(body.model);
   const logprobs = { content: [{ token: "raw", logprob: 0 }] };
@@ -187,7 +185,6 @@ function post(body: Record<string, unknown>, tenantId = T.main): Promise<Respons
   });
 }
 
-// By model: events flushed in one batch share created_at.
 async function latestEvent(model: string) {
   await auditQueue.flush();
   const [row] = await db

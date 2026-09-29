@@ -2,7 +2,6 @@ import type { Scenario } from "./types.js";
 
 const CANARY = /plg-canary-[0-9a-f]{16}/i;
 
-// Plays a model that was talked into revealing its system prompt's canary.
 export const mockLeakCanary: Scenario = {
   reply(messages) {
     const system = messages.find((m) => m.role === "system")?.content ?? "";

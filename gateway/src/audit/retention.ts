@@ -17,7 +17,6 @@ export async function deleteExpiredEvents(
   return deleted.length;
 }
 
-/** Runs now, then daily. A failed run is logged and retried on the next tick. */
 export function startRetention(db: Db, retentionDays: number, logger: Logger): () => void {
   const run = async () => {
     try {

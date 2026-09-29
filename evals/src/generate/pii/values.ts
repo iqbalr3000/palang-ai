@@ -1,7 +1,6 @@
 import { pick, type Rng } from "../prng.js";
 
-// Real province prefixes, listed here rather than imported from the detector so the dataset
-// doesn't inherit the detector's own assumptions.
+// Not imported from the detector, so the dataset doesn't inherit its assumptions.
 // prettier-ignore
 const PROVINCES = [
   "11", "12", "13", "14", "15", "16", "17", "18", "19", "21", "31", "32", "33", "34", "35", "36",
@@ -9,7 +8,6 @@ const PROVINCES = [
   "91", "94",
 ] as const;
 
-// Public test BINs; Mastercard's 51–53 overlap NIK province codes on purpose (real-world clash).
 const CARD_BINS = ["411111", "400000", "555555", "510510", "520082"] as const;
 const MOBILE_PREFIXES = ["811", "812", "813", "821", "822", "852", "857", "878", "895", "896"];
 const FIRST_NAMES = [
@@ -143,8 +141,6 @@ export function card(rng: Rng): string {
   if (style < 0.3) return value;
   return group(value, [4, 4, 4, 4], style < 0.8 ? " " : "-");
 }
-
-// Non-PII numbers that share a shape with PII — what hard negatives are made of.
 
 export function orderNumber16(rng: Rng): string {
   return String(int(rng, 1, 9)) + digits(rng, 15);

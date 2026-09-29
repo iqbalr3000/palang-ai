@@ -4,8 +4,6 @@ import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { createDb } from "./client.js";
 import { apiKeys, auditEvents } from "./schema.js";
 
-// needs a real Postgres 16 at DATABASE_URL:
-// docker run --rm -d -e POSTGRES_PASSWORD=dev -e POSTGRES_DB=palang -p 55433:5432 postgres:16
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) throw new Error("DATABASE_URL is required to run gateway db tests");
 
@@ -16,7 +14,7 @@ beforeAll(async () => {
 });
 
 test("api_keys: insert and read back", async () => {
-  const keyHash = crypto.randomUUID(); // unique per run — key_hash is a unique column
+  const keyHash = crypto.randomUUID();
 
   const [inserted] = await db
     .insert(apiKeys)

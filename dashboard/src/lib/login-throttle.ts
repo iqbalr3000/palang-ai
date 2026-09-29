@@ -1,6 +1,4 @@
-// One global throttle rather than per-IP: client IPs come from headers that can be forged when
-// the dashboard isn't behind a trusted proxy. The trade-off: while someone guesses nonstop, the
-// real admin is slowed or turned away too, which is why the dashboard mustn't be public.
+// Global, not per-IP: client IPs come from forgeable headers.
 
 const WINDOW_MS = 15 * 60 * 1000;
 const FREE_FAILURES = 3;
@@ -10,7 +8,6 @@ const MAX_DELAY_MS = 30_000;
 export type Reservation = { waitMs: number } | { rejected: true };
 
 export interface LoginThrottle {
-  /** Claims the next attempt slot; attempts are spaced out globally once failures pile up. */
   reserve(now: number): Reservation;
   recordFailure(now: number): void;
   recordSuccess(): void;
@@ -18,8 +15,7 @@ export interface LoginThrottle {
 
 export function createLoginThrottle(): LoginThrottle {
   let failures: number[] = [];
-  // Attempts still being checked count as likely failures: otherwise a burst of parallel attempts
-  // all get a free slot before the first one has failed.
+  // In-flight attempts count as failures, or a parallel burst all gets free slots.
   let pending = 0;
   let nextSlotAt = 0;
 
