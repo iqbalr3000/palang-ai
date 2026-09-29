@@ -1,6 +1,7 @@
 {
   "name": "palang-ai",
   "private": true,
+  "version": "0.1.0",
   "license": "MIT",
   "packageManager": "bun@1.3.12",
   "workspaces": [
@@ -8,7 +9,8 @@
     "dashboard",
     "guards",
     "mock-upstream",
-    "evals"
+    "evals",
+    "examples"
   ],
   "scripts": {
     "dev": "bun run --filter '*' dev",
@@ -20,10 +22,11 @@
     "format:check": "prettier --check .",
     "prepare": "husky",
     "setup": "bun run scripts/setup.ts",
-    "db:migrate": "bun run --filter @palang-ai/gateway migrate",
+    "db:migrate": "bun run gateway/src/db/migrate.ts",
     "mock": "bun run mock-upstream/src/index.ts",
     "gateway": "bun run gateway/src/index.ts",
-    "dashboard": "bun run --filter @palang-ai/dashboard build && bun run --filter @palang-ai/dashboard start"
+    "dashboard": "bun run --filter @palang-ai/dashboard build && bun run --filter @palang-ai/dashboard start",
+    "bench:gateway": "bun run --filter @palang-ai/evals bench:gateway"
   },
   "devDependencies": {
     "typescript": "^5.9.0",

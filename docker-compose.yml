@@ -1,0 +1,81 @@
+# Local demo: `docker compose up --build`. Every secret here is a demo value; the only upstream is
+# the bundled mock model. For a real deployment, see docs/deployment.md.
+x-bun: &bun
+  build:
+    context: .
+    dockerfile: docker/bun.Dockerfile
+  image: palang-ai:local
+
+x-env: &env
+  DATABASE_URL: postgres://palang:palang@postgres:5432/palang
+  PALANG_ADMIN_TOKEN: demo-admin-token-not-for-production
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: palang
+      POSTGRES_PASSWORD: palang
+      POSTGRES_DB: palang
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "palang"]
+      interval: 2s
+      retries: 30
+
+  migrate:
+    <<: *bun
+    command: ["bun", "run", "gateway/src/db/migrate.ts"]
+    environment: *env
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  mock-upstream:
+    <<: *bun
+    command: ["bun", "run", "mock-upstream/src/index.ts"]
+    environment:
+      MOCK_UPSTREAM_HOST: 0.0.0.0
+
+  gateway:
+    <<: *bun
+    environment: *env
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      mock-upstream: { condition: service_started }
+    healthcheck:
+      test:
+        - CMD
+        - bun
+        - -e
+        - "fetch('http://localhost:8080/readyz').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"
+      interval: 2s
+      retries: 30
+
+  seed:
+    <<: *bun
+    command: ["bun", "run", "gateway/src/demo/seed.ts"]
+    environment:
+      <<: *env
+      GATEWAY_URL: http://gateway:8080
+    depends_on:
+      gateway: { condition: service_healthy }
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: docker/dashboard.Dockerfile
+    image: palang-ai-dashboard:local
+    environment:
+      PALANG_ADMIN_URL: http://gateway:8081
+      PALANG_ADMIN_TOKEN: demo-admin-token-not-for-production
+      DASHBOARD_PASSWORD: palang-demo-password
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      gateway: { condition: service_healthy }
+
+volumes:
+  pgdata:

@@ -1,11 +1,16 @@
 {
   "name": "@palang-ai/gateway",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "exports": {
     "./classifier": "./src/classifier/index.ts",
-    "./stream": "./src/stream/processor.ts"
+    "./stream": "./src/stream/processor.ts",
+    "./app": "./src/public/app.ts",
+    "./audit": "./src/audit/queue.ts",
+    "./auth": "./src/auth/keys.ts",
+    "./config": "./src/config/index.ts",
+    "./db": "./src/db/index.ts"
   },
   "scripts": {
     "dev": "bun run --watch src/index.ts",
@@ -13,11 +18,10 @@
     "test": "bun test",
     "lint": "eslint .",
     "download-model": "bun run src/classifier/download-model.ts",
-    "migrate": "drizzle-kit migrate",
+    "migrate": "bun run src/db/migrate.ts",
     "generate": "drizzle-kit generate"
   },
   "dependencies": {
-    "@huggingface/transformers": "^4.3.0",
     "@palang-ai/guards": "workspace:*",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.13.8",
@@ -32,5 +36,8 @@
     "@types/bun": "^1.3.0",
     "openai": "^4.77.0",
     "drizzle-kit": "^0.31.10"
+  },
+  "optionalDependencies": {
+    "@huggingface/transformers": "^4.3.0"
   }
 }

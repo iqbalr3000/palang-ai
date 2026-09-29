@@ -1,13 +1,48 @@
 {
   "name": "@palang-ai/guards",
-  "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "description": "LLM security guards for Indonesian data: PII masking, prompt-injection detection, tool-call policy and canary leak detection.",
   "license": "MIT",
+  "author": "iqbalr3000",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iqbalr3000/palang-ai.git",
+    "directory": "guards"
+  },
+  "homepage": "https://github.com/iqbalr3000/palang-ai#readme",
+  "keywords": [
+    "llm",
+    "security",
+    "pii",
+    "prompt-injection",
+    "guardrails",
+    "indonesia",
+    "nik",
+    "openai"
+  ],
   "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20.3"
+  },
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "bun": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "!src/**/*.test.ts"
+  ],
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "prepublishOnly": "bun run build && bun test",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json",
     "test": "bun test",
     "lint": "eslint ."

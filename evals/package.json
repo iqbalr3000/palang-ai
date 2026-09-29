@@ -1,7 +1,7 @@
 {
   "name": "@palang-ai/evals",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "eval": "bun run src/run.ts",
@@ -9,14 +9,16 @@
     "typecheck": "tsc --noEmit",
     "test": "bun test",
     "lint": "eslint .",
-    "bench": "bun run src/bench.ts"
+    "bench": "bun run src/bench.ts",
+    "bench:gateway": "bun run src/bench-gateway.ts"
   },
   "dependencies": {
     "@huggingface/transformers": "^4.3.0",
     "@palang-ai/gateway": "workspace:*",
     "@palang-ai/guards": "workspace:*",
     "@palang-ai/mock-upstream": "workspace:*",
-    "zod": "^3.24.0"
+    "zod": "^3.24.0",
+    "drizzle-orm": "^0.45.2"
   },
   "devDependencies": {
     "@types/bun": "^1.3.0"

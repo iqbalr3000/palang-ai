@@ -1,0 +1,10 @@
+**/node_modules
+**/.next
+**/dist
+.git
+.env
+.env.*
+palang.yaml
+models
+evals/results
+coverage

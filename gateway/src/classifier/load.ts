@@ -1,6 +1,5 @@
 import type { InjectionClassifier } from "@palang-ai/guards";
 import type { PalangConfig } from "../config/schema.js";
-import { createTransformersClassifier } from "./transformers.js";
 
 export async function loadClassifiers(
   config: PalangConfig,
@@ -13,6 +12,17 @@ export async function loadClassifiers(
   );
 
   const classifiers = new Map<string, InjectionClassifier>();
+  if (modelIds.size === 0) return classifiers;
+
+  // Lazy and optional: the Docker image omits the ONNX runtime to stay small.
+  const { createTransformersClassifier } = await import("./transformers.js").catch(
+    (error: unknown) => {
+      throw new Error(
+        "the injection classifier needs @huggingface/transformers, which this install omits",
+        { cause: error },
+      );
+    },
+  );
   for (const modelId of modelIds) {
     classifiers.set(
       modelId,

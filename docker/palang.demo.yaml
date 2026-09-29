@@ -1,0 +1,43 @@
+# Demo config for docker compose. Its only upstream is the bundled mock model.
+server:
+  public_port: 8080
+  admin_port: 8081
+  public_host: 0.0.0.0
+  admin_host: 0.0.0.0 # reachable by the dashboard container; not published to the host
+
+audit:
+  content_mode: redacted
+  retention_days: 30
+
+models:
+  path: /app/models
+
+tenants:
+  - id: demo
+    failure_mode: fail_closed
+    upstream:
+      type: openai-compatible
+      base_url: http://mock-upstream:9090/v1
+      api_key: unused
+    allowed_models: ["mock-*"]
+    guards:
+      canary:
+        mode: enforce
+        on_detect: block
+      pii-id:
+        mode: enforce
+        entities: [NIK, NPWP, PHONE_ID, EMAIL, CARD]
+        preserve_hint: true
+      injection:
+        mode: monitor
+      tool-policy:
+        mode: enforce
+        default: deny
+        rules:
+          - { tool: "search_*", action: allow }
+          - { tool: "delete_*", action: deny, reason: destructive_tool }
+          - tool: transfer_funds
+            action: allow
+            constraints:
+              - { path: amount, op: lte, value: 1000000 }
+              - { path: currency, op: in, value: [IDR] }
