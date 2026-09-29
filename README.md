@@ -1,32 +1,28 @@
 <div align="center">
 
-<img src="docs/assets/logo.png" alt="Palang AI" width="240" />
+<img src="docs/assets/logo.png" alt="Palang AI" width="220" />
 
-<h3>A security gateway for LLM apps, built for Indonesian data.</h3>
+### A security gateway for LLM apps, built for Indonesian data.
+
+Mask PII, catch prompt injection and police tool calls, without changing your code.
 
 <p>
   <img src="https://img.shields.io/badge/status-pre--release-f59e0b?style=flat-square" alt="Status: pre-release" />
   <img src="https://img.shields.io/badge/license-MIT-3b82f6?style=flat-square" alt="License: MIT" />
   <img src="https://img.shields.io/badge/API-OpenAI--compatible-111827?style=flat-square" alt="OpenAI-compatible" />
+  <img src="https://img.shields.io/badge/runtime-Bun-000000?style=flat-square&logo=bun" alt="Runtime: Bun" />
 </p>
 
 <p>
-  <a href="#get-started">Get started</a> ·
-  <a href="#configuration">Configuration</a> ·
-  <a href="#how-well-it-works">Evaluation</a>
+  <a href="#features"><b>Features</b></a> &nbsp;·&nbsp;
+  <a href="#quick-start"><b>Quick start</b></a> &nbsp;·&nbsp;
+  <a href="#configuration"><b>Configuration</b></a> &nbsp;·&nbsp;
+  <a href="#evaluation"><b>Evaluation</b></a>
 </p>
 
 </div>
 
-<br />
-
-Once your app talks to an LLM, three things can go wrong:
-
-- **Personal data leaves your infrastructure.** NIKs, phone numbers and emails go straight to a
-  third-party model.
-- **Instructions hide in content.** A web page or tool result can tell your agent to "ignore
-  previous instructions".
-- **Tool calls have real effects.** One bad call can move money or delete data.
+---
 
 Palang sits between your app and the model and checks everything that passes through. Adopting it
 is a one-line change:
@@ -36,29 +32,25 @@ is a one-line change:
 + baseURL: "https://palang.your-company.internal/v1",
 ```
 
-What that changes for a single message:
-
 ```text
 Your user sends      →  "NIK saya 3171011506900001, tolong cek statusnya"
 The model receives   →  "NIK saya [NIK_1], tolong cek statusnya"
 Your user gets back  →  "Status untuk 3171011506900001: aktif."
 ```
 
-## What it does
+## Features
 
 | | |
 |---|---|
-| **PII masking** | NIK, NPWP, phone numbers, emails and card numbers never reach the model. They're masked in every text field of the request and restored in the reply, streaming included. |
-| **Injection detection** | Flags or blocks prompt injection in user and tool messages, in English and Indonesian. |
-| **Tool-call policy** | Allows only the tools you list, with limits on their arguments. |
-| **Leak detection** | Catches your system prompt showing up in the output. |
+| 🔒 **PII masking** | NIK, NPWP, phone numbers, emails and card numbers are masked before they reach the model and restored in the reply, streaming included. |
+| 🛡️ **Injection detection** | Flags or blocks prompt injection in user and tool messages, in English and Indonesian. |
+| 🧰 **Tool-call policy** | Allows only the tools you list, with limits on their arguments. |
+| 🕵️ **Leak detection** | Catches your system prompt showing up in the output. |
+| 📊 **Observability** | Every request lands in an audit log, a dashboard and Prometheus metrics. |
 
-Each guard can run in `monitor` mode (log only) before you `enforce` it. Every request lands in an
-audit log, a dashboard and Prometheus metrics.
+Every guard can run in `monitor` mode (log only) before you `enforce` it.
 
-<details>
-<summary><b>How it works</b></summary>
-<br />
+### How it works
 
 ```mermaid
 flowchart LR
@@ -74,79 +66,52 @@ flowchart LR
     F -.->|async| P[(Audit log)]
 ```
 
-- Guards run in order: PII is masked before the injection scan, and restored before the tool
-  policy checks arguments.
-- The audit log is written in the background, so it never slows a request down.
+PII is masked before the injection scan and restored before the tool policy checks arguments. The
+audit log is written in the background, so it never slows a request down.
 
-</details>
+## Quick start
 
 > [!NOTE]
-> Pre-release. Run it from source for now; container images and an npm package are on the way.
+> Pre-release: run it from source for now. Container images and an npm package are on the way.
 
-## Get started
+**Requirements:** [Bun](https://bun.sh) 1.3+, [Node.js](https://nodejs.org) 22+, Postgres 16,
+and an OpenAI-compatible API key. No key yet? [Try it with a mock model](#try-it-without-an-api-key).
 
-This sets Palang up in front of your own app and model provider. Plan on about fifteen minutes.
-
-### What you need
-
-| | |
-|---|---|
-| [Bun](https://bun.sh) 1.3+ | runs the gateway (`bun --version`) |
-| [Node.js](https://nodejs.org) 22+ | runs the dashboard (`node --version`) |
-| Postgres 16 | stores the audit log and API keys; Docker is the quickest way to get one |
-| An OpenAI-compatible API | OpenAI, or any provider or self-hosted server that speaks the same API, plus its API key |
-
-No API key at hand? You can [try Palang with a mock model](#try-it-without-an-api-key) first.
-
-### 1. Install
+### 1. Install and start Postgres
 
 ```sh
-git clone <this-repo-url> palang-ai
-cd palang-ai
+git clone <this-repo-url> palang-ai && cd palang-ai
 bun install
-```
 
-### 2. Start Postgres
-
-Skip this if you already have a Postgres 16 server. Otherwise, this container keeps its data in a
-named volume so it survives restarts:
-
-```sh
+# skip if you already run Postgres 16
 docker run -d --name palang-postgres \
   -e POSTGRES_USER=palang -e POSTGRES_PASSWORD=palang -e POSTGRES_DB=palang \
   -p 5432:5432 -v palang-pgdata:/var/lib/postgresql/data \
   postgres:16
 ```
 
-### 3. Create your config
+### 2. Configure
 
 ```sh
 bun run setup
 ```
 
-This creates two git-ignored files from their templates and never overwrites existing ones:
+This creates `.env` (secrets, with a generated admin token and dashboard password) and
+`palang.yaml` (your tenants and guards). Existing files are never overwritten.
 
-- **`.env`** holds secrets and connection settings. An admin token and a dashboard password are
-  generated for you, and the password is printed once.
-- **`palang.yaml`** describes your app (a *tenant*), its model provider and its guards.
-
-Now make them yours.
-
-**In `.env`**, point Palang at your model provider (and at your database, if it isn't the
-container above):
+Point `.env` at your model provider:
 
 ```sh
 UPSTREAM_BASE_URL=https://api.openai.com/v1
 UPSTREAM_API_KEY=sk-...
 ```
 
-**In `palang.yaml`**, describe your app. Rename the example tenant, list the models your app uses,
-and start the guards in `monitor` mode so nothing gets blocked while you learn what your traffic
-looks like:
+Then describe your app in `palang.yaml`. Start the guards in `monitor` mode so nothing is blocked
+while you learn what your traffic looks like:
 
 ```yaml
 tenants:
-  - id: my-app                      # used in the dashboard and when creating API keys
+  - id: my-app
     failure_mode: fail_closed
     upstream:
       type: openai-compatible
@@ -154,50 +119,51 @@ tenants:
       api_key: ${UPSTREAM_API_KEY}
     allowed_models: ["gpt-4o-mini", "gpt-4o"]   # globs work too, e.g. "gpt-4o*"
     guards:
-      pii-id:                       # masking happens in either mode
+      pii-id:                                    # masks in either mode
         mode: enforce
         entities: [NIK, NPWP, PHONE_ID, EMAIL, CARD]
-      injection:
-        mode: monitor
-      canary:
-        mode: monitor
-        on_detect: block
-      tool-policy:
-        mode: monitor
-        default: deny
-        rules: []                   # add your tools before enforcing, see Configuration
+      injection:   { mode: monitor }
+      canary:      { mode: monitor, on_detect: block }
+      tool-policy: { mode: monitor, default: deny, rules: [] }
 ```
 
-Every setting is explained in [`.env.example`](.env.example) and
+Every option is documented in [`.env.example`](.env.example) and
 [`palang.example.yaml`](palang.example.yaml).
 
-### 4. Create the database tables
+### 3. Run
 
 ```sh
 bun run db:migrate
+bun run gateway     # app traffic on :8080, admin API on :8081
+bun run dashboard   # http://localhost:3000, in a second terminal
 ```
 
-### 5. Start Palang
+Sign in to the dashboard with the password from `.env`.
 
-Run each of these in its own terminal:
+### 4. Connect your app
 
-```sh
-bun run gateway     # your app talks to :8080, the admin API is on :8081
+Create an API key under **API keys** in the dashboard (it's shown only once), then keep using the
+OpenAI SDK you already have:
+
+```ts
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  baseURL: "http://localhost:8080/v1",
+  apiKey: process.env.PALANG_API_KEY,
+});
+
+await client.chat.completions.create({
+  model: "gpt-4o-mini",
+  messages: [{ role: "user", content: "NIK saya 3171011506900001, tolong cek statusnya" }],
+});
 ```
 
-```sh
-bun run dashboard   # builds, then serves on http://localhost:3000
-```
-
-Open <http://localhost:3000> and sign in with the password from `.env`.
-
-### 6. Give your app an API key
-
-Your app authenticates to Palang with its own key, never the provider's. In the dashboard, go to
-**API keys**, pick your tenant and create a key. Copy it right away, because it's shown only once.
+Streaming and tool calls work the same way. Each request shows up under **Events**, with every
+guard's decision.
 
 <details>
-<summary>Prefer the command line?</summary>
+<summary>Create a key from the command line instead</summary>
 
 ```sh
 export PALANG_ADMIN_TOKEN=$(grep '^PALANG_ADMIN_TOKEN=' .env | cut -d= -f2)
@@ -209,56 +175,29 @@ curl -s -X POST localhost:8081/admin/tenants/my-app/keys \
 
 </details>
 
-### 7. Connect your app
+### 5. Go from monitoring to enforcing
 
-Keep using the OpenAI SDK you already use. Only the base URL and the key change:
-
-```ts
-import OpenAI from "openai";
-
-const client = new OpenAI({
-  baseURL: "http://localhost:8080/v1", // your Palang gateway
-  apiKey: process.env.PALANG_API_KEY, // the key from step 6
-});
-
-const reply = await client.chat.completions.create({
-  model: "gpt-4o-mini",
-  messages: [{ role: "user", content: "NIK saya 3171011506900001, tolong cek statusnya" }],
-});
-```
-
-Streaming, tool calls and every other OpenAI-compatible SDK work the same way. Send a request and
-it shows up under **Events** in the dashboard, with each guard's decision.
-
-### 8. From monitoring to enforcing
-
-Let real traffic run through for a while, then use the dashboard to decide what to block:
-
-1. **Overview** shows how much each guard *would* have blocked, and **Events** shows why, request
-   by request.
-2. Add your tools to `tool-policy` and tune the injection thresholds until the would-blocks look
-   right.
-3. Switch the guards you trust to `mode: enforce` and restart the gateway. Config is read at
-   startup.
+1. **Overview** shows what each guard *would* have blocked; **Events** shows why.
+2. Add your tools to `tool-policy` and tune the injection thresholds.
+3. Switch trusted guards to `mode: enforce` and restart the gateway.
 
 ### Try it without an API key
 
-Palang ships with a mock model server that speaks the OpenAI API. Keep the `UPSTREAM_*` values
-from `bun run setup`, leave the example tenant (`demo`) as it is, then:
+Keep the defaults from `bun run setup` and start the bundled mock model next to the gateway:
 
 ```sh
-bun run mock        # in its own terminal, next to the gateway
+bun run mock
 ```
 
-Create a key for the `demo` tenant and use the model `mock-echo`, which repeats your message
-back. Send it a NIK and you get the NIK back, while the "model" only ever saw `[NIK_1]`.
+Create a key for the `demo` tenant and call the model `mock-echo`. Send it a NIK and you get the
+NIK back, while the "model" only ever saw `[NIK_1]`.
 
 ## Configuration
 
 | File | Holds | Template |
 |---|---|---|
 | `palang.yaml` | Tenants, providers and guards | [`palang.example.yaml`](palang.example.yaml) |
-| `.env` | Secrets, shared by the gateway, dashboard and migrations | [`.env.example`](.env.example) |
+| `.env` | Secrets shared by the gateway, dashboard and migrations | [`.env.example`](.env.example) |
 
 <details>
 <summary><b>All guard options</b></summary>
@@ -299,8 +238,8 @@ guards:
 
 ## Use it as a library
 
-`@palang-ai/guards` has no dependencies and runs on Node, Bun, Deno and the edge. Not on npm yet;
-inside this repo:
+`@palang-ai/guards` has no dependencies and runs on Node, Bun, Deno and the edge. It isn't on npm
+yet, so use it from inside this repo:
 
 ```ts
 import { DEFAULT_PII_ID_CONFIG, createPiiIdInputGuard, type GuardContext } from "@palang-ai/guards";
@@ -320,12 +259,12 @@ await createPiiIdInputGuard(DEFAULT_PII_ID_CONFIG).check(ctx);
 ctx.messages[0]?.content; // "NIK saya [NIK_1]"
 ```
 
-## How well it works
+## Evaluation
 
 Detection quality is measured, not claimed. `bun run eval` reproduces the report on synthetic
-datasets, and results are kept in [`evals/results/`](evals/results/).
+datasets; results live in [`evals/results/`](evals/results/).
 
-**Prompt injection**, on a held-out test set at the flag threshold (0.5):
+**Prompt injection**, held-out test set, flag threshold 0.5:
 
 | Layer | Recall | False positives | Recall (ID) | Recall (EN) |
 |---|---:|---:|---:|---:|
@@ -333,35 +272,13 @@ datasets, and results are kept in [`evals/results/`](evals/results/).
 | Classifier only | 81.3% | 27.1% | 71.9% | 100% |
 | **Combined** | **92.4%** | 39.9% | 88.5% | 100% |
 
-**PII**, on 550 synthetic samples: **93.0% precision and 99.7% recall** on supported formats, and
-the streaming restore round trip succeeds on **100%** of masked samples.
+**PII**, 550 synthetic samples: **93.0% precision** and **99.7% recall** on supported formats, and
+**100%** of masked samples survive the streaming restore round trip.
 
 > [!IMPORTANT]
-> The datasets are synthetic, and the heuristics were written by the same author as the samples,
-> so treat these numbers as optimistic. The combined false-positive rate is too high to block on,
+> The datasets are synthetic and the heuristics were written by the same author as the samples, so
+> treat these numbers as optimistic. The combined false-positive rate is too high to block on,
 > which is why `injection` should start in `monitor` mode.
-
-## Known limitations
-
-- Audit events can be lost on a crash, since the queue lives in memory.
-- A block during streaming can't take back text that was already sent.
-- The classifier is weaker on Indonesian than on English.
-- Any 15-digit number is treated as an NPWP.
-- Dashboard sign-in is rate-limited globally, so someone guessing passwords nonstop can keep you
-  out too. Don't expose the dashboard to the public internet.
-- Only OpenAI-compatible providers are supported.
-- `logprobs` are dropped, since they would expose the unguarded output. The legacy `functions`
-  API is rejected with a 400; use `tools`.
-
-## Contributing
-
-```sh
-bun run typecheck && bun run test   # gateway tests need DATABASE_URL (Postgres 16)
-bun run lint
-```
-
-Five workspaces: `gateway/`, `dashboard/`, `guards/`, `mock-upstream/` and `evals/`. The technical
-spec is in [`docs/TSD.md`](docs/TSD.md), and design decisions in [`docs/decisions/`](docs/decisions/).
 
 ## License
 
