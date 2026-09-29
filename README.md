@@ -7,7 +7,7 @@
 Mask PII, catch prompt injection and police tool calls, without changing your code.
 
 <p>
-  <a href="https://www.npmjs.com/package/@palang-ai/guards"><img src="https://img.shields.io/npm/v/@palang-ai/guards?style=flat-square&color=f59e0b" alt="npm: @palang-ai/guards" /></a>
+  <a href="https://github.com/iqbalr3000/palang-ai/releases"><img src="https://img.shields.io/github/v/release/iqbalr3000/palang-ai?style=flat-square&color=f59e0b" alt="Latest release" /></a>
   <img src="https://img.shields.io/badge/license-MIT-3b82f6?style=flat-square" alt="License: MIT" />
   <img src="https://img.shields.io/badge/API-OpenAI--compatible-111827?style=flat-square" alt="OpenAI-compatible" />
   <img src="https://img.shields.io/badge/runtime-Bun-000000?style=flat-square&logo=bun" alt="Runtime: Bun" />
