@@ -1,14 +1,17 @@
+# Demo only: every secret here is public.
+name: palang-ai-demo
+
 x-bun: &bun
   build:
-    context: .
+    context: ..
     dockerfile: docker/bun.Dockerfile
   image: palang-ai:local
-  env_file: .env
   volumes:
-    - ./palang.yaml:/app/palang.yaml:ro
+    - ./palang.demo.yaml:/app/palang.yaml:ro
 
-x-db: &db
+x-env: &env
   DATABASE_URL: postgres://palang:palang@postgres:5432/palang
+  PALANG_ADMIN_TOKEN: demo-admin-token-not-for-production
 
 services:
   postgres:
@@ -23,24 +26,28 @@ services:
       test: ["CMD", "pg_isready", "-U", "palang"]
       interval: 2s
       retries: 30
-    restart: unless-stopped
 
   migrate:
     <<: *bun
     command: ["bun", "run", "gateway/src/db/migrate.ts"]
-    environment: *db
+    environment: *env
     depends_on:
       postgres: { condition: service_healthy }
 
+  mock-upstream:
+    <<: *bun
+    command: ["bun", "run", "mock-upstream/src/index.ts"]
+    environment:
+      MOCK_UPSTREAM_HOST: 0.0.0.0
+
   gateway:
     <<: *bun
-    environment:
-      <<: *db
-      PALANG_ADMIN_HOST: 0.0.0.0 # for the dashboard container; 8081 isn't published
+    environment: *env
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     depends_on:
       migrate: { condition: service_completed_successfully }
+      mock-upstream: { condition: service_started }
     healthcheck:
       test:
         - CMD
@@ -49,21 +56,29 @@ services:
         - "fetch('http://localhost:8080/readyz').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"
       interval: 2s
       retries: 30
-    restart: unless-stopped
+
+  seed:
+    <<: *bun
+    command: ["bun", "run", "gateway/src/demo/seed.ts"]
+    environment:
+      <<: *env
+      GATEWAY_URL: http://gateway:8080
+    depends_on:
+      gateway: { condition: service_healthy }
 
   dashboard:
     build:
-      context: .
+      context: ..
       dockerfile: docker/dashboard.Dockerfile
     image: palang-ai-dashboard:local
-    env_file: .env
     environment:
       PALANG_ADMIN_URL: http://gateway:8081
+      PALANG_ADMIN_TOKEN: demo-admin-token-not-for-production
+      DASHBOARD_PASSWORD: palang-demo-password
     ports:
       - "127.0.0.1:3000:3000"
     depends_on:
       gateway: { condition: service_healthy }
-    restart: unless-stopped
 
 volumes:
   pgdata:

@@ -61,3 +61,18 @@ test("unset referenced env var throws ConfigError naming the variable", async ()
   await expect(promise).rejects.toThrow(ConfigError);
   await expect(promise).rejects.toThrow(/TEST_UPSTREAM_BASE_URL/);
 });
+
+test("${VAR:-default} falls back when the variable is unset or empty", async () => {
+  process.env.TEST_UPSTREAM_BASE_URL = "https://api.openai.com/v1";
+  const path = new URL("env-default.yaml", FIXTURES).pathname;
+
+  delete process.env.TEST_ADMIN_HOST;
+  expect((await loadConfig(path)).server.admin_host).toBe("127.0.0.1");
+  process.env.TEST_ADMIN_HOST = "";
+  expect((await loadConfig(path)).server.admin_host).toBe("127.0.0.1");
+  process.env.TEST_ADMIN_HOST = "0.0.0.0";
+  expect((await loadConfig(path)).server.admin_host).toBe("0.0.0.0");
+
+  delete process.env.TEST_ADMIN_HOST;
+  delete process.env.TEST_UPSTREAM_BASE_URL;
+});

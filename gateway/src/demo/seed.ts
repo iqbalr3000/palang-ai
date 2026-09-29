@@ -73,7 +73,7 @@ const inserted = await db
   .onConflictDoNothing({ target: apiKeys.keyHash })
   .returning({ id: apiKeys.id });
 
-// Traffic only on the first run, so restarting the stack doesn't pile up duplicate events.
+// First run only, so restarts don't duplicate events.
 if (inserted.length > 0) {
   console.log(`demo key created: ${DEMO_API_KEY}`);
   await sendSamples(gatewayUrl);

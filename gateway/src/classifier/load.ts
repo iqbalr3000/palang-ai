@@ -14,7 +14,7 @@ export async function loadClassifiers(
   const classifiers = new Map<string, InjectionClassifier>();
   if (modelIds.size === 0) return classifiers;
 
-  // Lazy and optional: the Docker image omits the ONNX runtime to stay small.
+  // Optional dependency: the Docker image omits it.
   const { createTransformersClassifier } = await import("./transformers.js").catch(
     (error: unknown) => {
       throw new Error(

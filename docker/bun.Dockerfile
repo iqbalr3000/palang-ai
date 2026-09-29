@@ -1,4 +1,3 @@
-# One image for the Bun services: gateway, mock-upstream, migrations and the demo seed.
 FROM oven/bun:1.3.12-slim
 WORKDIR /app
 ENV HUSKY=0 NODE_ENV=production
@@ -15,6 +14,5 @@ COPY guards/src guards/src
 COPY mock-upstream/src mock-upstream/src
 COPY gateway/src gateway/src
 COPY gateway/drizzle gateway/drizzle
-COPY docker/palang.demo.yaml /app/palang.yaml
 USER bun
 CMD ["bun", "run", "gateway/src/index.ts"]

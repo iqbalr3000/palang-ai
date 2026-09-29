@@ -29,4 +29,6 @@ await createFrom("palang.example.yaml", "palang.yaml");
 if (createdEnv) {
   console.log(`\nDashboard password: ${password}  (change DASHBOARD_PASSWORD in .env any time)`);
 }
-console.log("\nNext: start Postgres, then `bun run db:migrate` — see the README.");
+console.log(
+  "\nNext: set your model provider in .env, then `docker compose up -d --build` — see the README.",
+);

@@ -1,8 +1,8 @@
 # Deploying Palang
 
-The `docker compose` setup in the repo root is a **demo**: fixed secrets, a mock model, and every
-port bound to `127.0.0.1`. This page covers what changes for a real deployment, and what Palang
-can't do yet.
+`docker compose up` in the repo root runs Palang with your own `.env` and `palang.yaml` (see the
+README). This page covers what to check before real traffic goes through it, and what Palang can't
+do yet. The demo (`docker/demo.compose.yml`) has public secrets and is never meant to be deployed.
 
 ## Production checklist
 
@@ -25,7 +25,7 @@ can't do yet.
 - [ ] `DASHBOARD_PASSWORD` is unique and at least 12 characters.
 - [ ] Provider API keys come from the environment via `${VAR}` in `palang.yaml`, never written in
       the file itself.
-- [ ] None of the demo values from `docker-compose.yml` are reused.
+- [ ] None of the demo values from `docker/demo.compose.yml` are reused.
 
 **Guards**
 
@@ -39,8 +39,10 @@ can't do yet.
 - [ ] `audit.content_mode` fits your data policy: `redacted` (default) stores content with PII
       and the canary masked, `hash` stores only hashes, `none` stores nothing.
 - [ ] `audit.retention_days` matches your retention policy, and Postgres is backed up.
-- [ ] Migrations run before the gateway starts (`bun run db:migrate`, or the compose `migrate`
-      service).
+- [ ] Migrations run before the gateway starts (the compose `migrate` service does this, or
+      `bun run db:migrate` from source).
+- [ ] The compose Postgres has fixed credentials, so it stays unpublished (only the compose
+      network can reach it).
 
 **Operations**
 

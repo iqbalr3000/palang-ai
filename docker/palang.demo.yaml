@@ -1,9 +1,8 @@
-# Demo config for docker compose. Its only upstream is the bundled mock model.
 server:
   public_port: 8080
   admin_port: 8081
   public_host: 0.0.0.0
-  admin_host: 0.0.0.0 # reachable by the dashboard container; not published to the host
+  admin_host: 0.0.0.0 # for the dashboard container; 8081 isn't published
 
 audit:
   content_mode: redacted

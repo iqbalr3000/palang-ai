@@ -1,4 +1,3 @@
-// The guards without the gateway: mask a prompt, restore the reply, check a tool call.
 import {
   DEFAULT_PII_ID_CONFIG,
   createPiiIdInputGuard,

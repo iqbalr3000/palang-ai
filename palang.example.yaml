@@ -1,6 +1,8 @@
 server:
   public_port: 8080
   admin_port: 8081
+  # docker compose sets this so the dashboard container can reach the admin API.
+  admin_host: ${PALANG_ADMIN_HOST:-127.0.0.1}
 
 audit:
   content_mode: redacted # none | redacted | hash

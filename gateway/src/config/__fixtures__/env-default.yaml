@@ -1,0 +1,20 @@
+server:
+  public_port: 8080
+  admin_port: 8081
+  admin_host: ${TEST_ADMIN_HOST:-127.0.0.1}
+
+audit:
+  content_mode: redacted
+
+models:
+  path: ./models
+
+tenants:
+  - id: demo
+    failure_mode: fail_closed
+    upstream:
+      type: openai-compatible
+      base_url: ${TEST_UPSTREAM_BASE_URL}
+      api_key: sk-test
+    allowed_models: ["gpt-4o-mini"]
+    guards: {}

@@ -1,4 +1,4 @@
-// Talks to the gateway from `docker compose up` with the official OpenAI SDK.
+// Defaults target the demo stack (docker/demo.compose.yml).
 import OpenAI from "openai";
 
 const client = new OpenAI({

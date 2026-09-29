@@ -3,11 +3,14 @@ import { configSchema, type PalangConfig } from "./schema.js";
 
 export class ConfigError extends Error {}
 
-const ENV_VAR_PATTERN = /\$\{([A-Z_][A-Z0-9_]*)\}/g;
+// `${VAR}` or `${VAR:-default}`; like the shell, the default also covers an empty value.
+const ENV_VAR_PATTERN = /\$\{([A-Z_][A-Z0-9_]*)(?::-([^}]*))?\}/g;
 
 function interpolateEnvVars(text: string): string {
-  return text.replace(ENV_VAR_PATTERN, (_match, varName: string) => {
+  return text.replace(ENV_VAR_PATTERN, (_match, varName: string, fallback: string | undefined) => {
     const value = process.env[varName];
+    if (value) return value;
+    if (fallback !== undefined) return fallback;
     if (value === undefined) {
       throw new ConfigError(`Environment variable "${varName}" referenced in config is not set`);
     }

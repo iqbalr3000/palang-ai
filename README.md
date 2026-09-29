@@ -38,6 +38,8 @@ The model receives   →  "NIK saya [NIK_1], tolong cek statusnya"
 Your user gets back  →  "Status untuk 3171011506900001: aktif."
 ```
 
+<br />
+
 ## Features
 
 | | |
@@ -69,6 +71,8 @@ flowchart LR
 PII is masked before the injection scan and restored before the tool policy checks arguments. The
 audit log is written in the background, so it never slows a request down.
 
+<br />
+
 ## Quick start
 
 ### Try the demo
@@ -77,7 +81,7 @@ All you need is Docker:
 
 ```sh
 git clone https://github.com/iqbalr3000/palang-ai.git && cd palang-ai
-docker compose up --build
+docker compose -f docker/demo.compose.yml up --build
 ```
 
 Open <http://localhost:3000> and sign in with `palang-demo-password`. The dashboard already shows
@@ -92,46 +96,37 @@ curl localhost:8080/v1/chat/completions \
 ```
 
 The demo's only model is a mock: `mock-echo` repeats your message back, while the "model" only
-ever saw `[NIK_1]`. Its secrets are public, so don't deploy it as is.
-
-When you're done, `docker compose down` stops the demo (add `-v` to delete its data).
+ever saw `[NIK_1]`. Its secrets are public, so don't deploy it as is. Stop it with
+`docker compose -f docker/demo.compose.yml down` (add `-v` to delete its data).
 
 ### Run it in front of your app
 
-**Requirements:** [Bun](https://bun.sh) 1.3+, [Node.js](https://nodejs.org) 22+, Postgres 16,
-and an OpenAI-compatible API key.
+**Requirements:** Docker, [Bun](https://bun.sh) (only for the setup script) and an
+OpenAI-compatible API key.
 
-#### 1. Install and start Postgres
+#### 1. Generate your config
 
 ```sh
 git clone https://github.com/iqbalr3000/palang-ai.git && cd palang-ai
-bun install
-
-# skip if you already run Postgres 16
-docker run -d --name palang-postgres \
-  -e POSTGRES_USER=palang -e POSTGRES_PASSWORD=palang -e POSTGRES_DB=palang \
-  -p 5432:5432 -v palang-pgdata:/var/lib/postgresql/data \
-  postgres:16
-```
-
-#### 2. Configure
-
-```sh
 bun run setup
 ```
 
-This creates `.env` (secrets, with a generated admin token and dashboard password) and
-`palang.yaml` (your tenants and guards). Existing files are never overwritten.
+This creates `.env`, with a generated admin token and dashboard password (printed once), and
+`palang.yaml`. Existing files are never overwritten.
 
-Point `.env` at your model provider:
+#### 2. Point it at your model provider
+
+In `.env`:
 
 ```sh
 UPSTREAM_BASE_URL=https://api.openai.com/v1
 UPSTREAM_API_KEY=sk-...
 ```
 
-Then describe your app in `palang.yaml`. Start the guards in `monitor` mode so nothing is blocked
-while you learn what your traffic looks like:
+#### 3. Describe your app
+
+In `palang.yaml`, rename the `demo` tenant, list the models your app uses, and start the guards in
+`monitor` mode so nothing is blocked while you learn what your traffic looks like:
 
 ```yaml
 tenants:
@@ -154,20 +149,19 @@ tenants:
 Every option is documented in [`.env.example`](.env.example) and
 [`palang.example.yaml`](palang.example.yaml).
 
-#### 3. Run
+#### 4. Start Palang
 
 ```sh
-bun run db:migrate
-bun run gateway     # app traffic on :8080, admin API on :8081
-bun run dashboard   # http://localhost:3000, in a second terminal
+docker compose up -d --build
 ```
 
-Sign in to the dashboard with the password from `.env`.
+This starts Postgres, runs the migrations, then the gateway on port `8080` and the dashboard on
+<http://localhost:3000>.
 
-#### 4. Connect your app
+#### 5. Connect your app
 
-Create an API key under **API keys** in the dashboard (it's shown only once), then keep using the
-OpenAI SDK you already have:
+Sign in to the dashboard with the password from step 1 and create an API key under **API keys**
+(it's shown only once). Then point the OpenAI SDK you already use at Palang:
 
 ```ts
 import OpenAI from "openai";
@@ -186,20 +180,7 @@ await client.chat.completions.create({
 Streaming and tool calls work the same way. Each request shows up under **Events**, with every
 guard's decision.
 
-<details>
-<summary>Create a key from the command line instead</summary>
-
-```sh
-export PALANG_ADMIN_TOKEN=$(grep '^PALANG_ADMIN_TOKEN=' .env | cut -d= -f2)
-
-curl -s -X POST localhost:8081/admin/tenants/my-app/keys \
-  -H "Authorization: Bearer $PALANG_ADMIN_TOKEN" \
-  -H 'content-type: application/json' -d '{"name":"production"}'
-```
-
-</details>
-
-#### 5. Go from monitoring to enforcing
+#### 6. Go from monitoring to enforcing
 
 1. **Overview** shows what each guard *would* have blocked; **Events** shows why.
 2. Add your tools to `tool-policy` and tune the injection thresholds.
@@ -207,6 +188,25 @@ curl -s -X POST localhost:8081/admin/tenants/my-app/keys \
 
 Going to production? Read [**docs/deployment.md**](docs/deployment.md) for the checklist and known
 limitations.
+
+<details>
+<summary>Run from source instead (for development)</summary>
+
+Needs Bun 1.3+, Node.js 22+ and Postgres 16. After steps 1–3:
+
+```sh
+bun install
+bun run db:migrate
+bun run gateway     # app traffic on :8080, admin API on :8081
+bun run dashboard   # http://localhost:3000, in a second terminal
+```
+
+Set `DATABASE_URL` in `.env` to your Postgres. `bun run mock` starts the bundled mock model, which
+the default `UPSTREAM_BASE_URL` points at.
+
+</details>
+
+<br />
 
 ## Configuration
 
@@ -252,6 +252,8 @@ guards:
 
 </details>
 
+<br />
+
 ## Use it as a library
 
 Don't need the gateway? The guards run in-process, with no dependencies, on Node 20.3+, Bun, Deno
@@ -282,6 +284,8 @@ ctx.messages[0]?.content; // "NIK saya [NIK_1]"
 More in [`examples/`](examples/): the OpenAI SDK through the gateway, and mask → restore → tool
 policy in-process.
 
+<br />
+
 ## Evaluation
 
 Detection quality is measured, not claimed. `bun run eval` reproduces the report on synthetic
@@ -306,6 +310,8 @@ time-to-first-token **5.3 ms p95**, well under the 10 ms and 100 ms budgets. Rep
 > The datasets are synthetic and the heuristics were written by the same author as the samples, so
 > treat these numbers as optimistic. The combined false-positive rate is too high to block on,
 > which is why `injection` should start in `monitor` mode.
+
+<br />
 
 ## License
 
