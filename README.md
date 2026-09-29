@@ -7,7 +7,7 @@
 Mask PII, catch prompt injection and police tool calls, without changing your code.
 
 <p>
-  <img src="https://img.shields.io/badge/status-pre--release-f59e0b?style=flat-square" alt="Status: pre-release" />
+  <a href="https://www.npmjs.com/package/@palang-ai/guards"><img src="https://img.shields.io/npm/v/@palang-ai/guards?style=flat-square&color=f59e0b" alt="npm: @palang-ai/guards" /></a>
   <img src="https://img.shields.io/badge/license-MIT-3b82f6?style=flat-square" alt="License: MIT" />
   <img src="https://img.shields.io/badge/API-OpenAI--compatible-111827?style=flat-square" alt="OpenAI-compatible" />
   <img src="https://img.shields.io/badge/runtime-Bun-000000?style=flat-square&logo=bun" alt="Runtime: Bun" />
@@ -93,6 +93,8 @@ curl localhost:8080/v1/chat/completions \
 
 The demo's only model is a mock: `mock-echo` repeats your message back, while the "model" only
 ever saw `[NIK_1]`. Its secrets are public, so don't deploy it as is.
+
+When you're done, `docker compose down` stops the demo (add `-v` to delete its data).
 
 ### Run it in front of your app
 
