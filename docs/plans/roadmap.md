@@ -198,6 +198,26 @@ Feature order comes from `docs/TSD.md` §15; see `docs/plans/overview.md` for th
   unchanged, unlabeled NPWP recall 0% by design; guard overhead unchanged.
 - `docs/plans/constraints.md` replaced the TSD (no longer tracked) as the standing rules;
   `SECURITY.md` added.
+- Fixed after review in `v0.2.1`: in streamed output, a plain NPWP whose keyword arrived in the
+  previous segment wasn't detected; output detection now reads the last 40 characters of the
+  previous segment.
+
+## `injection-id`
+
+*Spec: `spec-injection-id.md`. Reports: `evals/results/2026-10-03-e9fab6a-dirty-fp32{-before,}.md`,
+`evals/results/2026-10-03-14b6017-dirty-fp32.md` (after the 0.2.1 fix).*
+
+- Injection eval: informal Indonesian and EN-ID code-mixed slices (attacks + `benign_hard`,
+  disjoint dev/test phrasing), per-slice tables with `benign` / `benign_hard` FPR, and fixed-FPR
+  thresholds picked on dev and applied to test. Thresholds reported, not changed.
+- L1: informal expansion (abbreviations, reduplication, leetspeak) scanned alongside each target,
+  affix / informal / cross-language pattern variants. Test L1 recall on code-mixed 12.5% → 34.4%
+  at 0% `benign` FPR; informal Indonesian unchanged at 5.2% (rules tuned on dev didn't
+  generalize), its `benign_hard` FPR 5.6% → 16.7%. Combined recall 86.6% → 86.9%, FPR unchanged.
+- README: dashboard screenshot, CI badge, per-slice injection table, known limitations, roadmap
+  and security sections. Released as `v0.2.0`.
+- Fixed after review in `v0.2.1`: `skip` dropped from the 0.9-weight override pattern (it flagged
+  "Can I skip the installation instructions?").
 
 ## Platform foundation
 
@@ -216,6 +236,16 @@ Feature order comes from `docs/TSD.md` §15; see `docs/plans/overview.md` for th
 Same history as above, dated against the actual commit that shipped it (`git log`), newest first.
 
 ### 2026-10-03
+
+**`e34ec0f` — chore: upgrade lint-staged to 16 to clear the braces advisory**
+CI's `bun audit` failed on a new `braces` advisory (dev-only, via `lint-staged` 15).
+
+**`d104084` — fix: detect output NPWP across stream segments, drop `skip` override verb, bump to
+0.2.1**
+The two code-review findings on `pii-precision` and `injection-id`; tagged `v0.2.1`.
+
+**`14b6017` — feat: implement injection-id, refresh the README, and bump to 0.2.0**
+The whole `injection-id` feature and the README refresh; tagged `v0.2.0`.
 
 **`e9fab6a` — feat: implement pii-precision — keyword-gated NPWP, company NPWP, parenthesized
 phones**

@@ -52,7 +52,7 @@ rules don't bind this repo's workflow; it and the TSD are local-only.
   cost. **Done** — see `docs/plans/roadmap.md`.
 - `injection-id` (`spec-injection-id.md`) — informal and code-mixed Indonesian datasets, per-slice
   and fixed-FPR metrics, L1 normalization and pattern variants; thresholds reported, not changed.
-  Built, pending the user's review.
+  **Done** — see `docs/plans/roadmap.md`.
 - Deferred: a multilingual classifier, decided from `injection-id`'s numbers. A human-written
   held-out set has no writer yet.
 
