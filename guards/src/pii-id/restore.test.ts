@@ -162,3 +162,26 @@ test("checkToolCall flags raw PII in arguments but not restored placeholders", a
     expect.objectContaining({ type: "OUTPUT_PII", meta: { entityType: "EMAIL" } }),
   ]);
 });
+
+test("a plain NPWP in a later stream segment uses the keyword from the earlier one", async () => {
+  const guard = createPiiIdOutputGuard({ ...DEFAULT_PII_ID_CONFIG, maskNewOutputPii: true });
+  const ctx = makeCtx();
+
+  const first = await guard.checkText!("NPWP saya ", ctx);
+  const second = await guard.checkText!("123456789012345 ", ctx);
+
+  expect(first.decision.action).toBe("allow");
+  expect(second.text).toBe("[NPWP_1] ");
+  expect(second.decision.findings).toEqual([{ type: "OUTPUT_PII", meta: { entityType: "NPWP" } }]);
+});
+
+test("without a keyword in this or the earlier segment, a plain 15-digit number passes", async () => {
+  const guard = createPiiIdOutputGuard({ ...DEFAULT_PII_ID_CONFIG, maskNewOutputPii: true });
+  const ctx = makeCtx();
+
+  await guard.checkText!("ID transaksi ", ctx);
+  const second = await guard.checkText!("123456789012345 ", ctx);
+
+  expect(second.text).toBe("123456789012345 ");
+  expect(second.decision.action).toBe("allow");
+});

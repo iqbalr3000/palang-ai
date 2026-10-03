@@ -1,6 +1,6 @@
 import { REASONS } from "../core/index.js";
 import type { Decision, Finding, GuardContext, OutputGuard, ToolCall } from "../core/index.js";
-import { detectPii } from "./detect.js";
+import { NPWP_KEYWORD_WINDOW, detectPii } from "./detect.js";
 import { getOrCreatePlaceholder } from "./vault.js";
 import type { PiiIdConfig } from "./config.js";
 
@@ -32,20 +32,26 @@ interface Span {
 
 // One pass: a second would restore freshly masked output right back. Raw PII here is a leak
 // even if it's in the vault, since the model never saw real values.
+// `context` is earlier stream text: detection needs it (e.g. an NPWP keyword), but only matches
+// starting in `raw` are handled here.
 function restoreAndScan(
   raw: string,
   ctx: GuardContext,
   config: PiiIdConfig,
   findings: Finding[],
+  context = "",
 ): string {
   const placeholders: Span[] = [...raw.matchAll(PLACEHOLDER_PATTERN)].map((m) => ({
     start: m.index,
     end: m.index + m[0].length,
   }));
   const entities = new Set<string>(config.entities);
-  const pii = detectPii(raw).filter(
-    (m) => entities.has(m.type) && !placeholders.some((p) => m.start < p.end && p.start < m.end),
-  );
+  const pii = detectPii(context + raw)
+    .filter((m) => m.start >= context.length)
+    .map((m) => ({ ...m, start: m.start - context.length, end: m.end - context.length }))
+    .filter(
+      (m) => entities.has(m.type) && !placeholders.some((p) => m.start < p.end && p.start < m.end),
+    );
   const spans = [
     ...placeholders.map((span) => ({ span, pii: undefined })),
     ...pii.map((match) => ({ span: match, pii: match })),
@@ -79,19 +85,22 @@ function restoreAndScan(
 }
 
 // PII may start in the already-sent previous segment; if it needed masking, block instead.
-function scanAcrossSegments(
-  raw: string,
-  ctx: GuardContext,
-  config: PiiIdConfig,
-  findings: Finding[],
-  choice: number,
-): boolean {
+function takeCarry(raw: string, ctx: GuardContext, choice: number): string {
   const key = `${CARRY_KEY}:${choice}`;
   const carried = ctx.metadata[key];
   const carry = typeof carried === "string" ? carried : "";
-  const window = carry + raw;
-  ctx.metadata[key] = window.slice(-CARRY_LENGTH);
+  ctx.metadata[key] = (carry + raw).slice(-CARRY_LENGTH);
+  return carry;
+}
+
+function scanAcrossSegments(
+  raw: string,
+  carry: string,
+  config: PiiIdConfig,
+  findings: Finding[],
+): boolean {
   if (carry === "") return false;
+  const window = carry + raw;
 
   const entities = new Set<string>(config.entities);
   const crossing = detectPii(window).filter(
@@ -129,8 +138,10 @@ export function createPiiIdOutputGuard(config: PiiIdConfig): OutputGuard {
 
     async checkText(text: string, ctx: GuardContext, choice = 0) {
       const findings: Finding[] = [];
-      const block = scanAcrossSegments(text, ctx, config, findings, choice);
-      const result = restoreAndScan(text, ctx, config, findings);
+      const carry = takeCarry(text, ctx, choice);
+      const block = scanAcrossSegments(text, carry, config, findings);
+      const context = carry.slice(-NPWP_KEYWORD_WINDOW);
+      const result = restoreAndScan(text, ctx, config, findings, context);
       return { decision: buildDecision(findings, block), text: result };
     },
 

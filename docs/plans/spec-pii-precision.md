@@ -104,6 +104,13 @@ PII, supported formats (injection numbers are unchanged):
 - Bench (Apple M1): guard overhead p95 1.09–1.13 ms before, 1.14–1.15 ms after; added TTFT p95
   4.8–5.3 ms before, 5.1–5.6 ms after (run-to-run noise). All 393 tests pass.
 
+**Fixed after release (0.2.1), found by code review:** in streamed output the holdback buffer
+cuts at whitespace, so "NPWP saya " and "123456789012345 " reach the output guard as separate
+segments and the NPWP lost its keyword; the cross-segment check only reported matches crossing the
+boundary, not starting at it. Output detection now runs on the last 40 characters of the previous
+segment plus the current one, keeping matches that start in the current segment. Cost: guard
+overhead p50 ~0.99 → ~1.17 ms (p95 1.18–1.20 → 1.35–1.38 ms). Input masking was never affected.
+
 Found on the way, not fixed (out of scope): `PHONE_ID` matches the first 12 digits of a
 space-grouped voucher starting `08` (`0805 6856 5531 2…`), because the end of the match is only
 guarded against a digit, not a separator + digit (1 false positive, pre-existing). And the main

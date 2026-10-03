@@ -301,7 +301,7 @@ ordinary (420) and deliberately attack-like (252) benign text:
 
 | Layer | ID formal | ID informal | EN-ID mixed | English | FPR benign | FPR attack-like |
 |---|---:|---:|---:|---:|---:|---:|
-| Heuristics only | 51.6% | 5.2% | 41.1% | 41.7% | 0.0% | 33.7% |
+| Heuristics only | 51.6% | 5.2% | 34.4% | 41.7% | 0.0% | 33.7% |
 | Classifier only | 71.9% | 70.3% | 94.3% | 100% | 9.8% | 50.4% |
 | **Combined** | **88.5%** | 70.3% | 95.3% | 100% | 9.8% | 66.7% |
 
@@ -310,8 +310,8 @@ entities, plus 150 look-alike numbers that must not be masked), and **100%** of 
 survive the streaming restore round trip. Plain NPWPs with no "NPWP" label nearby are deliberately
 not masked (0 of 50 in the `unlabeled` slice); see [known limitations](#known-limitations).
 
-**Latency**, on an Apple M1 against a mock model: guard overhead **1.3 ms p95** and added
-time-to-first-token **5.9 ms p95**, well under the 10 ms and 100 ms budgets. Reproduce with
+**Latency**, on an Apple M1 against a mock model: guard overhead **1.4 ms p95** and added
+time-to-first-token **5.6 ms p95**, well under the 10 ms and 100 ms budgets. Reproduce with
 `bun run bench:gateway` (needs a migrated Postgres at `DATABASE_URL`).
 
 > [!IMPORTANT]

@@ -19,7 +19,7 @@ const NPWP_FORMATTED = /\b\d{2}\.\d{3}\.\d{3}\.\d-\d{3}\.\d{3}\b/g;
 // Plain 15 digits (or 16 with the company "0" prefix) are too common in IDs to accept unlabeled.
 const NPWP_PLAIN = /\b0?\d{15}\b/g;
 const NPWP_KEYWORD = /npwp|n\.p\.w\.p|nomor pokok wajib pajak|tax[ _-]?(?:id|number)|taxpayer/i;
-const NPWP_KEYWORD_WINDOW = 40;
+export const NPWP_KEYWORD_WINDOW = 40;
 // Lookarounds instead of `\b` (which rejects "+62"): a phone must not be read out of a longer
 // digit run ("5200 8283 9981 7031") or an email's local part.
 const PHONE_CANDIDATE =

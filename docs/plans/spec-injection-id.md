@@ -125,3 +125,8 @@ Combined (L1 + L2): recall 86.6% → 86.9% (mixed 94.3% → 95.3%, informal unch
 Open for the user: keep the informal normalization as is, or drop it (it adds cost and informal
 FPR with no test recall gain). Deciding that from these test numbers would itself be tuning on test;
 it's recorded here as a judgment call, not a measured optimization.
+
+**Fixed after release (0.2.1), found by code review:** `skip` in the 0.9-weight
+`en-ignore-previous` pattern flagged ordinary English ("Can I skip the installation
+instructions?" scored 0.90). It was removed; no dev sample needed it. Test L1 recall on
+mixed/informal went 41.1% → 34.4%; combined and every other number are unchanged.

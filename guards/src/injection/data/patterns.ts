@@ -7,7 +7,7 @@ export const INJECTION_PATTERNS: readonly InjectionPattern[] = [
     lang: "en",
     weight: 0.9,
     regex:
-      /\b(?:ignore|disregard|forget|override|skip)\b(?:\s+\w+){0,3}\s+(?:instructions?|prompts?|rules|guidelines|directives|instruksi|perintah|aturan|petunjuk|arahan)\b/,
+      /\b(?:ignore|disregard|forget|override)\b(?:\s+\w+){0,3}\s+(?:instructions?|prompts?|rules|guidelines|directives|instruksi|perintah|aturan|petunjuk|arahan)\b/,
   },
   {
     id: "en-reveal-prompt",
