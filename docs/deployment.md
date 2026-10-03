@@ -1,8 +1,8 @@
 # Deploying Palang
 
 `docker compose up` in the repo root runs Palang with your own `.env` and `palang.yaml` (see the
-README). This page covers what to check before real traffic goes through it, and what Palang can't
-do yet. The demo (`docker/demo.compose.yml`) has public secrets and is never meant to be deployed.
+README). This page covers what to check before real traffic goes through it; what Palang can't do yet
+is in the README's [known limitations](../README.md#known-limitations). The demo (`docker/demo.compose.yml`) has public secrets and is never meant to be deployed.
 
 ## Production checklist
 
@@ -12,7 +12,7 @@ do yet. The demo (`docker/demo.compose.yml`) has public secrets and is never mea
 - [ ] The admin API (`8081`) is **never** exposed publicly. It's loopback-only by default
       (`server.admin_host`); if the dashboard runs on another host, open it to that host only.
 - [ ] The dashboard (`3000`) is **not** on the public internet. Put it behind a VPN or an
-      authenticating proxy (see [sign-in limits](#known-limitations)).
+      authenticating proxy (see [sign-in limits](../README.md#known-limitations)).
 - [ ] TLS terminates in front of the gateway and the dashboard. If your proxy sets
       `X-Forwarded-Proto: https`, the dashboard session cookie is marked `Secure`.
 - [ ] Your reverse proxy doesn't buffer streaming responses (the gateway sends
@@ -53,23 +53,4 @@ do yet. The demo (`docker/demo.compose.yml`) has public secrets and is never mea
 
 ## Known limitations
 
-- **Audit events can be lost** on a crash or under overload: the queue lives in memory and drops
-  events rather than slowing requests down. `palang_audit_dropped_total` counts the losses.
-- **A streaming block can't recall text already sent.** Output guards hold back a small window,
-  but a block mid-stream ends the response after earlier text reached the client.
-- **The model may paraphrase placeholders**, which makes restore miss them. The eval measures this
-  as `restore_miss`.
-- **Injection detection is weaker in Indonesian** than in English, and its false-positive rate is
-  too high to block on; keep `injection` in `monitor`.
-- **A plain NPWP is masked only when labeled.** Formatted NPWPs (`01.234.567.8-901.000`) always
-  are; a plain 15- or 16-digit one needs a word like "NPWP" or "tax ID" shortly before it, so a bare
-  number in a pasted table row passes through.
-- **Long numeric IDs can be masked as cards.** Card detection relies on the Luhn check, which
-  about one in ten random 13–19-digit numbers (order IDs, virtual accounts, transfer references)
-  also passes. They're restored in the reply, but the model sees a placeholder.
-- **Dashboard sign-in is rate-limited globally**, not per IP (client IPs can be forged without a
-  trusted proxy). Someone guessing nonstop can lock the real admin out too.
-- **Only OpenAI-compatible providers** are supported.
-- **`logprobs` are dropped** from requests and responses, since they'd expose unguarded output.
-  The legacy `functions`/`function_call` API is rejected with a 400; use `tools`.
-- **Config is read at startup**; changing `palang.yaml` needs a gateway restart.
+See [Known limitations](../README.md#known-limitations) in the README.

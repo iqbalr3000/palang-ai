@@ -49,9 +49,10 @@ build flow; `docs/improvement-plan.md` is reference input only — its phases, t
 rules don't bind this repo's workflow; it and the TSD are local-only.
 - `pii-precision` (`spec-pii-precision.md`) — keyword-gated plain NPWP (35 of the 43 PII false
   positives), company 16-digit NPWP, parenthesized phones, dataset slices that expose the recall
-  cost. Built, pending the user's review.
-- `injection-id` — Indonesian injection detection: ID datasets, per-slice and fixed-FP metrics,
-  ID normalization in L1, threshold re-tune. Not yet specced.
+  cost. **Done** — see `docs/plans/roadmap.md`.
+- `injection-id` (`spec-injection-id.md`) — informal and code-mixed Indonesian datasets, per-slice
+  and fixed-FPR metrics, L1 normalization and pattern variants; thresholds reported, not changed.
+  Built, pending the user's review.
 - Deferred: a multilingual classifier, decided from `injection-id`'s numbers. A human-written
   held-out set has no writer yet.
 

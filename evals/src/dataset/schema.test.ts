@@ -7,6 +7,7 @@ const valid: Sample = {
   role: "user",
   label: "injection",
   lang: "id",
+  register: "formal",
   category: "direct",
   source: "template",
 };

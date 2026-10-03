@@ -7,7 +7,7 @@ export const INJECTION_PATTERNS: readonly InjectionPattern[] = [
     lang: "en",
     weight: 0.9,
     regex:
-      /\b(?:ignore|disregard|forget|override)\b(?:\s+\w+){0,3}\s+(?:instructions?|prompts?|rules|guidelines|directives)\b/,
+      /\b(?:ignore|disregard|forget|override|skip)\b(?:\s+\w+){0,3}\s+(?:instructions?|prompts?|rules|guidelines|directives|instruksi|perintah|aturan|petunjuk|arahan)\b/,
   },
   {
     id: "en-reveal-prompt",
@@ -58,28 +58,28 @@ export const INJECTION_PATTERNS: readonly InjectionPattern[] = [
     lang: "id",
     weight: 0.9,
     regex:
-      /\b(?:abaikan|acuhkan|lupakan|kesampingkan|hiraukan|jangan\s+(?:ikuti|patuhi))\b(?:\s+\w+){0,3}\s+(?:instruksi|perintah|petunjuk|arahan|aturan|prompt)\b/,
+      /\b(?:(?:meng|di)?abaikan(?:lah)?|acuhkan|lupakan(?:lah)?|lupain|cuekin|kesampingkan|hiraukan|(?:jangan|tidak\s+(?:usah|perlu))\s+(?:ikuti|ikutin|patuhi|follow))\b(?:\s+\w+){0,3}\s+(?:instruksi|perintah|petunjuk|arahan|aturan|prompt|instructions?|rules|guidelines|prompts)\b/,
   },
   {
     id: "id-reveal-prompt",
     lang: "id",
     weight: 0.8,
     regex:
-      /\b(?:tampilkan|ungkapkan|tunjukkan|bocorkan|cetak|ulangi|sebutkan|beritahu(?:kan)?)\b(?:\s+\w+){0,4}\s+(?:system\s+prompt|prompt\s+sistem|instruksi\s+(?:sistem|awal|asli|tersembunyi)|prompt\s+(?:awal|asli|tersembunyi))\b/,
+      /\b(?:tampilkan|ungkapkan|tunjukkan|tunjukin|bocorkan|bocorin|cetak|ulangi|sebutkan|beritahu(?:kan)?|kasih\s+(?:tau|tahu)|reveal|show|print|leak|display|output)\b(?:\s+\w+){0,4}\s+(?:system\s+prompt|prompt\s+sistem|instruksi\s+(?:sistem|awal|asli|tersembunyi)|prompt\s+(?:awal|asli|tersembunyi))\b/,
   },
   {
     id: "id-role-override",
     lang: "id",
     weight: 0.3,
     regex:
-      /\b(?:(?:kamu|anda|engkau)\s+(?:sekarang|kini)\s+(?:adalah|menjadi)|mulai\s+sekarang,?\s+(?:kamu|anda))\b/,
+      /\b(?:(?:kamu|anda|engkau)\s+(?:sekarang|kini)\s+(?:adalah|menjadi)|mulai\s+sekarang,?\s+(?:kamu|anda|you\s+are)|(?:sekarang|kini)\s+(?:kamu|anda)\s+bebas)\b/,
   },
   {
     id: "id-no-restrictions",
     lang: "id",
     weight: 0.4,
     regex:
-      /\b(?:tanpa|bebas\s+dari)\s+(?:(?:ada|semua|segala|seluruh)\s+)?(?:batasan|pembatasan|filter|sensor|aturan)\b/,
+      /\b(?:(?:tanpa|bebas\s+dari)\s+(?:(?:ada|semua|segala|seluruh)\s+)?(?:batasan|pembatasan|filter|sensor|aturan|restrictions?|rules|filters|limits?)|tidak\s+ada\s+(?:lagi\s+)?(?:aturan|batasan|sensor|filter))\b/,
   },
   {
     id: "id-jailbreak-persona",
@@ -97,13 +97,14 @@ export const INJECTION_PATTERNS: readonly InjectionPattern[] = [
     id: "id-pretend",
     lang: "id",
     weight: 0.3,
-    regex: /\b(?:berpura-pura|pura-pura|anggap\s+(?:dirimu|kamu)|bayangkan\s+kamu)\b/,
+    regex:
+      /\b(?:berpura-pura|pura-pura|(?:anggap|anggep)\s+(?:(?:aja|saja)\s+)?(?:dirimu|kamu)|bayangkan\s+kamu)\b/,
   },
   {
     id: "id-new-instructions",
     lang: "id",
     weight: 0.5,
-    regex: /\b(?:instruksi|perintah|aturan)\s+(?:baru|terbaru|tambahan)\s*:/,
+    regex: /\b(?:instruksi|perintah|aturan)\s+(?:baru|terbaru|tambahan)(?:\s+(?:nih|ya|ini))?\s*:/,
   },
   {
     id: "en-forget-everything",
@@ -124,7 +125,7 @@ export const INJECTION_PATTERNS: readonly InjectionPattern[] = [
     lang: "id",
     weight: 0.7,
     regex:
-      /\b(?:semua|segala)\s+(?:yang\s+)?(?:dikatakan|ditulis|disebutkan|diberikan)\s+(?:sebelum|di\s+atas)(?:\s+\w+){0,4}\s+(?:tidak\s+(?:berlaku|valid)|batal|salah)\b/,
+      /\b(?:(?:semua|segala)\s+(?:yang\s+)?|yang\s+tadi\s+)(?:dikatakan|ditulis|disebutkan|diberikan|dibilang)\s+(?:sebelum(?:nya)?|di\s+atas)(?:\s+\w+){0,4}\s+(?:tidak\s+(?:berlaku|valid)|not\s+valid|batal|salah)\b/,
   },
   {
     id: "any-fake-delimiter",

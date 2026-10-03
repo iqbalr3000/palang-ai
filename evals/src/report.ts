@@ -1,7 +1,11 @@
-import { CATEGORIES, LANGS, type Category, type Split } from "./dataset/schema.js";
-import { THRESHOLDS, type LayerReport, type ThresholdName } from "./evaluate.js";
+import { CATEGORIES, type Category, type Split } from "./dataset/schema.js";
+import {
+  THRESHOLDS,
+  type FixedFprReport,
+  type LayerReport,
+  type ThresholdName,
+} from "./evaluate.js";
 import { ms, pct } from "./format.js";
-import type { Metrics } from "./metrics.js";
 import { renderPiiMarkdown, type PiiReport } from "./pii/report.js";
 
 export interface SplitReport {
@@ -13,6 +17,7 @@ export interface InjectionReport {
   thresholds: typeof THRESHOLDS;
   classifier: { model: string; dtype: "fp32" | "q8" } | null;
   splits: Partial<Record<Split, SplitReport>>;
+  fixedFpr: Record<string, FixedFprReport[]> | null;
 }
 
 export interface EvalReport {
@@ -38,19 +43,40 @@ function overallTable(layer: LayerReport): string[] {
   ];
 }
 
-function langTable(layer: LayerReport): string[] {
+function sliceTable(layer: LayerReport): string[] {
   const rows: string[] = [];
   for (const name of Object.keys(THRESHOLDS) as ThresholdName[]) {
-    for (const lang of LANGS) {
-      const m: Metrics = layer.thresholds[name].byLang[lang];
+    for (const [slice, m] of Object.entries(layer.thresholds[name].bySlice)) {
       rows.push(
-        `| ${name} | ${lang} | ${m.n} | ${pct(m.precision)} | ${pct(m.recall)} | ${pct(m.fpr)} | ${pct(m.f1)} |`,
+        `| ${name} | ${slice} | ${m.all.n} | ${pct(m.all.recall)} | ${pct(m.benign.fpr)} | ${pct(m.benignHard.fpr)} | ${pct(m.all.precision)} | ${pct(m.all.f1)} |`,
       );
     }
   }
   return [
-    "| Threshold | Lang | n | Precision | Recall | FPR | F1 |",
-    "|---|---|---|---|---|---|---|",
+    "| Threshold | Slice | n | Recall | FPR benign | FPR benign_hard | Precision | F1 |",
+    "|---|---|---|---|---|---|---|---|",
+    ...rows,
+  ];
+}
+
+function fixedFprTable(fixedFpr: Record<string, FixedFprReport[]>): string[] {
+  const slices = [
+    ...new Set(
+      Object.values(fixedFpr).flatMap((reports) =>
+        reports.flatMap((r) => Object.keys(r.test?.bySlice ?? {})),
+      ),
+    ),
+  ];
+  const rows = Object.entries(fixedFpr).flatMap(([layerName, reports]) =>
+    reports.map((r) => {
+      const perSlice = slices.map((slice) => pct(r.test?.bySlice[slice]?.all.recall ?? null));
+      const threshold = r.threshold === null ? "unreachable" : r.threshold.toFixed(3);
+      return `| ${layerName} | ${pct(r.target)} | ${threshold} | ${pct(r.dev?.recall ?? null)} | ${pct(r.dev?.fpr ?? null)} | ${pct(r.test?.overall.recall ?? null)} | ${pct(r.test?.overall.fpr ?? null)} | ${perSlice.join(" | ")} |`;
+    }),
+  );
+  return [
+    `| Layer | Target FPR | Threshold | dev recall | dev FPR | test recall | test FPR | ${slices.map((s) => `test recall ${s}`).join(" | ")} |`,
+    `|---|---|---|---|---|---|---|${slices.map(() => "---").join("|")}|`,
     ...rows,
   ];
 }
@@ -77,8 +103,20 @@ function renderInjectionMarkdown(report: InjectionReport): string[] {
     "- L1 patterns were tuned against **dev** only. **test** is held out and its phrasing is disjoint from dev's.",
     "- The patterns and the samples were written by the same author, so test numbers are still optimistic compared with unseen real-world attacks.",
     "- `benign_hard` is benign text that deliberately resembles attacks (security discussion, legitimate uses of trigger words); it is where false positives are expected.",
+    "- Slices are `lang/register`: formal Indonesian and English, informal Indonesian (slang, abbreviations, leetspeak), and EN-ID code-mixed chat.",
     "",
   ];
+
+  if (report.fixedFpr) {
+    lines.push(
+      "### Fixed false-positive rate",
+      "",
+      "Threshold = the lowest score whose **dev** FPR stays within the target, applied unchanged to **test**. `unreachable` means too many benign dev samples share the top score.",
+      "",
+      ...fixedFprTable(report.fixedFpr),
+      "",
+    );
+  }
 
   for (const [split, splitReport] of Object.entries(report.splits)) {
     lines.push(`### ${split} (${splitReport.samples} samples)`, "");
@@ -88,7 +126,7 @@ function renderInjectionMarkdown(report: InjectionReport): string[] {
         "",
         ...overallTable(layer),
         "",
-        ...langTable(layer),
+        ...sliceTable(layer),
         "",
         ...categoryTable(layer),
         "",

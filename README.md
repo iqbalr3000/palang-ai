@@ -8,6 +8,7 @@ Mask PII, catch prompt injection and police tool calls, without changing your co
 
 <p>
   <a href="https://github.com/iqbalr3000/palang-ai/releases"><img src="https://img.shields.io/github/v/release/iqbalr3000/palang-ai?style=flat-square&color=f59e0b" alt="Latest release" /></a>
+  <a href="https://github.com/iqbalr3000/palang-ai/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/iqbalr3000/palang-ai/ci.yml?branch=main&style=flat-square&label=CI" alt="CI status" /></a>
   <img src="https://img.shields.io/badge/license-MIT-3b82f6?style=flat-square" alt="License: MIT" />
   <img src="https://img.shields.io/badge/API-OpenAI--compatible-111827?style=flat-square" alt="OpenAI-compatible" />
   <img src="https://img.shields.io/badge/runtime-Bun-000000?style=flat-square&logo=bun" alt="Runtime: Bun" />
@@ -17,8 +18,11 @@ Mask PII, catch prompt injection and police tool calls, without changing your co
   <a href="#features"><b>Features</b></a> &nbsp;·&nbsp;
   <a href="#quick-start"><b>Quick start</b></a> &nbsp;·&nbsp;
   <a href="#configuration"><b>Configuration</b></a> &nbsp;·&nbsp;
-  <a href="#evaluation"><b>Evaluation</b></a>
+  <a href="#evaluation"><b>Evaluation</b></a> &nbsp;·&nbsp;
+  <a href="#known-limitations"><b>Limitations</b></a>
 </p>
+
+<img src="docs/assets/dashboard.png" alt="Palang dashboard: requests, blocks and flags over time, top block reasons and per-guard latency" />
 
 </div>
 
@@ -186,8 +190,8 @@ guard's decision.
 2. Add your tools to `tool-policy` and tune the injection thresholds.
 3. Switch trusted guards to `mode: enforce` and restart the gateway.
 
-Going to production? Read [**docs/deployment.md**](docs/deployment.md) for the checklist and known
-limitations.
+Going to production? Read [**docs/deployment.md**](docs/deployment.md) for the checklist, and the
+[known limitations](#known-limitations) below.
 
 <details>
 <summary>Run from source instead (for development)</summary>
@@ -291,28 +295,77 @@ policy in-process.
 Detection quality is measured, not claimed. `bun run eval` reproduces the report on synthetic
 datasets; results live in [`evals/results/`](evals/results/).
 
-**Prompt injection**, held-out test set (288 attacks: 192 Indonesian, 96 English; 288 benign),
-flag threshold 0.5:
+**Prompt injection**, held-out test set, flag threshold 0.5. Recall per slice (192 attacks each for
+formal Indonesian, informal Indonesian and EN-ID code-mixed, 96 English) and false-positive rate on
+ordinary (420) and deliberately attack-like (252) benign text:
 
-| Layer | Recall | False positives | Recall (ID) | Recall (EN) |
-|---|---:|---:|---:|---:|
-| Heuristics only | 48.3% | 22.9% | 51.6% | 41.7% |
-| Classifier only | 81.3% | 27.1% | 71.9% | 100% |
-| **Combined** | **92.4%** | 39.9% | 88.5% | 100% |
+| Layer | ID formal | ID informal | EN-ID mixed | English | FPR benign | FPR attack-like |
+|---|---:|---:|---:|---:|---:|---:|
+| Heuristics only | 51.6% | 5.2% | 41.1% | 41.7% | 0.0% | 33.7% |
+| Classifier only | 71.9% | 70.3% | 94.3% | 100% | 9.8% | 50.4% |
+| **Combined** | **88.5%** | 70.3% | 95.3% | 100% | 9.8% | 66.7% |
 
 **PII**, 600 synthetic samples: **95.1% precision** and **99.7% recall** on supported formats (590
 entities, plus 150 look-alike numbers that must not be masked), and **100%** of masked samples
 survive the streaming restore round trip. Plain NPWPs with no "NPWP" label nearby are deliberately
-not masked (0 of 50 in the `unlabeled` slice); see [known limitations](docs/deployment.md#known-limitations).
+not masked (0 of 50 in the `unlabeled` slice); see [known limitations](#known-limitations).
 
-**Latency**, on an Apple M1 against a mock model: guard overhead **1.1 ms p95** and added
-time-to-first-token **5.6 ms p95**, well under the 10 ms and 100 ms budgets. Reproduce with
+**Latency**, on an Apple M1 against a mock model: guard overhead **1.3 ms p95** and added
+time-to-first-token **5.9 ms p95**, well under the 10 ms and 100 ms budgets. Reproduce with
 `bun run bench:gateway` (needs a migrated Postgres at `DATABASE_URL`).
 
 > [!IMPORTANT]
 > The datasets are synthetic and the heuristics were written by the same author as the samples, so
-> treat these numbers as optimistic. The combined false-positive rate is too high to block on,
-> which is why `injection` should start in `monitor` mode.
+> treat these numbers as optimistic. Informal Indonesian is the weak spot: the heuristics barely
+> catch slang phrasing they weren't written for, and the classifier also flags some ordinary
+> code-mixed chat. The false-positive rate is too high to block on, which is why `injection` should
+> start in `monitor` mode.
+
+<br />
+
+## Known limitations
+
+- **Audit events can be lost** on a crash or under overload: the queue lives in memory and drops
+  events rather than slowing requests down. `palang_audit_dropped_total` counts the losses.
+- **A streaming block can't recall text already sent.** Output guards hold back a small window,
+  but a block mid-stream ends the response after earlier text reached the client.
+- **The model may paraphrase placeholders**, which makes restore miss them. The eval measures this
+  as `restore_miss`.
+- **Injection detection is weaker in Indonesian** than in English, especially informal Indonesian
+  (slang, abbreviations), and the classifier flags some ordinary EN-ID code-mixed chat. The
+  false-positive rate is too high to block on; keep `injection` in `monitor`.
+- **A plain NPWP is masked only when labeled.** Formatted NPWPs (`01.234.567.8-901.000`) always
+  are; a plain 15- or 16-digit one needs a word like "NPWP" or "tax ID" shortly before it, so a bare
+  number in a pasted table row passes through.
+- **Long numeric IDs can be masked as cards.** Card detection relies on the Luhn check, which
+  about one in ten random 13–19-digit numbers (order IDs, virtual accounts, transfer references)
+  also passes. They're restored in the reply, but the model sees a placeholder.
+- **Dashboard sign-in is rate-limited globally**, not per IP (client IPs can be forged without a
+  trusted proxy). Someone guessing nonstop can lock the real admin out too.
+- **Only OpenAI-compatible providers** are supported.
+- **`logprobs` are dropped** from requests and responses, since they'd expose unguarded output.
+  The legacy `functions`/`function_call` API is rejected with a 400; use `tools`.
+- **Config is read at startup**; changing `palang.yaml` needs a gateway restart.
+
+<br />
+
+## Roadmap
+
+Not yet scheduled, roughly in order:
+
+- **Better Indonesian injection detection**: evaluate multilingual classifiers on informal and
+  code-mixed Indonesian, where the current heuristics and classifier are weakest.
+- **A human-written evaluation set**, so the numbers above stop depending on one author's samples.
+  Contributions of Indonesian attack and benign examples are welcome.
+- **Anthropic Messages API** support, beyond OpenAI-compatible providers.
+- **Policy editing in the dashboard**, backed by the database instead of `palang.yaml`.
+
+<br />
+
+## Security
+
+Found a vulnerability? Please report it privately; see [SECURITY.md](SECURITY.md). Detection misses
+and false positives can go in a regular issue.
 
 <br />
 

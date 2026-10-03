@@ -1,7 +1,13 @@
 import { join } from "node:path";
 import { parseArgs } from "node:util";
 import { SPLITS, loadDataset, type Sample, type Split } from "./dataset/schema.js";
-import { THRESHOLDS, buildLayerReport, scoreSamples, type ScoredSample } from "./evaluate.js";
+import {
+  THRESHOLDS,
+  buildFixedFprReport,
+  buildLayerReport,
+  scoreSamples,
+  type ScoredSample,
+} from "./evaluate.js";
 import { loadPiiDataset } from "./dataset/pii-schema.js";
 import { PII_DATASET_PATH, datasetPath } from "./generate/write.js";
 import { CLASSIFIER_MODEL_ID } from "@palang-ai/gateway/classifier";
@@ -84,16 +90,31 @@ if (suite !== "pii") {
     thresholds: THRESHOLDS,
     classifier: layerNames.some((n) => n !== "l1") ? { model: CLASSIFIER_MODEL_ID, dtype } : null,
     splits: {},
+    fixedFpr: null,
   };
+  const scoredBySplit: Partial<Record<Split, Map<string, ScoredSample[]>>> = {};
   for (const split of selectedSplits()) {
     const samples: Sample[] = await loadDataset(datasetPath(split));
     const splitReport: SplitReport = { samples: samples.length, layers: {} };
+    const scoredByLayer = new Map<string, ScoredSample[]>();
     for (const layer of layers) {
       const scored = await scoreSamples(layer, samples);
+      scoredByLayer.set(layer.name, scored);
       splitReport.layers[layer.name] = buildLayerReport(scored);
       if (values.misses) printMisses(`${layer.name}/${split}`, scored);
     }
     report.injection.splits[split] = splitReport;
+    scoredBySplit[split] = scoredByLayer;
+  }
+
+  const { dev, test } = scoredBySplit;
+  if (dev && test) {
+    report.injection.fixedFpr = Object.fromEntries(
+      layers.map((layer) => [
+        layer.name,
+        buildFixedFprReport(dev.get(layer.name) ?? [], test.get(layer.name) ?? []),
+      ]),
+    );
   }
 }
 

@@ -1,9 +1,11 @@
-import type { Category, Lang, Sample, Split } from "../../dataset/schema.js";
+import type { Category, Lang, Register, Sample, Split } from "../../dataset/schema.js";
 import { createRng, pick, uniqueSamples, type Rng } from "../prng.js";
 import { EN_POOLS } from "./pools-en.js";
+import { ID_INFORMAL_POOLS } from "./pools-id-informal.js";
 import { ID_POOLS } from "./pools-id.js";
+import { MIXED_POOLS } from "./pools-mixed.js";
 import type { LangPools } from "./pools.js";
-import { TRANSFORMS } from "./transforms.js";
+import { INFORMAL_TRANSFORMS, TRANSFORMS, type Transform } from "./transforms.js";
 
 type Counts = Record<Category, number>;
 interface Draft {
@@ -11,22 +13,63 @@ interface Draft {
   role: Sample["role"];
 }
 
-export const COUNTS: Record<Lang, Record<Split, Counts>> = {
-  id: {
-    dev: { direct: 64, indirect: 32, obfuscated: 32, benign: 80, benign_hard: 48 },
-    test: { direct: 96, indirect: 48, obfuscated: 48, benign: 120, benign_hard: 72 },
-  },
-  en: {
-    dev: { direct: 32, indirect: 16, obfuscated: 16, benign: 40, benign_hard: 24 },
-    test: { direct: 48, indirect: 24, obfuscated: 24, benign: 60, benign_hard: 36 },
-  },
+export interface Slice {
+  key: string;
+  lang: Lang;
+  register: Register;
+  pools: LangPools;
+  transforms: Record<Split, readonly Transform[]>;
+  seeds: Record<Split, number>;
+  counts: Record<Split, Counts>;
+}
+
+const ID_COUNTS: Record<Split, Counts> = {
+  dev: { direct: 64, indirect: 32, obfuscated: 32, benign: 80, benign_hard: 48 },
+  test: { direct: 96, indirect: 48, obfuscated: 48, benign: 120, benign_hard: 72 },
 };
 
-const POOLS: Record<Lang, LangPools> = { id: ID_POOLS, en: EN_POOLS };
-const SEEDS: Record<Lang, Record<Split, number>> = {
-  id: { dev: 1101, test: 2202 },
-  en: { dev: 3303, test: 4404 },
-};
+// The key prefixes sample ids, so the original "id" and "en" slices keep their ids.
+export const SLICES: readonly Slice[] = [
+  {
+    key: "id",
+    lang: "id",
+    register: "formal",
+    pools: ID_POOLS,
+    transforms: TRANSFORMS,
+    seeds: { dev: 1101, test: 2202 },
+    counts: ID_COUNTS,
+  },
+  {
+    key: "en",
+    lang: "en",
+    register: "formal",
+    pools: EN_POOLS,
+    transforms: TRANSFORMS,
+    seeds: { dev: 3303, test: 4404 },
+    counts: {
+      dev: { direct: 32, indirect: 16, obfuscated: 16, benign: 40, benign_hard: 24 },
+      test: { direct: 48, indirect: 24, obfuscated: 24, benign: 60, benign_hard: 36 },
+    },
+  },
+  {
+    key: "id-informal",
+    lang: "id",
+    register: "informal",
+    pools: ID_INFORMAL_POOLS,
+    transforms: INFORMAL_TRANSFORMS,
+    seeds: { dev: 5505, test: 6606 },
+    counts: ID_COUNTS,
+  },
+  {
+    key: "mixed",
+    lang: "mixed",
+    register: "informal",
+    pools: MIXED_POOLS,
+    transforms: INFORMAL_TRANSFORMS,
+    seeds: { dev: 7707, test: 8808 },
+    counts: ID_COUNTS,
+  },
+];
 const BENIGN_TOOL_SHARE = 0.3;
 
 function fillSlots(template: string, pools: LangPools, rng: Rng): string {
@@ -54,8 +97,8 @@ function indirect(pools: LangPools, split: Split, rng: Rng): Draft {
   return { text, role: "tool" };
 }
 
-function obfuscated(lang: Lang, pools: LangPools, split: Split, rng: Rng): Draft {
-  const text = pick(rng, TRANSFORMS[split])(directText(pools, split, rng), lang);
+function obfuscated(slice: Slice, split: Split, rng: Rng): Draft {
+  const text = pick(rng, slice.transforms[split])(directText(slice.pools, split, rng), slice.lang);
   return { text, role: "user" };
 }
 
@@ -74,10 +117,10 @@ function benignHard(pools: LangPools, split: Split, rng: Rng): Draft {
   };
 }
 
-export function generateInjectionSamples(lang: Lang, split: Split): Sample[] {
-  const pools = POOLS[lang];
-  const rng = createRng(SEEDS[lang][split]);
-  const counts = COUNTS[lang][split];
+export function generateInjectionSamples(slice: Slice, split: Split): Sample[] {
+  const { pools, lang, register } = slice;
+  const rng = createRng(slice.seeds[split]);
+  const counts = slice.counts[split];
   const counters = { inj: 0, ben: 0 };
 
   function build(category: Category, drafts: Draft[]): Sample[] {
@@ -85,8 +128,8 @@ export function generateInjectionSamples(lang: Lang, split: Split): Sample[] {
     const prefix = label === "injection" ? "inj" : "ben";
     return drafts.map((draft) => {
       counters[prefix] += 1;
-      const id = `${prefix}-${lang}-${split}-${String(counters[prefix]).padStart(4, "0")}`;
-      return { id, ...draft, label, lang, category, source: "template" };
+      const id = `${prefix}-${slice.key}-${split}-${String(counters[prefix]).padStart(4, "0")}`;
+      return { id, ...draft, label, lang, register, category, source: "template" };
     });
   }
 
@@ -101,7 +144,7 @@ export function generateInjectionSamples(lang: Lang, split: Split): Sample[] {
     ),
     ...build(
       "obfuscated",
-      uniqueSamples(counts.obfuscated, () => obfuscated(lang, pools, split, rng)),
+      uniqueSamples(counts.obfuscated, () => obfuscated(slice, split, rng)),
     ),
     ...build(
       "benign",
@@ -115,5 +158,5 @@ export function generateInjectionSamples(lang: Lang, split: Split): Sample[] {
 }
 
 export function generateInjectionDataset(split: Split): Sample[] {
-  return [...generateInjectionSamples("id", split), ...generateInjectionSamples("en", split)];
+  return SLICES.flatMap((slice) => generateInjectionSamples(slice, split));
 }

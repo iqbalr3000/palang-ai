@@ -1,6 +1,6 @@
 {
   "name": "@palang-ai/guards",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "LLM security guards for Indonesian data: PII masking, prompt-injection detection, tool-call policy and canary leak detection.",
   "license": "MIT",
   "author": "iqbalr3000",

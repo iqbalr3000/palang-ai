@@ -1,0 +1,4204 @@
+{
+  "generatedAt": "2026-10-03T08:36:55.195Z",
+  "gitSha": "e9fab6a",
+  "dirty": true,
+  "injection": {
+    "thresholds": {
+      "flag": 0.5,
+      "block": 0.85
+    },
+    "classifier": {
+      "model": "protectai/deberta-v3-base-prompt-injection-v2",
+      "dtype": "fp32"
+    },
+    "splits": {
+      "dev": {
+        "samples": 896,
+        "layers": {
+          "l1": {
+            "thresholds": {
+              "flag": {
+                "value": 0.5,
+                "overall": {
+                  "tp": 228,
+                  "fp": 40,
+                  "tn": 408,
+                  "fn": 220,
+                  "n": 896,
+                  "precision": 0.8507462686567164,
+                  "recall": 0.5089285714285714,
+                  "fpr": 0.08928571428571429,
+                  "f1": 0.6368715083798883
+                },
+                "bySlice": {
+                  "id/formal": {
+                    "all": {
+                      "tp": 121,
+                      "fp": 19,
+                      "tn": 109,
+                      "fn": 7,
+                      "n": 256,
+                      "precision": 0.8642857142857143,
+                      "recall": 0.9453125,
+                      "fpr": 0.1484375,
+                      "f1": 0.9029850746268657
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 80,
+                      "fn": 0,
+                      "n": 80,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 19,
+                      "tn": 29,
+                      "fn": 0,
+                      "n": 48,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.3958333333333333,
+                      "f1": null
+                    }
+                  },
+                  "en/formal": {
+                    "all": {
+                      "tp": 58,
+                      "fp": 6,
+                      "tn": 58,
+                      "fn": 6,
+                      "n": 128,
+                      "precision": 0.90625,
+                      "recall": 0.90625,
+                      "fpr": 0.09375,
+                      "f1": 0.90625
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 40,
+                      "fn": 0,
+                      "n": 40,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 6,
+                      "tn": 18,
+                      "fn": 0,
+                      "n": 24,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.25,
+                      "f1": null
+                    }
+                  },
+                  "id/informal": {
+                    "all": {
+                      "tp": 0,
+                      "fp": 7,
+                      "tn": 121,
+                      "fn": 128,
+                      "n": 256,
+                      "precision": 0,
+                      "recall": 0,
+                      "fpr": 0.0546875,
+                      "f1": null
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 80,
+                      "fn": 0,
+                      "n": 80,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 7,
+                      "tn": 41,
+                      "fn": 0,
+                      "n": 48,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.14583333333333334,
+                      "f1": null
+                    }
+                  },
+                  "mixed/informal": {
+                    "all": {
+                      "tp": 49,
+                      "fp": 8,
+                      "tn": 120,
+                      "fn": 79,
+                      "n": 256,
+                      "precision": 0.8596491228070176,
+                      "recall": 0.3828125,
+                      "fpr": 0.0625,
+                      "f1": 0.5297297297297298
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 80,
+                      "fn": 0,
+                      "n": 80,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 8,
+                      "tn": 40,
+                      "fn": 0,
+                      "n": 48,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.16666666666666666,
+                      "f1": null
+                    }
+                  }
+                },
+                "byCategory": {
+                  "direct": {
+                    "tp": 122,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 102,
+                    "n": 224,
+                    "precision": 1,
+                    "recall": 0.5446428571428571,
+                    "fpr": null,
+                    "f1": 0.7052023121387282
+                  },
+                  "indirect": {
+                    "tp": 61,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 51,
+                    "n": 112,
+                    "precision": 1,
+                    "recall": 0.5446428571428571,
+                    "fpr": null,
+                    "f1": 0.7052023121387282
+                  },
+                  "obfuscated": {
+                    "tp": 45,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 67,
+                    "n": 112,
+                    "precision": 1,
+                    "recall": 0.4017857142857143,
+                    "fpr": null,
+                    "f1": 0.5732484076433121
+                  },
+                  "benign": {
+                    "tp": 0,
+                    "fp": 0,
+                    "tn": 280,
+                    "fn": 0,
+                    "n": 280,
+                    "precision": null,
+                    "recall": null,
+                    "fpr": 0,
+                    "f1": null
+                  },
+                  "benign_hard": {
+                    "tp": 0,
+                    "fp": 40,
+                    "tn": 128,
+                    "fn": 0,
+                    "n": 168,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.23809523809523808,
+                    "f1": null
+                  }
+                }
+              },
+              "block": {
+                "value": 0.85,
+                "overall": {
+                  "tp": 149,
+                  "fp": 35,
+                  "tn": 413,
+                  "fn": 299,
+                  "n": 896,
+                  "precision": 0.8097826086956522,
+                  "recall": 0.3325892857142857,
+                  "fpr": 0.078125,
+                  "f1": 0.47151898734177217
+                },
+                "bySlice": {
+                  "id/formal": {
+                    "all": {
+                      "tp": 78,
+                      "fp": 14,
+                      "tn": 114,
+                      "fn": 50,
+                      "n": 256,
+                      "precision": 0.8478260869565217,
+                      "recall": 0.609375,
+                      "fpr": 0.109375,
+                      "f1": 0.709090909090909
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 80,
+                      "fn": 0,
+                      "n": 80,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 14,
+                      "tn": 34,
+                      "fn": 0,
+                      "n": 48,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.2916666666666667,
+                      "f1": null
+                    }
+                  },
+                  "en/formal": {
+                    "all": {
+                      "tp": 35,
+                      "fp": 6,
+                      "tn": 58,
+                      "fn": 29,
+                      "n": 128,
+                      "precision": 0.8536585365853658,
+                      "recall": 0.546875,
+                      "fpr": 0.09375,
+                      "f1": 0.6666666666666667
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 40,
+                      "fn": 0,
+                      "n": 40,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 6,
+                      "tn": 18,
+                      "fn": 0,
+                      "n": 24,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.25,
+                      "f1": null
+                    }
+                  },
+                  "id/informal": {
+                    "all": {
+                      "tp": 0,
+                      "fp": 7,
+                      "tn": 121,
+                      "fn": 128,
+                      "n": 256,
+                      "precision": 0,
+                      "recall": 0,
+                      "fpr": 0.0546875,
+                      "f1": null
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 80,
+                      "fn": 0,
+                      "n": 80,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 7,
+                      "tn": 41,
+                      "fn": 0,
+                      "n": 48,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.14583333333333334,
+                      "f1": null
+                    }
+                  },
+                  "mixed/informal": {
+                    "all": {
+                      "tp": 36,
+                      "fp": 8,
+                      "tn": 120,
+                      "fn": 92,
+                      "n": 256,
+                      "precision": 0.8181818181818182,
+                      "recall": 0.28125,
+                      "fpr": 0.0625,
+                      "f1": 0.41860465116279066
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 80,
+                      "fn": 0,
+                      "n": 80,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 8,
+                      "tn": 40,
+                      "fn": 0,
+                      "n": 48,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.16666666666666666,
+                      "f1": null
+                    }
+                  }
+                },
+                "byCategory": {
+                  "direct": {
+                    "tp": 87,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 137,
+                    "n": 224,
+                    "precision": 1,
+                    "recall": 0.38839285714285715,
+                    "fpr": null,
+                    "f1": 0.5594855305466238
+                  },
+                  "indirect": {
+                    "tp": 38,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 74,
+                    "n": 112,
+                    "precision": 1,
+                    "recall": 0.3392857142857143,
+                    "fpr": null,
+                    "f1": 0.5066666666666666
+                  },
+                  "obfuscated": {
+                    "tp": 24,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 88,
+                    "n": 112,
+                    "precision": 1,
+                    "recall": 0.21428571428571427,
+                    "fpr": null,
+                    "f1": 0.35294117647058826
+                  },
+                  "benign": {
+                    "tp": 0,
+                    "fp": 0,
+                    "tn": 280,
+                    "fn": 0,
+                    "n": 280,
+                    "precision": null,
+                    "recall": null,
+                    "fpr": 0,
+                    "f1": null
+                  },
+                  "benign_hard": {
+                    "tp": 0,
+                    "fp": 35,
+                    "tn": 133,
+                    "fn": 0,
+                    "n": 168,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.20833333333333334,
+                    "f1": null
+                  }
+                }
+              }
+            },
+            "latencyMs": {
+              "p50": 0.0062499999999090505,
+              "p95": 0.020292000000154076
+            }
+          },
+          "l2": {
+            "thresholds": {
+              "flag": {
+                "value": 0.5,
+                "overall": {
+                  "tp": 370,
+                  "fp": 110,
+                  "tn": 338,
+                  "fn": 78,
+                  "n": 896,
+                  "precision": 0.7708333333333334,
+                  "recall": 0.8258928571428571,
+                  "fpr": 0.24553571428571427,
+                  "f1": 0.7974137931034483
+                },
+                "bySlice": {
+                  "id/formal": {
+                    "all": {
+                      "tp": 101,
+                      "fp": 35,
+                      "tn": 93,
+                      "fn": 27,
+                      "n": 256,
+                      "precision": 0.7426470588235294,
+                      "recall": 0.7890625,
+                      "fpr": 0.2734375,
+                      "f1": 0.7651515151515152
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 11,
+                      "tn": 69,
+                      "fn": 0,
+                      "n": 80,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.1375,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 24,
+                      "tn": 24,
+                      "fn": 0,
+                      "n": 48,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.5,
+                      "f1": null
+                    }
+                  },
+                  "en/formal": {
+                    "all": {
+                      "tp": 61,
+                      "fp": 6,
+                      "tn": 58,
+                      "fn": 3,
+                      "n": 128,
+                      "precision": 0.9104477611940298,
+                      "recall": 0.953125,
+                      "fpr": 0.09375,
+                      "f1": 0.931297709923664
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 40,
+                      "fn": 0,
+                      "n": 40,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 6,
+                      "tn": 18,
+                      "fn": 0,
+                      "n": 24,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.25,
+                      "f1": null
+                    }
+                  },
+                  "id/informal": {
+                    "all": {
+                      "tp": 89,
+                      "fp": 27,
+                      "tn": 101,
+                      "fn": 39,
+                      "n": 256,
+                      "precision": 0.7672413793103449,
+                      "recall": 0.6953125,
+                      "fpr": 0.2109375,
+                      "f1": 0.7295081967213116
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 14,
+                      "tn": 66,
+                      "fn": 0,
+                      "n": 80,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.175,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 13,
+                      "tn": 35,
+                      "fn": 0,
+                      "n": 48,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.2708333333333333,
+                      "f1": null
+                    }
+                  },
+                  "mixed/informal": {
+                    "all": {
+                      "tp": 119,
+                      "fp": 42,
+                      "tn": 86,
+                      "fn": 9,
+                      "n": 256,
+                      "precision": 0.7391304347826086,
+                      "recall": 0.9296875,
+                      "fpr": 0.328125,
+                      "f1": 0.8235294117647058
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 7,
+                      "tn": 73,
+                      "fn": 0,
+                      "n": 80,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.0875,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 35,
+                      "tn": 13,
+                      "fn": 0,
+                      "n": 48,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.7291666666666666,
+                      "f1": null
+                    }
+                  }
+                },
+                "byCategory": {
+                  "direct": {
+                    "tp": 199,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 25,
+                    "n": 224,
+                    "precision": 1,
+                    "recall": 0.8883928571428571,
+                    "fpr": null,
+                    "f1": 0.9408983451536642
+                  },
+                  "indirect": {
+                    "tp": 80,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 32,
+                    "n": 112,
+                    "precision": 1,
+                    "recall": 0.7142857142857143,
+                    "fpr": null,
+                    "f1": 0.8333333333333333
+                  },
+                  "obfuscated": {
+                    "tp": 91,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 21,
+                    "n": 112,
+                    "precision": 1,
+                    "recall": 0.8125,
+                    "fpr": null,
+                    "f1": 0.896551724137931
+                  },
+                  "benign": {
+                    "tp": 0,
+                    "fp": 32,
+                    "tn": 248,
+                    "fn": 0,
+                    "n": 280,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.11428571428571428,
+                    "f1": null
+                  },
+                  "benign_hard": {
+                    "tp": 0,
+                    "fp": 78,
+                    "tn": 90,
+                    "fn": 0,
+                    "n": 168,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.4642857142857143,
+                    "f1": null
+                  }
+                }
+              },
+              "block": {
+                "value": 0.85,
+                "overall": {
+                  "tp": 355,
+                  "fp": 102,
+                  "tn": 346,
+                  "fn": 93,
+                  "n": 896,
+                  "precision": 0.7768052516411379,
+                  "recall": 0.7924107142857143,
+                  "fpr": 0.22767857142857142,
+                  "f1": 0.7845303867403316
+                },
+                "bySlice": {
+                  "id/formal": {
+                    "all": {
+                      "tp": 96,
+                      "fp": 31,
+                      "tn": 97,
+                      "fn": 32,
+                      "n": 256,
+                      "precision": 0.7559055118110236,
+                      "recall": 0.75,
+                      "fpr": 0.2421875,
+                      "f1": 0.7529411764705882
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 8,
+                      "tn": 72,
+                      "fn": 0,
+                      "n": 80,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.1,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 23,
+                      "tn": 25,
+                      "fn": 0,
+                      "n": 48,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.4791666666666667,
+                      "f1": null
+                    }
+                  },
+                  "en/formal": {
+                    "all": {
+                      "tp": 60,
+                      "fp": 6,
+                      "tn": 58,
+                      "fn": 4,
+                      "n": 128,
+                      "precision": 0.9090909090909091,
+                      "recall": 0.9375,
+                      "fpr": 0.09375,
+                      "f1": 0.923076923076923
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 40,
+                      "fn": 0,
+                      "n": 40,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 6,
+                      "tn": 18,
+                      "fn": 0,
+                      "n": 24,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.25,
+                      "f1": null
+                    }
+                  },
+                  "id/informal": {
+                    "all": {
+                      "tp": 80,
+                      "fp": 25,
+                      "tn": 103,
+                      "fn": 48,
+                      "n": 256,
+                      "precision": 0.7619047619047619,
+                      "recall": 0.625,
+                      "fpr": 0.1953125,
+                      "f1": 0.6866952789699571
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 12,
+                      "tn": 68,
+                      "fn": 0,
+                      "n": 80,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.15,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 13,
+                      "tn": 35,
+                      "fn": 0,
+                      "n": 48,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.2708333333333333,
+                      "f1": null
+                    }
+                  },
+                  "mixed/informal": {
+                    "all": {
+                      "tp": 119,
+                      "fp": 40,
+                      "tn": 88,
+                      "fn": 9,
+                      "n": 256,
+                      "precision": 0.7484276729559748,
+                      "recall": 0.9296875,
+                      "fpr": 0.3125,
+                      "f1": 0.8292682926829268
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 5,
+                      "tn": 75,
+                      "fn": 0,
+                      "n": 80,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.0625,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 35,
+                      "tn": 13,
+                      "fn": 0,
+                      "n": 48,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.7291666666666666,
+                      "f1": null
+                    }
+                  }
+                },
+                "byCategory": {
+                  "direct": {
+                    "tp": 193,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 31,
+                    "n": 224,
+                    "precision": 1,
+                    "recall": 0.8616071428571429,
+                    "fpr": null,
+                    "f1": 0.9256594724220625
+                  },
+                  "indirect": {
+                    "tp": 75,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 37,
+                    "n": 112,
+                    "precision": 1,
+                    "recall": 0.6696428571428571,
+                    "fpr": null,
+                    "f1": 0.802139037433155
+                  },
+                  "obfuscated": {
+                    "tp": 87,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 25,
+                    "n": 112,
+                    "precision": 1,
+                    "recall": 0.7767857142857143,
+                    "fpr": null,
+                    "f1": 0.8743718592964823
+                  },
+                  "benign": {
+                    "tp": 0,
+                    "fp": 25,
+                    "tn": 255,
+                    "fn": 0,
+                    "n": 280,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.08928571428571429,
+                    "f1": null
+                  },
+                  "benign_hard": {
+                    "tp": 0,
+                    "fp": 77,
+                    "tn": 91,
+                    "fn": 0,
+                    "n": 168,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.4583333333333333,
+                    "f1": null
+                  }
+                }
+              }
+            },
+            "latencyMs": {
+              "p50": 29.552833000001556,
+              "p95": 78.95233400000143
+            }
+          },
+          "combined": {
+            "thresholds": {
+              "flag": {
+                "value": 0.5,
+                "overall": {
+                  "tp": 394,
+                  "fp": 112,
+                  "tn": 336,
+                  "fn": 54,
+                  "n": 896,
+                  "precision": 0.7786561264822134,
+                  "recall": 0.8794642857142857,
+                  "fpr": 0.25,
+                  "f1": 0.8259958071278826
+                },
+                "bySlice": {
+                  "id/formal": {
+                    "all": {
+                      "tp": 125,
+                      "fp": 37,
+                      "tn": 91,
+                      "fn": 3,
+                      "n": 256,
+                      "precision": 0.7716049382716049,
+                      "recall": 0.9765625,
+                      "fpr": 0.2890625,
+                      "f1": 0.8620689655172414
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 11,
+                      "tn": 69,
+                      "fn": 0,
+                      "n": 80,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.1375,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 26,
+                      "tn": 22,
+                      "fn": 0,
+                      "n": 48,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.5416666666666666,
+                      "f1": null
+                    }
+                  },
+                  "en/formal": {
+                    "all": {
+                      "tp": 61,
+                      "fp": 6,
+                      "tn": 58,
+                      "fn": 3,
+                      "n": 128,
+                      "precision": 0.9104477611940298,
+                      "recall": 0.953125,
+                      "fpr": 0.09375,
+                      "f1": 0.931297709923664
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 40,
+                      "fn": 0,
+                      "n": 40,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 6,
+                      "tn": 18,
+                      "fn": 0,
+                      "n": 24,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.25,
+                      "f1": null
+                    }
+                  },
+                  "id/informal": {
+                    "all": {
+                      "tp": 89,
+                      "fp": 27,
+                      "tn": 101,
+                      "fn": 39,
+                      "n": 256,
+                      "precision": 0.7672413793103449,
+                      "recall": 0.6953125,
+                      "fpr": 0.2109375,
+                      "f1": 0.7295081967213116
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 14,
+                      "tn": 66,
+                      "fn": 0,
+                      "n": 80,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.175,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 13,
+                      "tn": 35,
+                      "fn": 0,
+                      "n": 48,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.2708333333333333,
+                      "f1": null
+                    }
+                  },
+                  "mixed/informal": {
+                    "all": {
+                      "tp": 119,
+                      "fp": 42,
+                      "tn": 86,
+                      "fn": 9,
+                      "n": 256,
+                      "precision": 0.7391304347826086,
+                      "recall": 0.9296875,
+                      "fpr": 0.328125,
+                      "f1": 0.8235294117647058
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 7,
+                      "tn": 73,
+                      "fn": 0,
+                      "n": 80,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.0875,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 35,
+                      "tn": 13,
+                      "fn": 0,
+                      "n": 48,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.7291666666666666,
+                      "f1": null
+                    }
+                  }
+                },
+                "byCategory": {
+                  "direct": {
+                    "tp": 204,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 20,
+                    "n": 224,
+                    "precision": 1,
+                    "recall": 0.9107142857142857,
+                    "fpr": null,
+                    "f1": 0.9532710280373832
+                  },
+                  "indirect": {
+                    "tp": 98,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 14,
+                    "n": 112,
+                    "precision": 1,
+                    "recall": 0.875,
+                    "fpr": null,
+                    "f1": 0.9333333333333333
+                  },
+                  "obfuscated": {
+                    "tp": 92,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 20,
+                    "n": 112,
+                    "precision": 1,
+                    "recall": 0.8214285714285714,
+                    "fpr": null,
+                    "f1": 0.9019607843137255
+                  },
+                  "benign": {
+                    "tp": 0,
+                    "fp": 32,
+                    "tn": 248,
+                    "fn": 0,
+                    "n": 280,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.11428571428571428,
+                    "f1": null
+                  },
+                  "benign_hard": {
+                    "tp": 0,
+                    "fp": 80,
+                    "tn": 88,
+                    "fn": 0,
+                    "n": 168,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.47619047619047616,
+                    "f1": null
+                  }
+                }
+              },
+              "block": {
+                "value": 0.85,
+                "overall": {
+                  "tp": 370,
+                  "fp": 103,
+                  "tn": 345,
+                  "fn": 78,
+                  "n": 896,
+                  "precision": 0.7822410147991543,
+                  "recall": 0.8258928571428571,
+                  "fpr": 0.22991071428571427,
+                  "f1": 0.8034744842562432
+                },
+                "bySlice": {
+                  "id/formal": {
+                    "all": {
+                      "tp": 111,
+                      "fp": 32,
+                      "tn": 96,
+                      "fn": 17,
+                      "n": 256,
+                      "precision": 0.7762237762237763,
+                      "recall": 0.8671875,
+                      "fpr": 0.25,
+                      "f1": 0.8191881918819188
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 8,
+                      "tn": 72,
+                      "fn": 0,
+                      "n": 80,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.1,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 24,
+                      "tn": 24,
+                      "fn": 0,
+                      "n": 48,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.5,
+                      "f1": null
+                    }
+                  },
+                  "en/formal": {
+                    "all": {
+                      "tp": 60,
+                      "fp": 6,
+                      "tn": 58,
+                      "fn": 4,
+                      "n": 128,
+                      "precision": 0.9090909090909091,
+                      "recall": 0.9375,
+                      "fpr": 0.09375,
+                      "f1": 0.923076923076923
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 40,
+                      "fn": 0,
+                      "n": 40,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 6,
+                      "tn": 18,
+                      "fn": 0,
+                      "n": 24,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.25,
+                      "f1": null
+                    }
+                  },
+                  "id/informal": {
+                    "all": {
+                      "tp": 80,
+                      "fp": 25,
+                      "tn": 103,
+                      "fn": 48,
+                      "n": 256,
+                      "precision": 0.7619047619047619,
+                      "recall": 0.625,
+                      "fpr": 0.1953125,
+                      "f1": 0.6866952789699571
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 12,
+                      "tn": 68,
+                      "fn": 0,
+                      "n": 80,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.15,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 13,
+                      "tn": 35,
+                      "fn": 0,
+                      "n": 48,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.2708333333333333,
+                      "f1": null
+                    }
+                  },
+                  "mixed/informal": {
+                    "all": {
+                      "tp": 119,
+                      "fp": 40,
+                      "tn": 88,
+                      "fn": 9,
+                      "n": 256,
+                      "precision": 0.7484276729559748,
+                      "recall": 0.9296875,
+                      "fpr": 0.3125,
+                      "f1": 0.8292682926829268
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 5,
+                      "tn": 75,
+                      "fn": 0,
+                      "n": 80,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.0625,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 35,
+                      "tn": 13,
+                      "fn": 0,
+                      "n": 48,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.7291666666666666,
+                      "f1": null
+                    }
+                  }
+                },
+                "byCategory": {
+                  "direct": {
+                    "tp": 194,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 30,
+                    "n": 224,
+                    "precision": 1,
+                    "recall": 0.8660714285714286,
+                    "fpr": null,
+                    "f1": 0.9282296650717704
+                  },
+                  "indirect": {
+                    "tp": 88,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 24,
+                    "n": 112,
+                    "precision": 1,
+                    "recall": 0.7857142857142857,
+                    "fpr": null,
+                    "f1": 0.88
+                  },
+                  "obfuscated": {
+                    "tp": 88,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 24,
+                    "n": 112,
+                    "precision": 1,
+                    "recall": 0.7857142857142857,
+                    "fpr": null,
+                    "f1": 0.88
+                  },
+                  "benign": {
+                    "tp": 0,
+                    "fp": 25,
+                    "tn": 255,
+                    "fn": 0,
+                    "n": 280,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.08928571428571429,
+                    "f1": null
+                  },
+                  "benign_hard": {
+                    "tp": 0,
+                    "fp": 78,
+                    "tn": 90,
+                    "fn": 0,
+                    "n": 168,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.4642857142857143,
+                    "f1": null
+                  }
+                }
+              }
+            },
+            "latencyMs": {
+              "p50": 27.229707999998936,
+              "p95": 77.79924999999639
+            }
+          }
+        }
+      },
+      "test": {
+        "samples": 1344,
+        "layers": {
+          "l1": {
+            "thresholds": {
+              "flag": {
+                "value": 0.5,
+                "overall": {
+                  "tp": 173,
+                  "fp": 77,
+                  "tn": 595,
+                  "fn": 499,
+                  "n": 1344,
+                  "precision": 0.692,
+                  "recall": 0.25744047619047616,
+                  "fpr": 0.11458333333333333,
+                  "f1": 0.37527114967462033
+                },
+                "bySlice": {
+                  "id/formal": {
+                    "all": {
+                      "tp": 99,
+                      "fp": 37,
+                      "tn": 155,
+                      "fn": 93,
+                      "n": 384,
+                      "precision": 0.7279411764705882,
+                      "recall": 0.515625,
+                      "fpr": 0.19270833333333334,
+                      "f1": 0.6036585365853657
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 120,
+                      "fn": 0,
+                      "n": 120,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 37,
+                      "tn": 35,
+                      "fn": 0,
+                      "n": 72,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.5138888888888888,
+                      "f1": null
+                    }
+                  },
+                  "en/formal": {
+                    "all": {
+                      "tp": 40,
+                      "fp": 29,
+                      "tn": 67,
+                      "fn": 56,
+                      "n": 192,
+                      "precision": 0.5797101449275363,
+                      "recall": 0.4166666666666667,
+                      "fpr": 0.3020833333333333,
+                      "f1": 0.4848484848484849
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 60,
+                      "fn": 0,
+                      "n": 60,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 29,
+                      "tn": 7,
+                      "fn": 0,
+                      "n": 36,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.8055555555555556,
+                      "f1": null
+                    }
+                  },
+                  "id/informal": {
+                    "all": {
+                      "tp": 10,
+                      "fp": 4,
+                      "tn": 188,
+                      "fn": 182,
+                      "n": 384,
+                      "precision": 0.7142857142857143,
+                      "recall": 0.052083333333333336,
+                      "fpr": 0.020833333333333332,
+                      "f1": 0.0970873786407767
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 120,
+                      "fn": 0,
+                      "n": 120,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 4,
+                      "tn": 68,
+                      "fn": 0,
+                      "n": 72,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.05555555555555555,
+                      "f1": null
+                    }
+                  },
+                  "mixed/informal": {
+                    "all": {
+                      "tp": 24,
+                      "fp": 7,
+                      "tn": 185,
+                      "fn": 168,
+                      "n": 384,
+                      "precision": 0.7741935483870968,
+                      "recall": 0.125,
+                      "fpr": 0.036458333333333336,
+                      "f1": 0.21524663677130046
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 120,
+                      "fn": 0,
+                      "n": 120,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 7,
+                      "tn": 65,
+                      "fn": 0,
+                      "n": 72,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.09722222222222222,
+                      "f1": null
+                    }
+                  }
+                },
+                "byCategory": {
+                  "direct": {
+                    "tp": 96,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 240,
+                    "n": 336,
+                    "precision": 1,
+                    "recall": 0.2857142857142857,
+                    "fpr": null,
+                    "f1": 0.4444444444444445
+                  },
+                  "indirect": {
+                    "tp": 55,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 113,
+                    "n": 168,
+                    "precision": 1,
+                    "recall": 0.3273809523809524,
+                    "fpr": null,
+                    "f1": 0.4932735426008969
+                  },
+                  "obfuscated": {
+                    "tp": 22,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 146,
+                    "n": 168,
+                    "precision": 1,
+                    "recall": 0.13095238095238096,
+                    "fpr": null,
+                    "f1": 0.23157894736842108
+                  },
+                  "benign": {
+                    "tp": 0,
+                    "fp": 0,
+                    "tn": 420,
+                    "fn": 0,
+                    "n": 420,
+                    "precision": null,
+                    "recall": null,
+                    "fpr": 0,
+                    "f1": null
+                  },
+                  "benign_hard": {
+                    "tp": 0,
+                    "fp": 77,
+                    "tn": 175,
+                    "fn": 0,
+                    "n": 252,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.3055555555555556,
+                    "f1": null
+                  }
+                }
+              },
+              "block": {
+                "value": 0.85,
+                "overall": {
+                  "tp": 88,
+                  "fp": 31,
+                  "tn": 641,
+                  "fn": 584,
+                  "n": 1344,
+                  "precision": 0.7394957983193278,
+                  "recall": 0.13095238095238096,
+                  "fpr": 0.046130952380952384,
+                  "f1": 0.22250316055625793
+                },
+                "bySlice": {
+                  "id/formal": {
+                    "all": {
+                      "tp": 63,
+                      "fp": 13,
+                      "tn": 179,
+                      "fn": 129,
+                      "n": 384,
+                      "precision": 0.8289473684210527,
+                      "recall": 0.328125,
+                      "fpr": 0.06770833333333333,
+                      "f1": 0.4701492537313433
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 120,
+                      "fn": 0,
+                      "n": 120,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 13,
+                      "tn": 59,
+                      "fn": 0,
+                      "n": 72,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.18055555555555555,
+                      "f1": null
+                    }
+                  },
+                  "en/formal": {
+                    "all": {
+                      "tp": 24,
+                      "fp": 11,
+                      "tn": 85,
+                      "fn": 72,
+                      "n": 192,
+                      "precision": 0.6857142857142857,
+                      "recall": 0.25,
+                      "fpr": 0.11458333333333333,
+                      "f1": 0.366412213740458
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 60,
+                      "fn": 0,
+                      "n": 60,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 11,
+                      "tn": 25,
+                      "fn": 0,
+                      "n": 36,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.3055555555555556,
+                      "f1": null
+                    }
+                  },
+                  "id/informal": {
+                    "all": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 192,
+                      "fn": 192,
+                      "n": 384,
+                      "precision": null,
+                      "recall": 0,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 120,
+                      "fn": 0,
+                      "n": 120,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 72,
+                      "fn": 0,
+                      "n": 72,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    }
+                  },
+                  "mixed/informal": {
+                    "all": {
+                      "tp": 1,
+                      "fp": 7,
+                      "tn": 185,
+                      "fn": 191,
+                      "n": 384,
+                      "precision": 0.125,
+                      "recall": 0.005208333333333333,
+                      "fpr": 0.036458333333333336,
+                      "f1": 0.009999999999999998
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 120,
+                      "fn": 0,
+                      "n": 120,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 7,
+                      "tn": 65,
+                      "fn": 0,
+                      "n": 72,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.09722222222222222,
+                      "f1": null
+                    }
+                  }
+                },
+                "byCategory": {
+                  "direct": {
+                    "tp": 46,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 290,
+                    "n": 336,
+                    "precision": 1,
+                    "recall": 0.13690476190476192,
+                    "fpr": null,
+                    "f1": 0.24083769633507857
+                  },
+                  "indirect": {
+                    "tp": 33,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 135,
+                    "n": 168,
+                    "precision": 1,
+                    "recall": 0.19642857142857142,
+                    "fpr": null,
+                    "f1": 0.3283582089552239
+                  },
+                  "obfuscated": {
+                    "tp": 9,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 159,
+                    "n": 168,
+                    "precision": 1,
+                    "recall": 0.05357142857142857,
+                    "fpr": null,
+                    "f1": 0.10169491525423728
+                  },
+                  "benign": {
+                    "tp": 0,
+                    "fp": 0,
+                    "tn": 420,
+                    "fn": 0,
+                    "n": 420,
+                    "precision": null,
+                    "recall": null,
+                    "fpr": 0,
+                    "f1": null
+                  },
+                  "benign_hard": {
+                    "tp": 0,
+                    "fp": 31,
+                    "tn": 221,
+                    "fn": 0,
+                    "n": 252,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.12301587301587301,
+                    "f1": null
+                  }
+                }
+              }
+            },
+            "latencyMs": {
+              "p50": 0.006666000001132488,
+              "p95": 0.016458999998576473
+            }
+          },
+          "l2": {
+            "thresholds": {
+              "flag": {
+                "value": 0.5,
+                "overall": {
+                  "tp": 550,
+                  "fp": 168,
+                  "tn": 504,
+                  "fn": 122,
+                  "n": 1344,
+                  "precision": 0.766016713091922,
+                  "recall": 0.8184523809523809,
+                  "fpr": 0.25,
+                  "f1": 0.7913669064748201
+                },
+                "bySlice": {
+                  "id/formal": {
+                    "all": {
+                      "tp": 138,
+                      "fp": 59,
+                      "tn": 133,
+                      "fn": 54,
+                      "n": 384,
+                      "precision": 0.700507614213198,
+                      "recall": 0.71875,
+                      "fpr": 0.3072916666666667,
+                      "f1": 0.7095115681233932
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 14,
+                      "tn": 106,
+                      "fn": 0,
+                      "n": 120,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.11666666666666667,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 45,
+                      "tn": 27,
+                      "fn": 0,
+                      "n": 72,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.625,
+                      "f1": null
+                    }
+                  },
+                  "en/formal": {
+                    "all": {
+                      "tp": 96,
+                      "fp": 19,
+                      "tn": 77,
+                      "fn": 0,
+                      "n": 192,
+                      "precision": 0.8347826086956521,
+                      "recall": 1,
+                      "fpr": 0.19791666666666666,
+                      "f1": 0.909952606635071
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 1,
+                      "tn": 59,
+                      "fn": 0,
+                      "n": 60,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.016666666666666666,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 18,
+                      "tn": 18,
+                      "fn": 0,
+                      "n": 36,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.5,
+                      "f1": null
+                    }
+                  },
+                  "id/informal": {
+                    "all": {
+                      "tp": 135,
+                      "fp": 44,
+                      "tn": 148,
+                      "fn": 57,
+                      "n": 384,
+                      "precision": 0.7541899441340782,
+                      "recall": 0.703125,
+                      "fpr": 0.22916666666666666,
+                      "f1": 0.7277628032345014
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 16,
+                      "tn": 104,
+                      "fn": 0,
+                      "n": 120,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.13333333333333333,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 28,
+                      "tn": 44,
+                      "fn": 0,
+                      "n": 72,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.3888888888888889,
+                      "f1": null
+                    }
+                  },
+                  "mixed/informal": {
+                    "all": {
+                      "tp": 181,
+                      "fp": 46,
+                      "tn": 146,
+                      "fn": 11,
+                      "n": 384,
+                      "precision": 0.7973568281938326,
+                      "recall": 0.9427083333333334,
+                      "fpr": 0.23958333333333334,
+                      "f1": 0.8639618138424822
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 10,
+                      "tn": 110,
+                      "fn": 0,
+                      "n": 120,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.08333333333333333,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 36,
+                      "tn": 36,
+                      "fn": 0,
+                      "n": 72,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.5,
+                      "f1": null
+                    }
+                  }
+                },
+                "byCategory": {
+                  "direct": {
+                    "tp": 287,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 49,
+                    "n": 336,
+                    "precision": 1,
+                    "recall": 0.8541666666666666,
+                    "fpr": null,
+                    "f1": 0.9213483146067416
+                  },
+                  "indirect": {
+                    "tp": 110,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 58,
+                    "n": 168,
+                    "precision": 1,
+                    "recall": 0.6547619047619048,
+                    "fpr": null,
+                    "f1": 0.7913669064748202
+                  },
+                  "obfuscated": {
+                    "tp": 153,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 15,
+                    "n": 168,
+                    "precision": 1,
+                    "recall": 0.9107142857142857,
+                    "fpr": null,
+                    "f1": 0.9532710280373832
+                  },
+                  "benign": {
+                    "tp": 0,
+                    "fp": 41,
+                    "tn": 379,
+                    "fn": 0,
+                    "n": 420,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.09761904761904762,
+                    "f1": null
+                  },
+                  "benign_hard": {
+                    "tp": 0,
+                    "fp": 127,
+                    "tn": 125,
+                    "fn": 0,
+                    "n": 252,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.503968253968254,
+                    "f1": null
+                  }
+                }
+              },
+              "block": {
+                "value": 0.85,
+                "overall": {
+                  "tp": 524,
+                  "fp": 149,
+                  "tn": 523,
+                  "fn": 148,
+                  "n": 1344,
+                  "precision": 0.7786032689450223,
+                  "recall": 0.7797619047619048,
+                  "fpr": 0.22172619047619047,
+                  "f1": 0.779182156133829
+                },
+                "bySlice": {
+                  "id/formal": {
+                    "all": {
+                      "tp": 127,
+                      "fp": 56,
+                      "tn": 136,
+                      "fn": 65,
+                      "n": 384,
+                      "precision": 0.6939890710382514,
+                      "recall": 0.6614583333333334,
+                      "fpr": 0.2916666666666667,
+                      "f1": 0.6773333333333333
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 12,
+                      "tn": 108,
+                      "fn": 0,
+                      "n": 120,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.1,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 44,
+                      "tn": 28,
+                      "fn": 0,
+                      "n": 72,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.6111111111111112,
+                      "f1": null
+                    }
+                  },
+                  "en/formal": {
+                    "all": {
+                      "tp": 95,
+                      "fp": 18,
+                      "tn": 78,
+                      "fn": 1,
+                      "n": 192,
+                      "precision": 0.8407079646017699,
+                      "recall": 0.9895833333333334,
+                      "fpr": 0.1875,
+                      "f1": 0.9090909090909092
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 60,
+                      "fn": 0,
+                      "n": 60,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 18,
+                      "tn": 18,
+                      "fn": 0,
+                      "n": 36,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.5,
+                      "f1": null
+                    }
+                  },
+                  "id/informal": {
+                    "all": {
+                      "tp": 122,
+                      "fp": 36,
+                      "tn": 156,
+                      "fn": 70,
+                      "n": 384,
+                      "precision": 0.7721518987341772,
+                      "recall": 0.6354166666666666,
+                      "fpr": 0.1875,
+                      "f1": 0.6971428571428571
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 11,
+                      "tn": 109,
+                      "fn": 0,
+                      "n": 120,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.09166666666666666,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 25,
+                      "tn": 47,
+                      "fn": 0,
+                      "n": 72,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.3472222222222222,
+                      "f1": null
+                    }
+                  },
+                  "mixed/informal": {
+                    "all": {
+                      "tp": 180,
+                      "fp": 39,
+                      "tn": 153,
+                      "fn": 12,
+                      "n": 384,
+                      "precision": 0.821917808219178,
+                      "recall": 0.9375,
+                      "fpr": 0.203125,
+                      "f1": 0.8759124087591241
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 7,
+                      "tn": 113,
+                      "fn": 0,
+                      "n": 120,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.058333333333333334,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 32,
+                      "tn": 40,
+                      "fn": 0,
+                      "n": 72,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.4444444444444444,
+                      "f1": null
+                    }
+                  }
+                },
+                "byCategory": {
+                  "direct": {
+                    "tp": 267,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 69,
+                    "n": 336,
+                    "precision": 1,
+                    "recall": 0.7946428571428571,
+                    "fpr": null,
+                    "f1": 0.8855721393034826
+                  },
+                  "indirect": {
+                    "tp": 104,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 64,
+                    "n": 168,
+                    "precision": 1,
+                    "recall": 0.6190476190476191,
+                    "fpr": null,
+                    "f1": 0.7647058823529412
+                  },
+                  "obfuscated": {
+                    "tp": 153,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 15,
+                    "n": 168,
+                    "precision": 1,
+                    "recall": 0.9107142857142857,
+                    "fpr": null,
+                    "f1": 0.9532710280373832
+                  },
+                  "benign": {
+                    "tp": 0,
+                    "fp": 30,
+                    "tn": 390,
+                    "fn": 0,
+                    "n": 420,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.07142857142857142,
+                    "f1": null
+                  },
+                  "benign_hard": {
+                    "tp": 0,
+                    "fp": 119,
+                    "tn": 133,
+                    "fn": 0,
+                    "n": 252,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.4722222222222222,
+                    "f1": null
+                  }
+                }
+              }
+            },
+            "latencyMs": {
+              "p50": 38.15862500000367,
+              "p95": 97.08795800000371
+            }
+          },
+          "combined": {
+            "thresholds": {
+              "flag": {
+                "value": 0.5,
+                "overall": {
+                  "tp": 582,
+                  "fp": 209,
+                  "tn": 463,
+                  "fn": 90,
+                  "n": 1344,
+                  "precision": 0.7357774968394437,
+                  "recall": 0.8660714285714286,
+                  "fpr": 0.31101190476190477,
+                  "f1": 0.7956254272043745
+                },
+                "bySlice": {
+                  "id/formal": {
+                    "all": {
+                      "tp": 170,
+                      "fp": 78,
+                      "tn": 114,
+                      "fn": 22,
+                      "n": 384,
+                      "precision": 0.6854838709677419,
+                      "recall": 0.8854166666666666,
+                      "fpr": 0.40625,
+                      "f1": 0.7727272727272726
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 14,
+                      "tn": 106,
+                      "fn": 0,
+                      "n": 120,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.11666666666666667,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 64,
+                      "tn": 8,
+                      "fn": 0,
+                      "n": 72,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.8888888888888888,
+                      "f1": null
+                    }
+                  },
+                  "en/formal": {
+                    "all": {
+                      "tp": 96,
+                      "fp": 37,
+                      "tn": 59,
+                      "fn": 0,
+                      "n": 192,
+                      "precision": 0.7218045112781954,
+                      "recall": 1,
+                      "fpr": 0.3854166666666667,
+                      "f1": 0.8384279475982532
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 1,
+                      "tn": 59,
+                      "fn": 0,
+                      "n": 60,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.016666666666666666,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 36,
+                      "tn": 0,
+                      "fn": 0,
+                      "n": 36,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 1,
+                      "f1": null
+                    }
+                  },
+                  "id/informal": {
+                    "all": {
+                      "tp": 135,
+                      "fp": 48,
+                      "tn": 144,
+                      "fn": 57,
+                      "n": 384,
+                      "precision": 0.7377049180327869,
+                      "recall": 0.703125,
+                      "fpr": 0.25,
+                      "f1": 0.72
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 16,
+                      "tn": 104,
+                      "fn": 0,
+                      "n": 120,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.13333333333333333,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 32,
+                      "tn": 40,
+                      "fn": 0,
+                      "n": 72,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.4444444444444444,
+                      "f1": null
+                    }
+                  },
+                  "mixed/informal": {
+                    "all": {
+                      "tp": 181,
+                      "fp": 46,
+                      "tn": 146,
+                      "fn": 11,
+                      "n": 384,
+                      "precision": 0.7973568281938326,
+                      "recall": 0.9427083333333334,
+                      "fpr": 0.23958333333333334,
+                      "f1": 0.8639618138424822
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 10,
+                      "tn": 110,
+                      "fn": 0,
+                      "n": 120,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.08333333333333333,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 36,
+                      "tn": 36,
+                      "fn": 0,
+                      "n": 72,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.5,
+                      "f1": null
+                    }
+                  }
+                },
+                "byCategory": {
+                  "direct": {
+                    "tp": 299,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 37,
+                    "n": 336,
+                    "precision": 1,
+                    "recall": 0.8898809523809523,
+                    "fpr": null,
+                    "f1": 0.9417322834645669
+                  },
+                  "indirect": {
+                    "tp": 130,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 38,
+                    "n": 168,
+                    "precision": 1,
+                    "recall": 0.7738095238095238,
+                    "fpr": null,
+                    "f1": 0.8724832214765101
+                  },
+                  "obfuscated": {
+                    "tp": 153,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 15,
+                    "n": 168,
+                    "precision": 1,
+                    "recall": 0.9107142857142857,
+                    "fpr": null,
+                    "f1": 0.9532710280373832
+                  },
+                  "benign": {
+                    "tp": 0,
+                    "fp": 41,
+                    "tn": 379,
+                    "fn": 0,
+                    "n": 420,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.09761904761904762,
+                    "f1": null
+                  },
+                  "benign_hard": {
+                    "tp": 0,
+                    "fp": 168,
+                    "tn": 84,
+                    "fn": 0,
+                    "n": 252,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.6666666666666666,
+                    "f1": null
+                  }
+                }
+              },
+              "block": {
+                "value": 0.85,
+                "overall": {
+                  "tp": 553,
+                  "fp": 150,
+                  "tn": 522,
+                  "fn": 119,
+                  "n": 1344,
+                  "precision": 0.786628733997155,
+                  "recall": 0.8229166666666666,
+                  "fpr": 0.22321428571428573,
+                  "f1": 0.8043636363636364
+                },
+                "bySlice": {
+                  "id/formal": {
+                    "all": {
+                      "tp": 156,
+                      "fp": 57,
+                      "tn": 135,
+                      "fn": 36,
+                      "n": 384,
+                      "precision": 0.7323943661971831,
+                      "recall": 0.8125,
+                      "fpr": 0.296875,
+                      "f1": 0.7703703703703704
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 12,
+                      "tn": 108,
+                      "fn": 0,
+                      "n": 120,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.1,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 45,
+                      "tn": 27,
+                      "fn": 0,
+                      "n": 72,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.625,
+                      "f1": null
+                    }
+                  },
+                  "en/formal": {
+                    "all": {
+                      "tp": 95,
+                      "fp": 18,
+                      "tn": 78,
+                      "fn": 1,
+                      "n": 192,
+                      "precision": 0.8407079646017699,
+                      "recall": 0.9895833333333334,
+                      "fpr": 0.1875,
+                      "f1": 0.9090909090909092
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 0,
+                      "tn": 60,
+                      "fn": 0,
+                      "n": 60,
+                      "precision": null,
+                      "recall": null,
+                      "fpr": 0,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 18,
+                      "tn": 18,
+                      "fn": 0,
+                      "n": 36,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.5,
+                      "f1": null
+                    }
+                  },
+                  "id/informal": {
+                    "all": {
+                      "tp": 122,
+                      "fp": 36,
+                      "tn": 156,
+                      "fn": 70,
+                      "n": 384,
+                      "precision": 0.7721518987341772,
+                      "recall": 0.6354166666666666,
+                      "fpr": 0.1875,
+                      "f1": 0.6971428571428571
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 11,
+                      "tn": 109,
+                      "fn": 0,
+                      "n": 120,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.09166666666666666,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 25,
+                      "tn": 47,
+                      "fn": 0,
+                      "n": 72,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.3472222222222222,
+                      "f1": null
+                    }
+                  },
+                  "mixed/informal": {
+                    "all": {
+                      "tp": 180,
+                      "fp": 39,
+                      "tn": 153,
+                      "fn": 12,
+                      "n": 384,
+                      "precision": 0.821917808219178,
+                      "recall": 0.9375,
+                      "fpr": 0.203125,
+                      "f1": 0.8759124087591241
+                    },
+                    "benign": {
+                      "tp": 0,
+                      "fp": 7,
+                      "tn": 113,
+                      "fn": 0,
+                      "n": 120,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.058333333333333334,
+                      "f1": null
+                    },
+                    "benignHard": {
+                      "tp": 0,
+                      "fp": 32,
+                      "tn": 40,
+                      "fn": 0,
+                      "n": 72,
+                      "precision": 0,
+                      "recall": null,
+                      "fpr": 0.4444444444444444,
+                      "f1": null
+                    }
+                  }
+                },
+                "byCategory": {
+                  "direct": {
+                    "tp": 280,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 56,
+                    "n": 336,
+                    "precision": 1,
+                    "recall": 0.8333333333333334,
+                    "fpr": null,
+                    "f1": 0.9090909090909091
+                  },
+                  "indirect": {
+                    "tp": 120,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 48,
+                    "n": 168,
+                    "precision": 1,
+                    "recall": 0.7142857142857143,
+                    "fpr": null,
+                    "f1": 0.8333333333333333
+                  },
+                  "obfuscated": {
+                    "tp": 153,
+                    "fp": 0,
+                    "tn": 0,
+                    "fn": 15,
+                    "n": 168,
+                    "precision": 1,
+                    "recall": 0.9107142857142857,
+                    "fpr": null,
+                    "f1": 0.9532710280373832
+                  },
+                  "benign": {
+                    "tp": 0,
+                    "fp": 30,
+                    "tn": 390,
+                    "fn": 0,
+                    "n": 420,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.07142857142857142,
+                    "f1": null
+                  },
+                  "benign_hard": {
+                    "tp": 0,
+                    "fp": 120,
+                    "tn": 132,
+                    "fn": 0,
+                    "n": 252,
+                    "precision": 0,
+                    "recall": null,
+                    "fpr": 0.47619047619047616,
+                    "f1": null
+                  }
+                }
+              }
+            },
+            "latencyMs": {
+              "p50": 36.442333000013605,
+              "p95": 99.25412499997765
+            }
+          }
+        }
+      }
+    },
+    "fixedFpr": {
+      "l1": [
+        {
+          "target": 0.05,
+          "threshold": 0.916,
+          "dev": {
+            "tp": 51,
+            "fp": 0,
+            "tn": 448,
+            "fn": 397,
+            "n": 896,
+            "precision": 1,
+            "recall": 0.11383928571428571,
+            "fpr": 0,
+            "f1": 0.20440881763527052
+          },
+          "test": {
+            "overall": {
+              "tp": 27,
+              "fp": 0,
+              "tn": 672,
+              "fn": 645,
+              "n": 1344,
+              "precision": 1,
+              "recall": 0.04017857142857143,
+              "fpr": 0,
+              "f1": 0.07725321888412018
+            },
+            "bySlice": {
+              "id/formal": {
+                "all": {
+                  "tp": 18,
+                  "fp": 0,
+                  "tn": 192,
+                  "fn": 174,
+                  "n": 384,
+                  "precision": 1,
+                  "recall": 0.09375,
+                  "fpr": 0,
+                  "f1": 0.17142857142857143
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 120,
+                  "fn": 0,
+                  "n": 120,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 72,
+                  "fn": 0,
+                  "n": 72,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                }
+              },
+              "en/formal": {
+                "all": {
+                  "tp": 9,
+                  "fp": 0,
+                  "tn": 96,
+                  "fn": 87,
+                  "n": 192,
+                  "precision": 1,
+                  "recall": 0.09375,
+                  "fpr": 0,
+                  "f1": 0.17142857142857143
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 60,
+                  "fn": 0,
+                  "n": 60,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 36,
+                  "fn": 0,
+                  "n": 36,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                }
+              },
+              "id/informal": {
+                "all": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 192,
+                  "fn": 192,
+                  "n": 384,
+                  "precision": null,
+                  "recall": 0,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 120,
+                  "fn": 0,
+                  "n": 120,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 72,
+                  "fn": 0,
+                  "n": 72,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                }
+              },
+              "mixed/informal": {
+                "all": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 192,
+                  "fn": 192,
+                  "n": 384,
+                  "precision": null,
+                  "recall": 0,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 120,
+                  "fn": 0,
+                  "n": 120,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 72,
+                  "fn": 0,
+                  "n": 72,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                }
+              }
+            },
+            "byCategory": {
+              "direct": {
+                "tp": 12,
+                "fp": 0,
+                "tn": 0,
+                "fn": 324,
+                "n": 336,
+                "precision": 1,
+                "recall": 0.03571428571428571,
+                "fpr": null,
+                "f1": 0.0689655172413793
+              },
+              "indirect": {
+                "tp": 12,
+                "fp": 0,
+                "tn": 0,
+                "fn": 156,
+                "n": 168,
+                "precision": 1,
+                "recall": 0.07142857142857142,
+                "fpr": null,
+                "f1": 0.13333333333333333
+              },
+              "obfuscated": {
+                "tp": 3,
+                "fp": 0,
+                "tn": 0,
+                "fn": 165,
+                "n": 168,
+                "precision": 1,
+                "recall": 0.017857142857142856,
+                "fpr": null,
+                "f1": 0.03508771929824561
+              },
+              "benign": {
+                "tp": 0,
+                "fp": 0,
+                "tn": 420,
+                "fn": 0,
+                "n": 420,
+                "precision": null,
+                "recall": null,
+                "fpr": 0,
+                "f1": null
+              },
+              "benign_hard": {
+                "tp": 0,
+                "fp": 0,
+                "tn": 252,
+                "fn": 0,
+                "n": 252,
+                "precision": null,
+                "recall": null,
+                "fpr": 0,
+                "f1": null
+              }
+            }
+          }
+        },
+        {
+          "target": 0.1,
+          "threshold": 0.5,
+          "dev": {
+            "tp": 228,
+            "fp": 40,
+            "tn": 408,
+            "fn": 220,
+            "n": 896,
+            "precision": 0.8507462686567164,
+            "recall": 0.5089285714285714,
+            "fpr": 0.08928571428571429,
+            "f1": 0.6368715083798883
+          },
+          "test": {
+            "overall": {
+              "tp": 173,
+              "fp": 77,
+              "tn": 595,
+              "fn": 499,
+              "n": 1344,
+              "precision": 0.692,
+              "recall": 0.25744047619047616,
+              "fpr": 0.11458333333333333,
+              "f1": 0.37527114967462033
+            },
+            "bySlice": {
+              "id/formal": {
+                "all": {
+                  "tp": 99,
+                  "fp": 37,
+                  "tn": 155,
+                  "fn": 93,
+                  "n": 384,
+                  "precision": 0.7279411764705882,
+                  "recall": 0.515625,
+                  "fpr": 0.19270833333333334,
+                  "f1": 0.6036585365853657
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 120,
+                  "fn": 0,
+                  "n": 120,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 37,
+                  "tn": 35,
+                  "fn": 0,
+                  "n": 72,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.5138888888888888,
+                  "f1": null
+                }
+              },
+              "en/formal": {
+                "all": {
+                  "tp": 40,
+                  "fp": 29,
+                  "tn": 67,
+                  "fn": 56,
+                  "n": 192,
+                  "precision": 0.5797101449275363,
+                  "recall": 0.4166666666666667,
+                  "fpr": 0.3020833333333333,
+                  "f1": 0.4848484848484849
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 60,
+                  "fn": 0,
+                  "n": 60,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 29,
+                  "tn": 7,
+                  "fn": 0,
+                  "n": 36,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.8055555555555556,
+                  "f1": null
+                }
+              },
+              "id/informal": {
+                "all": {
+                  "tp": 10,
+                  "fp": 4,
+                  "tn": 188,
+                  "fn": 182,
+                  "n": 384,
+                  "precision": 0.7142857142857143,
+                  "recall": 0.052083333333333336,
+                  "fpr": 0.020833333333333332,
+                  "f1": 0.0970873786407767
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 120,
+                  "fn": 0,
+                  "n": 120,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 4,
+                  "tn": 68,
+                  "fn": 0,
+                  "n": 72,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.05555555555555555,
+                  "f1": null
+                }
+              },
+              "mixed/informal": {
+                "all": {
+                  "tp": 24,
+                  "fp": 7,
+                  "tn": 185,
+                  "fn": 168,
+                  "n": 384,
+                  "precision": 0.7741935483870968,
+                  "recall": 0.125,
+                  "fpr": 0.036458333333333336,
+                  "f1": 0.21524663677130046
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 120,
+                  "fn": 0,
+                  "n": 120,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 7,
+                  "tn": 65,
+                  "fn": 0,
+                  "n": 72,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.09722222222222222,
+                  "f1": null
+                }
+              }
+            },
+            "byCategory": {
+              "direct": {
+                "tp": 96,
+                "fp": 0,
+                "tn": 0,
+                "fn": 240,
+                "n": 336,
+                "precision": 1,
+                "recall": 0.2857142857142857,
+                "fpr": null,
+                "f1": 0.4444444444444445
+              },
+              "indirect": {
+                "tp": 55,
+                "fp": 0,
+                "tn": 0,
+                "fn": 113,
+                "n": 168,
+                "precision": 1,
+                "recall": 0.3273809523809524,
+                "fpr": null,
+                "f1": 0.4932735426008969
+              },
+              "obfuscated": {
+                "tp": 22,
+                "fp": 0,
+                "tn": 0,
+                "fn": 146,
+                "n": 168,
+                "precision": 1,
+                "recall": 0.13095238095238096,
+                "fpr": null,
+                "f1": 0.23157894736842108
+              },
+              "benign": {
+                "tp": 0,
+                "fp": 0,
+                "tn": 420,
+                "fn": 0,
+                "n": 420,
+                "precision": null,
+                "recall": null,
+                "fpr": 0,
+                "f1": null
+              },
+              "benign_hard": {
+                "tp": 0,
+                "fp": 77,
+                "tn": 175,
+                "fn": 0,
+                "n": 252,
+                "precision": 0,
+                "recall": null,
+                "fpr": 0.3055555555555556,
+                "f1": null
+              }
+            }
+          }
+        }
+      ],
+      "l2": [
+        {
+          "target": 0.05,
+          "threshold": 0.9999856564511471,
+          "dev": {
+            "tp": 170,
+            "fp": 22,
+            "tn": 426,
+            "fn": 278,
+            "n": 896,
+            "precision": 0.8854166666666666,
+            "recall": 0.3794642857142857,
+            "fpr": 0.049107142857142856,
+            "f1": 0.53125
+          },
+          "test": {
+            "overall": {
+              "tp": 246,
+              "fp": 39,
+              "tn": 633,
+              "fn": 426,
+              "n": 1344,
+              "precision": 0.8631578947368421,
+              "recall": 0.36607142857142855,
+              "fpr": 0.05803571428571429,
+              "f1": 0.5141065830721002
+            },
+            "bySlice": {
+              "id/formal": {
+                "all": {
+                  "tp": 9,
+                  "fp": 13,
+                  "tn": 179,
+                  "fn": 183,
+                  "n": 384,
+                  "precision": 0.4090909090909091,
+                  "recall": 0.046875,
+                  "fpr": 0.06770833333333333,
+                  "f1": 0.08411214953271028
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 120,
+                  "fn": 0,
+                  "n": 120,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 13,
+                  "tn": 59,
+                  "fn": 0,
+                  "n": 72,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.18055555555555555,
+                  "f1": null
+                }
+              },
+              "en/formal": {
+                "all": {
+                  "tp": 78,
+                  "fp": 13,
+                  "tn": 83,
+                  "fn": 18,
+                  "n": 192,
+                  "precision": 0.8571428571428571,
+                  "recall": 0.8125,
+                  "fpr": 0.13541666666666666,
+                  "f1": 0.8342245989304812
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 60,
+                  "fn": 0,
+                  "n": 60,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 13,
+                  "tn": 23,
+                  "fn": 0,
+                  "n": 36,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.3611111111111111,
+                  "f1": null
+                }
+              },
+              "id/informal": {
+                "all": {
+                  "tp": 31,
+                  "fp": 0,
+                  "tn": 192,
+                  "fn": 161,
+                  "n": 384,
+                  "precision": 1,
+                  "recall": 0.16145833333333334,
+                  "fpr": 0,
+                  "f1": 0.27802690582959644
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 120,
+                  "fn": 0,
+                  "n": 120,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 72,
+                  "fn": 0,
+                  "n": 72,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                }
+              },
+              "mixed/informal": {
+                "all": {
+                  "tp": 128,
+                  "fp": 13,
+                  "tn": 179,
+                  "fn": 64,
+                  "n": 384,
+                  "precision": 0.9078014184397163,
+                  "recall": 0.6666666666666666,
+                  "fpr": 0.06770833333333333,
+                  "f1": 0.7687687687687689
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 120,
+                  "fn": 0,
+                  "n": 120,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 13,
+                  "tn": 59,
+                  "fn": 0,
+                  "n": 72,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.18055555555555555,
+                  "f1": null
+                }
+              }
+            },
+            "byCategory": {
+              "direct": {
+                "tp": 131,
+                "fp": 0,
+                "tn": 0,
+                "fn": 205,
+                "n": 336,
+                "precision": 1,
+                "recall": 0.3898809523809524,
+                "fpr": null,
+                "f1": 0.5610278372591007
+              },
+              "indirect": {
+                "tp": 39,
+                "fp": 0,
+                "tn": 0,
+                "fn": 129,
+                "n": 168,
+                "precision": 1,
+                "recall": 0.23214285714285715,
+                "fpr": null,
+                "f1": 0.37681159420289856
+              },
+              "obfuscated": {
+                "tp": 76,
+                "fp": 0,
+                "tn": 0,
+                "fn": 92,
+                "n": 168,
+                "precision": 1,
+                "recall": 0.4523809523809524,
+                "fpr": null,
+                "f1": 0.6229508196721312
+              },
+              "benign": {
+                "tp": 0,
+                "fp": 0,
+                "tn": 420,
+                "fn": 0,
+                "n": 420,
+                "precision": null,
+                "recall": null,
+                "fpr": 0,
+                "f1": null
+              },
+              "benign_hard": {
+                "tp": 0,
+                "fp": 39,
+                "tn": 213,
+                "fn": 0,
+                "n": 252,
+                "precision": 0,
+                "recall": null,
+                "fpr": 0.15476190476190477,
+                "f1": null
+              }
+            }
+          }
+        },
+        {
+          "target": 0.1,
+          "threshold": 0.9989388330728445,
+          "dev": {
+            "tp": 222,
+            "fp": 44,
+            "tn": 404,
+            "fn": 226,
+            "n": 896,
+            "precision": 0.8345864661654135,
+            "recall": 0.4955357142857143,
+            "fpr": 0.09821428571428571,
+            "f1": 0.6218487394957983
+          },
+          "test": {
+            "overall": {
+              "tp": 338,
+              "fp": 64,
+              "tn": 608,
+              "fn": 334,
+              "n": 1344,
+              "precision": 0.8407960199004975,
+              "recall": 0.5029761904761905,
+              "fpr": 0.09523809523809523,
+              "f1": 0.6294227188081936
+            },
+            "bySlice": {
+              "id/formal": {
+                "all": {
+                  "tp": 40,
+                  "fp": 16,
+                  "tn": 176,
+                  "fn": 152,
+                  "n": 384,
+                  "precision": 0.7142857142857143,
+                  "recall": 0.20833333333333334,
+                  "fpr": 0.08333333333333333,
+                  "f1": 0.3225806451612903
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 1,
+                  "tn": 119,
+                  "fn": 0,
+                  "n": 120,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.008333333333333333,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 15,
+                  "tn": 57,
+                  "fn": 0,
+                  "n": 72,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.20833333333333334,
+                  "f1": null
+                }
+              },
+              "en/formal": {
+                "all": {
+                  "tp": 89,
+                  "fp": 18,
+                  "tn": 78,
+                  "fn": 7,
+                  "n": 192,
+                  "precision": 0.8317757009345794,
+                  "recall": 0.9270833333333334,
+                  "fpr": 0.1875,
+                  "f1": 0.8768472906403941
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 60,
+                  "fn": 0,
+                  "n": 60,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 18,
+                  "tn": 18,
+                  "fn": 0,
+                  "n": 36,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.5,
+                  "f1": null
+                }
+              },
+              "id/informal": {
+                "all": {
+                  "tp": 55,
+                  "fp": 10,
+                  "tn": 182,
+                  "fn": 137,
+                  "n": 384,
+                  "precision": 0.8461538461538461,
+                  "recall": 0.2864583333333333,
+                  "fpr": 0.052083333333333336,
+                  "f1": 0.42801556420233455
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 1,
+                  "tn": 119,
+                  "fn": 0,
+                  "n": 120,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.008333333333333333,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 9,
+                  "tn": 63,
+                  "fn": 0,
+                  "n": 72,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.125,
+                  "f1": null
+                }
+              },
+              "mixed/informal": {
+                "all": {
+                  "tp": 154,
+                  "fp": 20,
+                  "tn": 172,
+                  "fn": 38,
+                  "n": 384,
+                  "precision": 0.8850574712643678,
+                  "recall": 0.8020833333333334,
+                  "fpr": 0.10416666666666667,
+                  "f1": 0.8415300546448087
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 120,
+                  "fn": 0,
+                  "n": 120,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 20,
+                  "tn": 52,
+                  "fn": 0,
+                  "n": 72,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.2777777777777778,
+                  "f1": null
+                }
+              }
+            },
+            "byCategory": {
+              "direct": {
+                "tp": 169,
+                "fp": 0,
+                "tn": 0,
+                "fn": 167,
+                "n": 336,
+                "precision": 1,
+                "recall": 0.5029761904761905,
+                "fpr": null,
+                "f1": 0.6693069306930693
+              },
+              "indirect": {
+                "tp": 61,
+                "fp": 0,
+                "tn": 0,
+                "fn": 107,
+                "n": 168,
+                "precision": 1,
+                "recall": 0.3630952380952381,
+                "fpr": null,
+                "f1": 0.5327510917030567
+              },
+              "obfuscated": {
+                "tp": 108,
+                "fp": 0,
+                "tn": 0,
+                "fn": 60,
+                "n": 168,
+                "precision": 1,
+                "recall": 0.6428571428571429,
+                "fpr": null,
+                "f1": 0.782608695652174
+              },
+              "benign": {
+                "tp": 0,
+                "fp": 2,
+                "tn": 418,
+                "fn": 0,
+                "n": 420,
+                "precision": 0,
+                "recall": null,
+                "fpr": 0.004761904761904762,
+                "f1": null
+              },
+              "benign_hard": {
+                "tp": 0,
+                "fp": 62,
+                "tn": 190,
+                "fn": 0,
+                "n": 252,
+                "precision": 0,
+                "recall": null,
+                "fpr": 0.24603174603174602,
+                "f1": null
+              }
+            }
+          }
+        }
+      ],
+      "combined": [
+        {
+          "target": 0.05,
+          "threshold": 0.9985789637873275,
+          "dev": {
+            "tp": 129,
+            "fp": 22,
+            "tn": 426,
+            "fn": 319,
+            "n": 896,
+            "precision": 0.8543046357615894,
+            "recall": 0.28794642857142855,
+            "fpr": 0.049107142857142856,
+            "f1": 0.4307178631051753
+          },
+          "test": {
+            "overall": {
+              "tp": 311,
+              "fp": 41,
+              "tn": 631,
+              "fn": 361,
+              "n": 1344,
+              "precision": 0.8835227272727273,
+              "recall": 0.46279761904761907,
+              "fpr": 0.06101190476190476,
+              "f1": 0.6074218750000001
+            },
+            "bySlice": {
+              "id/formal": {
+                "all": {
+                  "tp": 29,
+                  "fp": 9,
+                  "tn": 183,
+                  "fn": 163,
+                  "n": 384,
+                  "precision": 0.7631578947368421,
+                  "recall": 0.15104166666666666,
+                  "fpr": 0.046875,
+                  "f1": 0.25217391304347825
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 1,
+                  "tn": 119,
+                  "fn": 0,
+                  "n": 120,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.008333333333333333,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 8,
+                  "tn": 64,
+                  "fn": 0,
+                  "n": 72,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.1111111111111111,
+                  "f1": null
+                }
+              },
+              "en/formal": {
+                "all": {
+                  "tp": 68,
+                  "fp": 7,
+                  "tn": 89,
+                  "fn": 28,
+                  "n": 192,
+                  "precision": 0.9066666666666666,
+                  "recall": 0.7083333333333334,
+                  "fpr": 0.07291666666666667,
+                  "f1": 0.7953216374269007
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 60,
+                  "fn": 0,
+                  "n": 60,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 7,
+                  "tn": 29,
+                  "fn": 0,
+                  "n": 36,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.19444444444444445,
+                  "f1": null
+                }
+              },
+              "id/informal": {
+                "all": {
+                  "tp": 58,
+                  "fp": 12,
+                  "tn": 180,
+                  "fn": 134,
+                  "n": 384,
+                  "precision": 0.8285714285714286,
+                  "recall": 0.3020833333333333,
+                  "fpr": 0.0625,
+                  "f1": 0.4427480916030534
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 1,
+                  "tn": 119,
+                  "fn": 0,
+                  "n": 120,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.008333333333333333,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 11,
+                  "tn": 61,
+                  "fn": 0,
+                  "n": 72,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.1527777777777778,
+                  "f1": null
+                }
+              },
+              "mixed/informal": {
+                "all": {
+                  "tp": 156,
+                  "fp": 13,
+                  "tn": 179,
+                  "fn": 36,
+                  "n": 384,
+                  "precision": 0.9230769230769231,
+                  "recall": 0.8125,
+                  "fpr": 0.06770833333333333,
+                  "f1": 0.8642659279778393
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 120,
+                  "fn": 0,
+                  "n": 120,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 13,
+                  "tn": 59,
+                  "fn": 0,
+                  "n": 72,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.18055555555555555,
+                  "f1": null
+                }
+              }
+            },
+            "byCategory": {
+              "direct": {
+                "tp": 153,
+                "fp": 0,
+                "tn": 0,
+                "fn": 183,
+                "n": 336,
+                "precision": 1,
+                "recall": 0.45535714285714285,
+                "fpr": null,
+                "f1": 0.6257668711656442
+              },
+              "indirect": {
+                "tp": 56,
+                "fp": 0,
+                "tn": 0,
+                "fn": 112,
+                "n": 168,
+                "precision": 1,
+                "recall": 0.3333333333333333,
+                "fpr": null,
+                "f1": 0.5
+              },
+              "obfuscated": {
+                "tp": 102,
+                "fp": 0,
+                "tn": 0,
+                "fn": 66,
+                "n": 168,
+                "precision": 1,
+                "recall": 0.6071428571428571,
+                "fpr": null,
+                "f1": 0.7555555555555554
+              },
+              "benign": {
+                "tp": 0,
+                "fp": 2,
+                "tn": 418,
+                "fn": 0,
+                "n": 420,
+                "precision": 0,
+                "recall": null,
+                "fpr": 0.004761904761904762,
+                "f1": null
+              },
+              "benign_hard": {
+                "tp": 0,
+                "fp": 39,
+                "tn": 213,
+                "fn": 0,
+                "n": 252,
+                "precision": 0,
+                "recall": null,
+                "fpr": 0.15476190476190477,
+                "f1": null
+              }
+            }
+          }
+        },
+        {
+          "target": 0.1,
+          "threshold": 0.9958785472748346,
+          "dev": {
+            "tp": 155,
+            "fp": 44,
+            "tn": 404,
+            "fn": 293,
+            "n": 896,
+            "precision": 0.7788944723618091,
+            "recall": 0.34598214285714285,
+            "fpr": 0.09821428571428571,
+            "f1": 0.47913446676970634
+          },
+          "test": {
+            "overall": {
+              "tp": 351,
+              "fp": 63,
+              "tn": 609,
+              "fn": 321,
+              "n": 1344,
+              "precision": 0.8478260869565217,
+              "recall": 0.5223214285714286,
+              "fpr": 0.09375,
+              "f1": 0.6464088397790055
+            },
+            "bySlice": {
+              "id/formal": {
+                "all": {
+                  "tp": 48,
+                  "fp": 18,
+                  "tn": 174,
+                  "fn": 144,
+                  "n": 384,
+                  "precision": 0.7272727272727273,
+                  "recall": 0.25,
+                  "fpr": 0.09375,
+                  "f1": 0.37209302325581395
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 3,
+                  "tn": 117,
+                  "fn": 0,
+                  "n": 120,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.025,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 15,
+                  "tn": 57,
+                  "fn": 0,
+                  "n": 72,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.20833333333333334,
+                  "f1": null
+                }
+              },
+              "en/formal": {
+                "all": {
+                  "tp": 68,
+                  "fp": 7,
+                  "tn": 89,
+                  "fn": 28,
+                  "n": 192,
+                  "precision": 0.9066666666666666,
+                  "recall": 0.7083333333333334,
+                  "fpr": 0.07291666666666667,
+                  "f1": 0.7953216374269007
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 60,
+                  "fn": 0,
+                  "n": 60,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 7,
+                  "tn": 29,
+                  "fn": 0,
+                  "n": 36,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.19444444444444445,
+                  "f1": null
+                }
+              },
+              "id/informal": {
+                "all": {
+                  "tp": 71,
+                  "fp": 18,
+                  "tn": 174,
+                  "fn": 121,
+                  "n": 384,
+                  "precision": 0.797752808988764,
+                  "recall": 0.3697916666666667,
+                  "fpr": 0.09375,
+                  "f1": 0.5053380782918149
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 2,
+                  "tn": 118,
+                  "fn": 0,
+                  "n": 120,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.016666666666666666,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 16,
+                  "tn": 56,
+                  "fn": 0,
+                  "n": 72,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.2222222222222222,
+                  "f1": null
+                }
+              },
+              "mixed/informal": {
+                "all": {
+                  "tp": 164,
+                  "fp": 20,
+                  "tn": 172,
+                  "fn": 28,
+                  "n": 384,
+                  "precision": 0.8913043478260869,
+                  "recall": 0.8541666666666666,
+                  "fpr": 0.10416666666666667,
+                  "f1": 0.8723404255319149
+                },
+                "benign": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 120,
+                  "fn": 0,
+                  "n": 120,
+                  "precision": null,
+                  "recall": null,
+                  "fpr": 0,
+                  "f1": null
+                },
+                "benignHard": {
+                  "tp": 0,
+                  "fp": 20,
+                  "tn": 52,
+                  "fn": 0,
+                  "n": 72,
+                  "precision": 0,
+                  "recall": null,
+                  "fpr": 0.2777777777777778,
+                  "f1": null
+                }
+              }
+            },
+            "byCategory": {
+              "direct": {
+                "tp": 173,
+                "fp": 0,
+                "tn": 0,
+                "fn": 163,
+                "n": 336,
+                "precision": 1,
+                "recall": 0.5148809523809523,
+                "fpr": null,
+                "f1": 0.6797642436149312
+              },
+              "indirect": {
+                "tp": 66,
+                "fp": 0,
+                "tn": 0,
+                "fn": 102,
+                "n": 168,
+                "precision": 1,
+                "recall": 0.39285714285714285,
+                "fpr": null,
+                "f1": 0.5641025641025641
+              },
+              "obfuscated": {
+                "tp": 112,
+                "fp": 0,
+                "tn": 0,
+                "fn": 56,
+                "n": 168,
+                "precision": 1,
+                "recall": 0.6666666666666666,
+                "fpr": null,
+                "f1": 0.8
+              },
+              "benign": {
+                "tp": 0,
+                "fp": 5,
+                "tn": 415,
+                "fn": 0,
+                "n": 420,
+                "precision": 0,
+                "recall": null,
+                "fpr": 0.011904761904761904,
+                "f1": null
+              },
+              "benign_hard": {
+                "tp": 0,
+                "fp": 58,
+                "tn": 194,
+                "fn": 0,
+                "n": 252,
+                "precision": 0,
+                "recall": null,
+                "fpr": 0.23015873015873015,
+                "f1": null
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "pii": {
+    "samples": {
+      "positive": 350,
+      "unsupported_format": 50,
+      "unlabeled": 50,
+      "hard_negative": 150
+    },
+    "detection": {
+      "supported": {
+        "NIK": {
+          "tp": 113,
+          "fp": 4,
+          "fn": 0,
+          "precision": 0.9658119658119658,
+          "recall": 1,
+          "f1": 0.9826086956521739
+        },
+        "NPWP": {
+          "tp": 121,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "PHONE_ID": {
+          "tp": 118,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0.9915966386554622,
+          "recall": 1,
+          "f1": 0.9957805907172996
+        },
+        "EMAIL": {
+          "tp": 109,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "CARD": {
+          "tp": 127,
+          "fp": 25,
+          "fn": 2,
+          "precision": 0.8355263157894737,
+          "recall": 0.9844961240310077,
+          "f1": 0.9039145907473309
+        },
+        "overall": {
+          "tp": 588,
+          "fp": 30,
+          "fn": 2,
+          "precision": 0.9514563106796117,
+          "recall": 0.9966101694915255,
+          "f1": 0.9735099337748345
+        }
+      },
+      "unlabeled": {
+        "NIK": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "NPWP": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 50,
+          "precision": null,
+          "recall": 0,
+          "f1": null
+        },
+        "PHONE_ID": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "EMAIL": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "CARD": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "overall": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 50,
+          "precision": null,
+          "recall": 0,
+          "f1": null
+        }
+      },
+      "all": {
+        "NIK": {
+          "tp": 113,
+          "fp": 4,
+          "fn": 20,
+          "precision": 0.9658119658119658,
+          "recall": 0.849624060150376,
+          "f1": 0.9040000000000001
+        },
+        "NPWP": {
+          "tp": 121,
+          "fp": 0,
+          "fn": 50,
+          "precision": 1,
+          "recall": 0.7076023391812866,
+          "f1": 0.8287671232876712
+        },
+        "PHONE_ID": {
+          "tp": 118,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0.9915966386554622,
+          "recall": 1,
+          "f1": 0.9957805907172996
+        },
+        "EMAIL": {
+          "tp": 109,
+          "fp": 0,
+          "fn": 30,
+          "precision": 1,
+          "recall": 0.7841726618705036,
+          "f1": 0.8790322580645161
+        },
+        "CARD": {
+          "tp": 127,
+          "fp": 28,
+          "fn": 2,
+          "precision": 0.8193548387096774,
+          "recall": 0.9844961240310077,
+          "f1": 0.8943661971830985
+        },
+        "overall": {
+          "tp": 588,
+          "fp": 33,
+          "fn": 102,
+          "precision": 0.9468599033816425,
+          "recall": 0.8521739130434782,
+          "f1": 0.897025171624714
+        }
+      },
+      "hardNegatives": {
+        "samples": 150,
+        "withAnyDetection": 19,
+        "byType": {
+          "NIK": 2,
+          "NPWP": 0,
+          "PHONE_ID": 0,
+          "EMAIL": 0,
+          "CARD": 17
+        }
+      },
+      "latencyMs": {
+        "p50": 0.011832999996840954,
+        "p95": 0.0217500000144355
+      }
+    },
+    "restore": {
+      "mock-echo": {
+        "samples": 372,
+        "succeeded": 372,
+        "successRate": 1,
+        "restoreMiss": {
+          "NIK": 0,
+          "NPWP": 0,
+          "PHONE_ID": 0,
+          "EMAIL": 0,
+          "CARD": 0,
+          "total": 0
+        }
+      },
+      "mock-split-placeholder": {
+        "samples": 372,
+        "succeeded": 372,
+        "successRate": 1,
+        "restoreMiss": {
+          "NIK": 0,
+          "NPWP": 0,
+          "PHONE_ID": 0,
+          "EMAIL": 0,
+          "CARD": 0,
+          "total": 0
+        }
+      }
+    }
+  }
+}

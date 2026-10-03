@@ -186,6 +186,19 @@ Feature order comes from `docs/TSD.md` §15; see `docs/plans/overview.md` for th
 - `@palang-ai/guards` publishable (JS + `.d.ts` in `dist/`, `bun` condition to `src/`).
 - Released `v0.1.0`, then `v0.1.1`.
 
+## `pii-precision`
+
+*Spec: `spec-pii-precision.md`. Reports: `evals/results/2026-10-03-9dfcd81-dirty-fp32{-before,}.md`.*
+
+- Plain 15-digit NPWP (and the 16-digit company NPWP, `0` + 15 digits, now detected) needs an NPWP
+  keyword within 40 characters before it; formatted NPWPs are always masked. Parenthesized phone
+  numbers are detected.
+- PII eval: new `unlabeled` slice reporting what the keyword rule costs, look-alike negatives
+  (timestamps, virtual accounts, transfer references, SKUs). Precision 93.0% → 95.1%, recall 99.7%
+  unchanged, unlabeled NPWP recall 0% by design; guard overhead unchanged.
+- `docs/plans/constraints.md` replaced the TSD (no longer tracked) as the standing rules;
+  `SECURITY.md` added.
+
 ## Platform foundation
 
 *Cross-cutting — not owned by a single feature spec.*
@@ -201,6 +214,13 @@ Feature order comes from `docs/TSD.md` §15; see `docs/plans/overview.md` for th
 ## Shipped, by commit
 
 Same history as above, dated against the actual commit that shipped it (`git log`), newest first.
+
+### 2026-10-03
+
+**`e9fab6a` — feat: implement pii-precision — keyword-gated NPWP, company NPWP, parenthesized
+phones**
+The whole `pii-precision` feature, plus `SECURITY.md`, `constraints.md` and logging `hardening` and
+`launch` as done.
 
 ### 2026-09-29
 

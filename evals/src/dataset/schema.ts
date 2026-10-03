@@ -1,10 +1,12 @@
 import { z } from "zod";
 
-export const LANGS = ["id", "en"] as const;
+export const LANGS = ["id", "en", "mixed"] as const;
+export const REGISTERS = ["formal", "informal"] as const;
 export const CATEGORIES = ["direct", "indirect", "obfuscated", "benign", "benign_hard"] as const;
 export const SPLITS = ["dev", "test"] as const;
 
 export type Lang = (typeof LANGS)[number];
+export type Register = (typeof REGISTERS)[number];
 export type Category = (typeof CATEGORIES)[number];
 export type Split = (typeof SPLITS)[number];
 
@@ -17,6 +19,7 @@ export const sampleSchema = z
     role: z.enum(["user", "tool"]),
     label: z.enum(["injection", "benign"]),
     lang: z.enum(LANGS),
+    register: z.enum(REGISTERS),
     category: z.enum(CATEGORIES),
     source: z.string().min(1),
   })

@@ -1,23 +1,26 @@
 import { test, expect } from "bun:test";
-import { SPLITS, CATEGORIES, LANGS, parseJsonl, sampleSchema } from "../../dataset/schema.js";
+import { SPLITS, CATEGORIES, parseJsonl, sampleSchema } from "../../dataset/schema.js";
 import { datasetPath, toJsonl } from "../write.js";
 
-import { COUNTS, generateInjectionDataset, generateInjectionSamples } from "./index.js";
+import { SLICES, generateInjectionDataset, generateInjectionSamples } from "./index.js";
 
-test("generates the configured number of samples per language, split and category", () => {
-  for (const lang of LANGS) {
+const slice = (key: string) => SLICES.find((s) => s.key === key)!;
+
+test("generates the configured number of samples per slice, split and category", () => {
+  for (const s of SLICES) {
     for (const split of SPLITS) {
-      const samples = generateInjectionSamples(lang, split);
+      const samples = generateInjectionSamples(s, split);
       for (const category of CATEGORIES) {
-        const actual = samples.filter((s) => s.category === category).length;
-        expect(actual).toBe(COUNTS[lang][split][category]);
+        const actual = samples.filter((x) => x.category === category).length;
+        expect(actual).toBe(s.counts[split][category]);
       }
+      expect(samples.every((x) => x.lang === s.lang && x.register === s.register)).toBe(true);
     }
   }
 });
 
-test("Indonesian totals reach at least 300 injection and 300 benign samples", () => {
-  const id = SPLITS.flatMap((split) => generateInjectionSamples("id", split));
+test("formal Indonesian totals reach at least 300 injection and 300 benign samples", () => {
+  const id = SPLITS.flatMap((split) => generateInjectionSamples(slice("id"), split));
   expect(id.filter((s) => s.label === "injection").length).toBeGreaterThanOrEqual(300);
   expect(id.filter((s) => s.label === "benign").length).toBeGreaterThanOrEqual(300);
 });
@@ -58,7 +61,7 @@ test("dataset files are ASCII-only so obfuscated samples stay reviewable", () =>
 
 test("non-BMP characters (tag characters) survive the ASCII escaping round trip", () => {
   const text = `hi${String.fromCodePoint(0xe0061)}${String.fromCodePoint(0x1f600)}there`;
-  const sample = { ...generateInjectionSamples("en", "dev")[0]!, text };
+  const sample = { ...generateInjectionSamples(slice("en"), "dev")[0]!, text };
   const jsonl = toJsonl([sample]);
   expect(/\P{ASCII}/u.test(jsonl)).toBe(false);
   expect(parseJsonl(jsonl)[0]?.text).toBe(text);

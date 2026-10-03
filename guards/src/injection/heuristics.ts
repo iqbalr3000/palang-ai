@@ -1,5 +1,5 @@
 import { INJECTION_PATTERNS } from "./data/patterns.js";
-import { normalizeForInjectionScan } from "./normalize.js";
+import { expandInformal, normalizeForInjectionScan } from "./normalize.js";
 import type { InjectionHeuristicMatch, InjectionHeuristicResult } from "./types.js";
 
 // Noisy-OR: weak signals add up toward 1 without exceeding it.
@@ -13,7 +13,10 @@ export function scanInjectionHeuristics(text: string): InjectionHeuristicResult 
   let score = 0;
 
   targets.forEach((target, index) => {
-    const found = INJECTION_PATTERNS.filter((p) => p.regex.test(target));
+    const informal = expandInformal(target);
+    const found = INJECTION_PATTERNS.filter(
+      (p) => p.regex.test(target) || (informal !== target && p.regex.test(informal)),
+    );
     score = Math.max(score, combine(found.map((p) => p.weight)));
     for (const p of found) {
       matches.push({ id: p.id, lang: p.lang, weight: p.weight, decoded: index > 0 });
