@@ -158,6 +158,34 @@ Feature order comes from `docs/TSD.md` §15; see `docs/plans/overview.md` for th
   `monitor`, monitor-to-enforce), with a production checklist; YAML examples validated against the
   config schema.
 
+## `hardening`
+
+*Spec: `spec-hardening.md`. Decision: `docs/decisions/0008`.*
+
+- All 15 findings of the 2026-09-28 security + code review fixed: email/`PHONE_ID` ReDoS, malformed
+  `tool_calls` crashing `pii-id` mid-mask (`pii-id` now always fails closed, 0008), holdback forced
+  cuts splitting canaries/PII, SDK-incompatible streaming (`role` delta, tool-call `index`,
+  `Content-Type`), servers binding every interface, unclosed `[` holding output, `last_used_at`
+  never written, audit gaps (aborted streams, overflow recorded as `allow`, streamed `usage`), 500
+  on malformed JSON, upstream headers forwarded as-is, no dashboard login rate limit, world-readable
+  `.env`, missing dashboard hardening headers, and logout not revoking the session.
+- Followed by two more review passes and a refactor deduping the output-guard chain.
+
+## `launch`
+
+*Spec: `spec-launch.md`. Last v0.1 feature.*
+
+- `docker compose -f docker/demo.compose.yml up --build`: Postgres, one-shot migrator, gateway,
+  dashboard and mock-upstream with a seeded `demo` tenant, fixed demo key and sample traffic (demo
+  ready in 3 min 49 s from an empty volume). `docker-compose.yml` runs Palang with the user's own
+  `.env` + `palang.yaml`. Images are built locally, never pushed.
+- Classifier is an optional dependency, imported lazily; the Docker image ships without it.
+- Gateway benchmark (`bun run bench:gateway`): guard overhead p95 1.10 ms, added TTFT p95 5.27 ms
+  on an M1 (`evals/results/gateway-2026-09-29-095abcb-dirty.md`).
+- `bun audit --audit-level=high` in CI; `examples/` workspace; `docs/deployment.md`.
+- `@palang-ai/guards` publishable (JS + `.d.ts` in `dist/`, `bun` condition to `src/`).
+- Released `v0.1.0`, then `v0.1.1`.
+
 ## Platform foundation
 
 *Cross-cutting — not owned by a single feature spec.*
@@ -173,6 +201,25 @@ Feature order comes from `docs/TSD.md` §15; see `docs/plans/overview.md` for th
 ## Shipped, by commit
 
 Same history as above, dated against the actual commit that shipped it (`git log`), newest first.
+
+### 2026-09-29
+
+**`9dfcd81` — chore: bump version to 0.1.1**
+
+**`b288cc0` — feat: run Palang with your own config via docker compose**
+Root `docker-compose.yml` for the user's own config; the demo moved to `docker/demo.compose.yml`.
+
+**`4975cf7` — feat: implement launch — docker compose demo, gateway benchmark, npm-ready guards**
+The whole `launch` feature, tagged `v0.1.0`.
+
+**`e4c5973` — refactor: dedupe output-guard chain, validate remaining inputs, strip comments**
+
+### 2026-09-28 (hardening)
+
+**`08d88df` — fix: close gaps from two more security reviews and polish the dashboard**
+
+**`000df30` — fix: harden the gateway, guards and dashboard after a full security and code review**
+The whole `hardening` feature (0008).
 
 ### 2026-09-28
 

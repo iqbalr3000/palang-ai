@@ -36,17 +36,22 @@ test("a span counts only on an exact type + start + end match", () => {
   expect(report.supported.overall).toMatchObject({ tp: 1, fp: 2, fn: 2 });
 });
 
-test("unsupported formats count only in the with-unsupported view", () => {
-  const d = detector({});
+test("unsupported formats and unlabeled samples count only in their own views", () => {
+  const d = detector({ c: [{ type: "NPWP", start: 0, end: 15 }] });
   const samples = [
     sample("a", "positive", [{ type: "EMAIL", start: 0, end: 10 }]),
     sample("b", "unsupported_format", [{ type: "EMAIL", start: 0, end: 10 }]),
+    sample("c", "unlabeled", [{ type: "NPWP", start: 0, end: 15 }]),
+    sample("d", "unlabeled", [{ type: "NPWP", start: 0, end: 15 }]),
   ];
 
   const report = evaluateDetection(samples, d);
 
   expect(report.supported.EMAIL.fn).toBe(1);
-  expect(report.withUnsupported.EMAIL.fn).toBe(2);
+  expect(report.supported.NPWP).toMatchObject({ tp: 0, fn: 0 });
+  expect(report.unlabeled.NPWP).toMatchObject({ tp: 1, fn: 1, recall: 0.5 });
+  expect(report.all.EMAIL.fn).toBe(2);
+  expect(report.all.NPWP).toMatchObject({ tp: 1, fn: 1 });
 });
 
 test("hard negatives: any detection is a false positive, counted per sample and per type", () => {

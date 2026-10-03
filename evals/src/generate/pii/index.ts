@@ -13,6 +13,7 @@ type Lang = "id" | "en";
 export const PII_COUNTS: Record<PiiCategory, number> = {
   positive: 350,
   unsupported_format: 50,
+  unlabeled: 50,
   hard_negative: 150,
 };
 const SEED = 5505;
@@ -52,7 +53,6 @@ const PII_VALUES: Record<PiiType, (rng: Rng) => string> = {
 
 const UNSUPPORTED: { type: PiiType; value: (rng: Rng) => string }[] = [
   { type: "NIK", value: v.nikSpaced },
-  { type: "PHONE_ID", value: v.phoneParenthesized },
   { type: "EMAIL", value: v.emailObfuscated },
 ];
 
@@ -66,6 +66,10 @@ const NEGATIVE_CLAUSES: Record<Lang, { template: string; value: (rng: Rng) => st
     { template: "jatuh tempo {v}", value: v.date },
     { template: "tagihan {v}", value: v.invoice },
     { template: "resi {v}", value: v.trackingNumber },
+    { template: "timestamp {v}", value: v.unixMillis },
+    { template: "bayar ke VA {v}", value: v.virtualAccount },
+    { template: "no. referensi transfer {v}", value: v.transferReference },
+    { template: "SKU {v}", value: v.sku },
   ],
   en: [
     { template: "order number {v}", value: v.orderNumber16 },
@@ -74,7 +78,17 @@ const NEGATIVE_CLAUSES: Record<Lang, { template: string; value: (rng: Rng) => st
     { template: "the total is {v}", value: v.price },
     { template: "due on {v}", value: v.date },
     { template: "invoice {v}", value: v.invoice },
+    { template: "timestamp {v}", value: v.unixMillis },
+    { template: "virtual account {v}", value: v.virtualAccount },
+    { template: "transfer reference {v}", value: v.transferReference },
+    { template: "SKU {v}", value: v.sku },
   ],
+};
+
+// Plain NPWPs with no NPWP keyword anywhere, e.g. a pasted table row.
+const UNLABELED_NPWP_CLAUSES: Record<Lang, string[]> = {
+  id: ["Budi Santoso | {v} | Jakarta Selatan", "nomor {v}", "datanya: {v}", "{v}"],
+  en: ["Budi Santoso, {v}, Jakarta", "number {v}", "{v}"],
 };
 
 const OPENERS: Record<Lang, string[]> = {
@@ -146,6 +160,14 @@ function unsupported(rng: Rng) {
   return compose(lang, [piiClause(lang, type, value(rng), rng)], rng);
 }
 
+function unlabeled(rng: Rng) {
+  const lang = pickLang(rng);
+  const clauses: Clause[] = [
+    { template: pick(rng, UNLABELED_NPWP_CLAUSES[lang]), value: v.npwpPlain(rng), type: "NPWP" },
+  ];
+  return compose(lang, clauses, rng);
+}
+
 function hardNegative(rng: Rng) {
   const lang = pickLang(rng);
   const clauses = [negativeClause(lang, rng)];
@@ -162,6 +184,10 @@ export function generatePiiDataset(): PiiSample[] {
     })),
     ...uniqueSamples(PII_COUNTS.unsupported_format, () => unsupported(rng)).map((d) => ({
       category: "unsupported_format" as const,
+      ...d,
+    })),
+    ...uniqueSamples(PII_COUNTS.unlabeled, () => unlabeled(rng)).map((d) => ({
+      category: "unlabeled" as const,
       ...d,
     })),
     ...uniqueSamples(PII_COUNTS.hard_negative, () => hardNegative(rng)).map((d) => ({

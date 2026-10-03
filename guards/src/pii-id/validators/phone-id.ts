@@ -6,7 +6,7 @@ export interface PhoneIdResult {
 const LOCAL_PATTERN = /^8\d{8,11}$/;
 
 export function normalizePhoneId(raw: string): PhoneIdResult {
-  const stripped = raw.replace(/[\s.-]/g, "");
+  const stripped = raw.replace(/[\s.()-]/g, "");
 
   let local: string | undefined;
   if (stripped.startsWith("+62")) local = stripped.slice(3);

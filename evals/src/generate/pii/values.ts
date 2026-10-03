@@ -83,9 +83,15 @@ export function nikSpaced(rng: Rng): string {
   return group(nik(rng), [4, 4, 4, 4], " ");
 }
 
-export function npwp(rng: Rng): string {
+// A company's 16-digit NPWP is "0" + its 15-digit NPWP (PMK 112/PMK.03/2022).
+export function npwpPlain(rng: Rng): string {
   const value = pad(int(rng, 1, 99), 2) + digits(rng, 13);
-  if (rng() < 0.4) return value;
+  return rng() < 0.4 ? `0${value}` : value;
+}
+
+export function npwp(rng: Rng): string {
+  if (rng() < 0.4) return npwpPlain(rng);
+  const value = pad(int(rng, 1, 99), 2) + digits(rng, 13);
   const [a, b, c, d, e, f] = [
     value.slice(0, 2),
     value.slice(2, 5),
@@ -102,6 +108,7 @@ function mobileLocal(rng: Rng): string {
 }
 
 export function phone(rng: Rng): string {
+  if (rng() < 0.2) return phoneParenthesized(rng);
   const local = mobileLocal(rng);
   const prefix = pick(rng, ["0", "+62", "62"] as const);
   const separator = pick(rng, ["", "-", " ", "."] as const);
@@ -172,6 +179,22 @@ export function date(rng: Rng): string {
 
 export function invoice(rng: Rng): string {
   return `INV/${int(rng, 2022, 2026)}/${pad(int(rng, 1, 12), 2)}/${digits(rng, 5)}`;
+}
+
+export function unixMillis(rng: Rng): string {
+  return String(int(rng, 1_600_000_000, 1_800_000_000)) + digits(rng, 3);
+}
+
+export function virtualAccount(rng: Rng): string {
+  return pick(rng, ["8808", "3901", "7001", "8277"]) + digits(rng, 12);
+}
+
+export function transferReference(rng: Rng): string {
+  return String(int(rng, 1, 9)) + digits(rng, 17);
+}
+
+export function sku(rng: Rng): string {
+  return `${pick(rng, ["BJU", "SPT", "TAS", "HP"])}-${digits(rng, 6)}`;
 }
 
 export function trackingNumber(rng: Rng): string {

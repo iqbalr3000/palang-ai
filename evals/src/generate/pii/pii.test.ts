@@ -34,14 +34,22 @@ test("supported-format gold spans have the shape their type requires", () => {
   const positives = dataset.filter((s) => s.category === "positive");
   for (const text of spanTexts(positives, "NIK")) expect(text).toMatch(/^\d{16}$/);
   for (const text of spanTexts(positives, "NPWP")) {
-    expect(text.replace(/[.-]/g, "")).toMatch(/^\d{15}$/);
+    expect(text.replace(/[.-]/g, "")).toMatch(/^0?\d{15}$/);
   }
   for (const text of spanTexts(positives, "PHONE_ID")) {
-    expect(text.replace(/[\s.-]/g, "")).toMatch(/^(?:\+62|62|0)8\d{8,11}$/);
+    expect(text.replace(/[\s.()-]/g, "")).toMatch(/^(?:\+62|62|0)8\d{8,11}$/);
   }
   for (const text of spanTexts(positives, "EMAIL")) expect(text).toMatch(/@example\.(com|org)$/);
   for (const text of spanTexts(positives, "CARD")) {
     expect(luhnValid(text.replace(/[ -]/g, ""))).toBe(true);
+  }
+});
+
+test("unlabeled samples hold one plain NPWP and no NPWP keyword", () => {
+  for (const s of dataset.filter((x) => x.category === "unlabeled")) {
+    expect(s.spans.map((span) => span.type)).toEqual(["NPWP"]);
+    expect(spanTexts([s], "NPWP")[0]).toMatch(/^0?\d{15}$/);
+    expect(s.text).not.toMatch(/npwp|pajak|tax/i);
   }
 });
 

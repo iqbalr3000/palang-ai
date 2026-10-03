@@ -16,6 +16,39 @@ test("detects an NPWP-formatted 15-digit number", () => {
   expect(matches[0]).toMatchObject({ type: "NPWP", normalized: "123456789012345" });
 });
 
+test("a formatted NPWP needs no keyword", () => {
+  const matches = detectPii("nomor 12.345.678.9-012.345 ya");
+  expect(matches).toHaveLength(1);
+  expect(matches[0]).toMatchObject({ type: "NPWP", normalized: "123456789012345" });
+});
+
+test("a plain 15-digit NPWP is detected with a keyword shortly before it", () => {
+  for (const text of [
+    "NPWP saya 123456789012345",
+    "nomor pokok wajib pajak: 123456789012345",
+    "our tax ID is 123456789012345",
+    '{"npwp": "123456789012345"}',
+    '{"tax_id":"123456789012345"}',
+  ]) {
+    const matches = detectPii(text);
+    expect(matches).toHaveLength(1);
+    expect(matches[0]).toMatchObject({ type: "NPWP", normalized: "123456789012345" });
+  }
+});
+
+test("a plain 15-digit number without a keyword before it is not an NPWP", () => {
+  expect(detectPii("ID transaksi 131502662851447")).toEqual([]);
+  expect(detectPii("123456789012345 itu NPWP saya")).toEqual([]);
+  expect(detectPii(`NPWP ${"x".repeat(40)} 123456789012345`)).toEqual([]);
+});
+
+test("a 16-digit company NPWP (0 + 15 digits) is detected with a keyword", () => {
+  const matches = detectPii("NPWP badan 0123456789012345");
+  expect(matches).toHaveLength(1);
+  expect(matches[0]).toMatchObject({ type: "NPWP", normalized: "0123456789012345" });
+  expect(detectPii("kode 0123456789012345").filter((m) => m.type === "NPWP")).toEqual([]);
+});
+
 test("a valid 16-digit value is typed NIK, not NPWP (post-2024: individual NPWP = NIK)", () => {
   const text = "npwp baru saya samain sama nik: 3171011506900001";
   const matches = detectPii(text);
@@ -85,6 +118,19 @@ test("phones right after punctuation or with a +62 prefix are still found", () =
   expect(matches.map((m) => m.normalized)).toEqual(["+6281234567890", "+6281234567890"]);
 });
 
+test("parenthesized phone numbers are found and normalized", () => {
+  const matches = detectPii("telp (0812) 3456-7890 atau WA +62 (812) 3456 7891");
+  expect(matches.map((m) => m.type)).toEqual(["PHONE_ID", "PHONE_ID"]);
+  expect(matches.map((m) => m.normalized)).toEqual(["+6281234567890", "+6281234567891"]);
+  expect(matches.map((m) => m.value)).toEqual(["(0812) 3456-7890", "+62 (812) 3456 7891"]);
+});
+
+test("parenthesized numbers that aren't mobile phones are not detected", () => {
+  expect(detectPii("kantor (021) 3456-7890")).toEqual([]);
+  expect(detectPii("kode (0812) 34")).toEqual([]);
+  expect(detectPii("ref 9(0812) 3456-7890").filter((m) => m.type === "PHONE_ID")).toEqual([]);
+});
+
 test("worst-case 1 MB inputs are detected in linear time", () => {
   const MB = 1_000_000;
   const adversarial = [
@@ -95,6 +141,8 @@ test("worst-case 1 MB inputs are detected in linear time", () => {
     `${"a".repeat(MB)}@${"b".repeat(100)}`,
     "0812345678".repeat(MB / 10),
     "a@".repeat(MB / 2),
+    "(0812) ".repeat(MB / 7),
+    "npwp 123456789012345 ".repeat(MB / 21),
   ];
   for (const text of adversarial) {
     const start = performance.now();

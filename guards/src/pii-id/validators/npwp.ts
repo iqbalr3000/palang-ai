@@ -1,4 +1,5 @@
-// Legacy 15-digit format only: since 2024 a 16-digit NPWP is the holder's NIK.
-export function validateNpwp15(digits: string): boolean {
-  return /^\d{15}$/.test(digits);
+// PMK 112/PMK.03/2022: an individual's 16-digit NPWP is their NIK (typed NIK); companies and
+// government institutions prefix their 15-digit NPWP with "0".
+export function validateNpwp(digits: string): boolean {
+  return /^0?\d{15}$/.test(digits);
 }

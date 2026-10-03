@@ -291,7 +291,8 @@ policy in-process.
 Detection quality is measured, not claimed. `bun run eval` reproduces the report on synthetic
 datasets; results live in [`evals/results/`](evals/results/).
 
-**Prompt injection**, held-out test set, flag threshold 0.5:
+**Prompt injection**, held-out test set (288 attacks: 192 Indonesian, 96 English; 288 benign),
+flag threshold 0.5:
 
 | Layer | Recall | False positives | Recall (ID) | Recall (EN) |
 |---|---:|---:|---:|---:|
@@ -299,11 +300,13 @@ datasets; results live in [`evals/results/`](evals/results/).
 | Classifier only | 81.3% | 27.1% | 71.9% | 100% |
 | **Combined** | **92.4%** | 39.9% | 88.5% | 100% |
 
-**PII**, 550 synthetic samples: **93.0% precision** and **99.7% recall** on supported formats, and
-**100%** of masked samples survive the streaming restore round trip.
+**PII**, 600 synthetic samples: **95.1% precision** and **99.7% recall** on supported formats (590
+entities, plus 150 look-alike numbers that must not be masked), and **100%** of masked samples
+survive the streaming restore round trip. Plain NPWPs with no "NPWP" label nearby are deliberately
+not masked (0 of 50 in the `unlabeled` slice); see [known limitations](docs/deployment.md#known-limitations).
 
 **Latency**, on an Apple M1 against a mock model: guard overhead **1.1 ms p95** and added
-time-to-first-token **5.3 ms p95**, well under the 10 ms and 100 ms budgets. Reproduce with
+time-to-first-token **5.6 ms p95**, well under the 10 ms and 100 ms budgets. Reproduce with
 `bun run bench:gateway` (needs a migrated Postgres at `DATABASE_URL`).
 
 > [!IMPORTANT]

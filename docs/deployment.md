@@ -61,7 +61,12 @@ do yet. The demo (`docker/demo.compose.yml`) has public secrets and is never mea
   as `restore_miss`.
 - **Injection detection is weaker in Indonesian** than in English, and its false-positive rate is
   too high to block on; keep `injection` in `monitor`.
-- **Any 15-digit number is read as an NPWP.**
+- **A plain NPWP is masked only when labeled.** Formatted NPWPs (`01.234.567.8-901.000`) always
+  are; a plain 15- or 16-digit one needs a word like "NPWP" or "tax ID" shortly before it, so a bare
+  number in a pasted table row passes through.
+- **Long numeric IDs can be masked as cards.** Card detection relies on the Luhn check, which
+  about one in ten random 13–19-digit numbers (order IDs, virtual accounts, transfer references)
+  also passes. They're restored in the reply, but the model sees a placeholder.
 - **Dashboard sign-in is rate-limited globally**, not per IP (client IPs can be forged without a
   trusted proxy). Someone guessing nonstop can lock the real admin out too.
 - **Only OpenAI-compatible providers** are supported.

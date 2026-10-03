@@ -1,7 +1,12 @@
 import { z } from "zod";
 
 export const PII_TYPES = ["NIK", "NPWP", "PHONE_ID", "EMAIL", "CARD"] as const;
-export const PII_CATEGORIES = ["positive", "unsupported_format", "hard_negative"] as const;
+export const PII_CATEGORIES = [
+  "positive",
+  "unsupported_format",
+  "unlabeled",
+  "hard_negative",
+] as const;
 
 export type PiiType = (typeof PII_TYPES)[number];
 export type PiiCategory = (typeof PII_CATEGORIES)[number];

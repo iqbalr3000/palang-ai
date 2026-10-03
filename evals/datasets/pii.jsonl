@@ -1,550 +1,600 @@
-{"id":"pii-0001","text":"tax ID (NPWP) 20.331.191.5-739.276. Thank you!","spans":[{"type":"NPWP","start":14,"end":34}],"category":"positive"}
-{"id":"pii-0002","text":"Mohon dicek ya, no. NIK 7402234212590835, no. HP 6282136831633.","spans":[{"type":"NIK","start":24,"end":40},{"type":"PHONE_ID","start":49,"end":62}],"category":"positive"}
-{"id":"pii-0003","text":"Pak, no. NIK 1803095205390266, terima kasih.","spans":[{"type":"NIK","start":13,"end":29}],"category":"positive"}
-{"id":"pii-0004","text":"Pak, resi JX5101639193, NIK saya 1904042812160504. Lalu no. HP 62821 7985 083, email saya maya@example.com","spans":[{"type":"NIK","start":33,"end":49},{"type":"PHONE_ID","start":63,"end":77},{"type":"EMAIL","start":90,"end":106}],"category":"positive"}
-{"id":"pii-0005","text":"Please update my details: my national ID (NIK) is 1420271105420074. Thank you!","spans":[{"type":"NIK","start":50,"end":66}],"category":"positive"}
-{"id":"pii-0006","text":"Pak, NPWP: 26.590.009.8-417.014, terima kasih.","spans":[{"type":"NPWP","start":11,"end":31}],"category":"positive"}
-{"id":"pii-0007","text":"Halo, no. NIK 1309185610800687, surel: budi_wijaya@example.org. Makasih!","spans":[{"type":"NIK","start":14,"end":30},{"type":"EMAIL","start":39,"end":62}],"category":"positive"}
-{"id":"pii-0008","text":"Tolong update data: email saya maya51@example.org dan nomor kartu saya 4000-0031-0369-7054, kode voucher 9861 2828 1084 0256. Makasih!","spans":[{"type":"EMAIL","start":31,"end":49},{"type":"CARD","start":71,"end":90}],"category":"positive"}
-{"id":"pii-0009","text":"Tolong update data: nomor telepon: 62896 5786 1453. Lalu kartu kredit 5555 5562 0728 1949.","spans":[{"type":"PHONE_ID","start":35,"end":50},{"type":"CARD","start":70,"end":89}],"category":"positive"}
-{"id":"pii-0010","text":"Pak, surel: agus.lestari@example.org, terima kasih.","spans":[{"type":"EMAIL","start":12,"end":36}],"category":"positive"}
-{"id":"pii-0011","text":"Mohon dicek ya, no. HP +62895-0379-0403 ya.","spans":[{"type":"PHONE_ID","start":23,"end":39}],"category":"positive"}
-{"id":"pii-0012","text":"Tolong update data: kartu kredit 5105104321993555","spans":[{"type":"CARD","start":33,"end":49}],"category":"positive"}
-{"id":"pii-0013","text":"Pak, surel: andi@example.org, WA ke +62 857.6583.7185, terima kasih.","spans":[{"type":"EMAIL","start":12,"end":28},{"type":"PHONE_ID","start":36,"end":53}],"category":"positive"}
-{"id":"pii-0014","text":"Halo, hubungi saya di 62857-4005-407 ya.","spans":[{"type":"PHONE_ID","start":22,"end":36}],"category":"positive"}
-{"id":"pii-0015","text":"Tolong update data: ID transaksi 131502662851447. Lalu nomor telepon: 0822-8512-8593, terima kasih.","spans":[{"type":"PHONE_ID","start":70,"end":84}],"category":"positive"}
-{"id":"pii-0016","text":"nomor KTP: 3417015005180816, NPWP perusahaan 66.696.402.9-223.810. Makasih!","spans":[{"type":"NIK","start":11,"end":27},{"type":"NPWP","start":45,"end":65}],"category":"positive"}
-{"id":"pii-0017","text":"card number 4000-0045-1937-9584.","spans":[{"type":"CARD","start":12,"end":31}],"category":"positive"}
-{"id":"pii-0018","text":"Mohon dicek ya, kartu kredit 5200-8283-9981-7031. Lalu no. HP +62811.9265.243","spans":[{"type":"CARD","start":29,"end":48},{"type":"PHONE_ID","start":62,"end":77}],"category":"positive"}
-{"id":"pii-0019","text":"Tolong update data: nomor NPWP saya 802255053894527. Lalu kirim ke andi@example.org, terima kasih.","spans":[{"type":"NPWP","start":36,"end":51},{"type":"EMAIL","start":67,"end":83}],"category":"positive"}
-{"id":"pii-0020","text":"NIK: 9111230911010882.","spans":[{"type":"NIK","start":5,"end":21}],"category":"positive"}
-{"id":"pii-0021","text":"Halo, tagihan INV/2024/08/65832 dan nomor NPWP saya 807954291979413, terima kasih.","spans":[{"type":"NPWP","start":52,"end":67}],"category":"positive"}
-{"id":"pii-0022","text":"For the record, tax ID (NPWP) 774358792821590 and charge it to 5105-1013-9086-9773 and my national ID (NIK) is 9416190804450510. Thank you!","spans":[{"type":"NPWP","start":30,"end":45},{"type":"CARD","start":63,"end":82},{"type":"NIK","start":111,"end":127}],"category":"positive"}
-{"id":"pii-0023","text":"Halo, no. HP 62821.5664.441. Makasih!","spans":[{"type":"PHONE_ID","start":13,"end":27}],"category":"positive"}
-{"id":"pii-0024","text":"nomor kartu saya 4111-1113-7633-5470. Makasih!","spans":[{"type":"CARD","start":17,"end":36}],"category":"positive"}
-{"id":"pii-0025","text":"Pak, NPWP: 31.459.431.1-257.722. Lalu no. HP +62 896-9688-9787.","spans":[{"type":"NPWP","start":11,"end":31},{"type":"PHONE_ID","start":45,"end":62}],"category":"positive"}
-{"id":"pii-0026","text":"Tolong update data: tagihan INV/2022/11/39856, bayar pakai kartu 4000 0089 1073 7696. Makasih!","spans":[{"type":"CARD","start":65,"end":84}],"category":"positive"}
-{"id":"pii-0027","text":"Halo, hubungi saya di 62813-0990-169. Makasih!","spans":[{"type":"PHONE_ID","start":22,"end":36}],"category":"positive"}
-{"id":"pii-0028","text":"Mohon dicek ya, nomor NPWP saya 230806205228339, NIK pemohon 8112216603120039, terima kasih.","spans":[{"type":"NPWP","start":32,"end":47},{"type":"NIK","start":61,"end":77}],"category":"positive"}
-{"id":"pii-0029","text":"Tolong update data: nomor KTP: 3508032603190077. Lalu nomor NPWP saya 68.444.593.0-257.213, kode voucher 0220 7867 5740 0116, terima kasih.","spans":[{"type":"NIK","start":31,"end":47},{"type":"NPWP","start":70,"end":90}],"category":"positive"}
-{"id":"pii-0030","text":"Please update my details: call me at +62 811.0810.7178 and our NPWP is 476231053892675 and my national ID (NIK) is 1114281008270217. Thank you!","spans":[{"type":"PHONE_ID","start":37,"end":54},{"type":"NPWP","start":71,"end":86},{"type":"NIK","start":115,"end":131}],"category":"positive"}
-{"id":"pii-0031","text":"Hi, charge it to 4000 0013 1782 7541. Also, the total is Rp2.396.000. Thank you!","spans":[{"type":"CARD","start":17,"end":36}],"category":"positive"}
-{"id":"pii-0032","text":"Tolong update data: NPWP: 23.050.980.0-797.458 dan kode registrasi 8832569973443216, nomor KTP: 8116182301360249.","spans":[{"type":"NPWP","start":26,"end":46},{"type":"NIK","start":96,"end":112}],"category":"positive"}
-{"id":"pii-0033","text":"Pak, NIK saya 7213162105740075. Lalu email saya andi.santoso@example.org.","spans":[{"type":"NIK","start":14,"end":30},{"type":"EMAIL","start":48,"end":72}],"category":"positive"}
-{"id":"pii-0034","text":"NPWP perusahaan 148437986647213 ya.","spans":[{"type":"NPWP","start":16,"end":31}],"category":"positive"}
-{"id":"pii-0035","text":"Tolong update data: kartu kredit 5105107858427038 dan resi TKP4948213081 ya.","spans":[{"type":"CARD","start":33,"end":49}],"category":"positive"}
-{"id":"pii-0036","text":"For the record, charge it to 5555 5570 6066 0666. Thank you!","spans":[{"type":"CARD","start":29,"end":48}],"category":"positive"}
-{"id":"pii-0037","text":"Halo, email saya Budi_kusuma@example.org dan nomor pesanan 6998418727092561, terima kasih.","spans":[{"type":"EMAIL","start":17,"end":40}],"category":"positive"}
-{"id":"pii-0038","text":"tax ID (NPWP) 54.711.503.9-039.928. Thank you!","spans":[{"type":"NPWP","start":14,"end":34}],"category":"positive"}
-{"id":"pii-0039","text":"For the record, charge it to 4111118579147461, contact: agus40@example.org. Also, my national ID (NIK) is 1413302304620625.","spans":[{"type":"CARD","start":29,"end":45},{"type":"EMAIL","start":56,"end":74},{"type":"NIK","start":106,"end":122}],"category":"positive"}
-{"id":"pii-0040","text":"Please update my details: tax ID (NPWP) 85.694.536.5-750.458 and NIK: 3611290409570925 and my phone number is +6287840517753.","spans":[{"type":"NPWP","start":40,"end":60},{"type":"NIK","start":70,"end":86},{"type":"PHONE_ID","start":110,"end":124}],"category":"positive"}
-{"id":"pii-0041","text":"Pak, kirim ke joko@example.org, WA ke 62821.2450.495","spans":[{"type":"EMAIL","start":14,"end":30},{"type":"PHONE_ID","start":38,"end":52}],"category":"positive"}
-{"id":"pii-0042","text":"Halo, WA ke +62 895-5780-349.","spans":[{"type":"PHONE_ID","start":12,"end":28}],"category":"positive"}
-{"id":"pii-0043","text":"Halo, nomor NPWP saya 70.922.974.6-200.767, kode voucher 1132 7780 4956 8536. Lalu bayar pakai kartu 4000 0033 6042 3319, NIK pemohon 1411206403500915 ya.","spans":[{"type":"NPWP","start":22,"end":42},{"type":"CARD","start":101,"end":120},{"type":"NIK","start":134,"end":150}],"category":"positive"}
-{"id":"pii-0044","text":"jatuh tempo 22-10-2024, NPWP perusahaan 29.371.026.4-117.801, hubungi saya di 628117370150.","spans":[{"type":"NPWP","start":40,"end":60},{"type":"PHONE_ID","start":78,"end":90}],"category":"positive"}
-{"id":"pii-0045","text":"Mohon dicek ya, NPWP perusahaan 55.853.669.3-080.301 dan NIK pemohon 3314202204390990.","spans":[{"type":"NPWP","start":32,"end":52},{"type":"NIK","start":69,"end":85}],"category":"positive"}
-{"id":"pii-0046","text":"Pak, tagihan INV/2022/04/35477. Lalu surel: maya4@example.org. Makasih!","spans":[{"type":"EMAIL","start":44,"end":61}],"category":"positive"}
-{"id":"pii-0047","text":"Hi, invoice INV/2022/05/31253, NIK: 6316231201720498. Thank you!","spans":[{"type":"NIK","start":36,"end":52}],"category":"positive"}
-{"id":"pii-0048","text":"Pak, hubungi saya di +628121221017. Lalu surel: Joko_saputra@example.org dan nomor kartu saya 4111 1113 9011 2806. Makasih!","spans":[{"type":"PHONE_ID","start":21,"end":34},{"type":"EMAIL","start":48,"end":72},{"type":"CARD","start":94,"end":113}],"category":"positive"}
-{"id":"pii-0049","text":"surel: dewi.saputra@example.com, no. NIK 1306116507920992 ya.","spans":[{"type":"EMAIL","start":7,"end":31},{"type":"NIK","start":41,"end":57}],"category":"positive"}
-{"id":"pii-0050","text":"Pak, kirim ke putri.lestari@example.com dan hubungi saya di +62 878-3779-8473, NIK saya 6507024302640993, terima kasih.","spans":[{"type":"EMAIL","start":14,"end":39},{"type":"PHONE_ID","start":60,"end":77},{"type":"NIK","start":88,"end":104}],"category":"positive"}
-{"id":"pii-0051","text":"Tolong update data: resi JX5808337526. Lalu no. HP 62813-4980-9190. Lalu kartu kredit 5555-5585-6457-1029, terima kasih.","spans":[{"type":"PHONE_ID","start":51,"end":66},{"type":"CARD","start":86,"end":105}],"category":"positive"}
-{"id":"pii-0052","text":"Mohon dicek ya, nomor pesanan 4143276219637338, email saya rina.kusuma@example.org. Lalu nomor telepon: 08212902321.","spans":[{"type":"EMAIL","start":59,"end":82},{"type":"PHONE_ID","start":104,"end":115}],"category":"positive"}
-{"id":"pii-0053","text":"Pak, resi TKP8982929602 dan bayar pakai kartu 5555553511019560 dan NPWP perusahaan 456025200912484 ya.","spans":[{"type":"CARD","start":46,"end":62},{"type":"NPWP","start":83,"end":98}],"category":"positive"}
-{"id":"pii-0054","text":"hubungi saya di +62857.5148.089","spans":[{"type":"PHONE_ID","start":16,"end":31}],"category":"positive"}
-{"id":"pii-0055","text":"Halo, kirim ke agus_hidayat@example.org.","spans":[{"type":"EMAIL","start":15,"end":39}],"category":"positive"}
-{"id":"pii-0056","text":"For the record, charge it to 5200 8280 9007 8958 and call me at +62895 6043 9044.","spans":[{"type":"CARD","start":29,"end":48},{"type":"PHONE_ID","start":64,"end":80}],"category":"positive"}
-{"id":"pii-0057","text":"nomor telepon: 62 822-9856-825, terima kasih.","spans":[{"type":"PHONE_ID","start":15,"end":30}],"category":"positive"}
-{"id":"pii-0058","text":"Tolong update data: kirim ke Maya88@example.org dan NPWP: 02.907.968.0-212.892, terima kasih.","spans":[{"type":"EMAIL","start":29,"end":47},{"type":"NPWP","start":58,"end":78}],"category":"positive"}
-{"id":"pii-0059","text":"Please update my details: card number 5200-8289-4437-7507 and NIK: 1308134112190613. Also, contact: siti81@example.org. Thank you!","spans":[{"type":"CARD","start":38,"end":57},{"type":"NIK","start":67,"end":83},{"type":"EMAIL","start":100,"end":118}],"category":"positive"}
-{"id":"pii-0060","text":"Halo, jatuh tempo 19-01-2024. Lalu WA ke 0812.1024.860, email saya Budi_santoso@example.com, terima kasih.","spans":[{"type":"PHONE_ID","start":41,"end":54},{"type":"EMAIL","start":67,"end":91}],"category":"positive"}
-{"id":"pii-0061","text":"Halo, WA ke +6281352573875 ya.","spans":[{"type":"PHONE_ID","start":12,"end":26}],"category":"positive"}
-{"id":"pii-0062","text":"Tolong update data: nomor pesanan 2055569659202232 dan nomor kartu saya 4000 0078 9649 9339.","spans":[{"type":"CARD","start":72,"end":91}],"category":"positive"}
-{"id":"pii-0063","text":"NIK pemohon 6119070707310516, nomor NPWP saya 03.833.651.1-957.499. Lalu tagihan INV/2022/02/45564.","spans":[{"type":"NIK","start":12,"end":28},{"type":"NPWP","start":46,"end":66}],"category":"positive"}
-{"id":"pii-0064","text":"Halo, email saya putri@example.com dan hubungi saya di +6289533675068, terima kasih.","spans":[{"type":"EMAIL","start":17,"end":34},{"type":"PHONE_ID","start":55,"end":69}],"category":"positive"}
-{"id":"pii-0065","text":"NPWP perusahaan 57.786.172.2-645.002, kirim ke Dewi_saputra@example.com.","spans":[{"type":"NPWP","start":16,"end":36},{"type":"EMAIL","start":47,"end":71}],"category":"positive"}
-{"id":"pii-0066","text":"Halo, NIK saya 3107261311790536, surel: Putri.kusuma55@example.com ya.","spans":[{"type":"NIK","start":15,"end":31},{"type":"EMAIL","start":40,"end":66}],"category":"positive"}
-{"id":"pii-0067","text":"Tolong update data: email saya Rizky66@example.org. Lalu hubungi saya di 6282205579627, terima kasih.","spans":[{"type":"EMAIL","start":31,"end":50},{"type":"PHONE_ID","start":73,"end":86}],"category":"positive"}
-{"id":"pii-0068","text":"email saya putri@example.com.","spans":[{"type":"EMAIL","start":11,"end":28}],"category":"positive"}
-{"id":"pii-0069","text":"Tolong update data: nomor KTP: 7410091204810049, terima kasih.","spans":[{"type":"NIK","start":31,"end":47}],"category":"positive"}
-{"id":"pii-0070","text":"Tolong update data: no. HP 0895.3934.447 ya.","spans":[{"type":"PHONE_ID","start":27,"end":40}],"category":"positive"}
-{"id":"pii-0071","text":"Mohon dicek ya, NIK pemohon 6304296009950628. Lalu kode registrasi 8809583498649434, nomor kartu saya 4000 0074 7798 6829. Makasih!","spans":[{"type":"NIK","start":28,"end":44},{"type":"CARD","start":102,"end":121}],"category":"positive"}
-{"id":"pii-0072","text":"Halo, nomor kartu saya 5200 8297 9597 6348. Makasih!","spans":[{"type":"CARD","start":23,"end":42}],"category":"positive"}
-{"id":"pii-0073","text":"For the record, contact: budi.santoso@example.com","spans":[{"type":"EMAIL","start":25,"end":49}],"category":"positive"}
-{"id":"pii-0074","text":"Halo, NIK saya 3606105211640320, no. HP 0896-1906-7743. Makasih!","spans":[{"type":"NIK","start":15,"end":31},{"type":"PHONE_ID","start":40,"end":54}],"category":"positive"}
-{"id":"pii-0075","text":"Halo, kartu kredit 4000000953137082, jatuh tempo 09-10-2023 dan no. NIK 7214295912880661","spans":[{"type":"CARD","start":19,"end":35},{"type":"NIK","start":72,"end":88}],"category":"positive"}
-{"id":"pii-0076","text":"Halo, kirim ke Siti92@example.org, no. NIK 5201032809260814, nomor NPWP saya 59.230.498.9-262.197, terima kasih.","spans":[{"type":"EMAIL","start":15,"end":33},{"type":"NIK","start":43,"end":59},{"type":"NPWP","start":77,"end":97}],"category":"positive"}
-{"id":"pii-0077","text":"Halo, NPWP perusahaan 949398282252273. Lalu no. NIK 3111172607990360 dan kode voucher 5902 7427 0115 6499 dan nomor kartu saya 5200 8209 3621 0655.","spans":[{"type":"NPWP","start":22,"end":37},{"type":"NIK","start":52,"end":68},{"type":"CARD","start":127,"end":146}],"category":"positive"}
-{"id":"pii-0078","text":"Pak, nomor telepon: 08131701895","spans":[{"type":"PHONE_ID","start":20,"end":31}],"category":"positive"}
-{"id":"pii-0079","text":"Please update my details: charge it to 5200 8238 7951 5049","spans":[{"type":"CARD","start":39,"end":58}],"category":"positive"}
-{"id":"pii-0080","text":"Halo, NIK pemohon 5311025008270208. Lalu email saya maya43@example.com","spans":[{"type":"NIK","start":18,"end":34},{"type":"EMAIL","start":52,"end":70}],"category":"positive"}
-{"id":"pii-0081","text":"NPWP perusahaan 69.771.375.3-247.355. Lalu NIK saya 7217092503340167 ya.","spans":[{"type":"NPWP","start":16,"end":36},{"type":"NIK","start":52,"end":68}],"category":"positive"}
-{"id":"pii-0082","text":"Mohon dicek ya, NIK pemohon 1416155606890835, nomor pesanan 8493397432908846. Lalu NPWP: 80.388.572.0-460.243, terima kasih.","spans":[{"type":"NIK","start":28,"end":44},{"type":"NPWP","start":89,"end":109}],"category":"positive"}
-{"id":"pii-0083","text":"Hi, email me at putri_wijaya@example.com","spans":[{"type":"EMAIL","start":16,"end":40}],"category":"positive"}
-{"id":"pii-0084","text":"Tolong update data: tagihan INV/2024/07/68792. Lalu NIK pemohon 7509202607660851, bayar pakai kartu 4111112019735472. Makasih!","spans":[{"type":"NIK","start":64,"end":80},{"type":"CARD","start":100,"end":116}],"category":"positive"}
-{"id":"pii-0085","text":"Halo, jatuh tempo 20-01-2026 dan surel: Budi_pratama@example.org. Makasih!","spans":[{"type":"EMAIL","start":40,"end":64}],"category":"positive"}
-{"id":"pii-0086","text":"Mohon dicek ya, email saya agus.lestari85@example.com.","spans":[{"type":"EMAIL","start":27,"end":53}],"category":"positive"}
-{"id":"pii-0087","text":"Pak, no. NIK 5310160911870606. Lalu email saya Rina_kusuma@example.com","spans":[{"type":"NIK","start":13,"end":29},{"type":"EMAIL","start":47,"end":70}],"category":"positive"}
-{"id":"pii-0088","text":"Tolong update data: nomor kartu saya 4000-0040-4842-0354.","spans":[{"type":"CARD","start":37,"end":56}],"category":"positive"}
-{"id":"pii-0089","text":"Pak, kartu kredit 4000 0034 1175 9208. Makasih!","spans":[{"type":"CARD","start":18,"end":37}],"category":"positive"}
-{"id":"pii-0090","text":"Halo, NIK pemohon 1816191903610864. Makasih!","spans":[{"type":"NIK","start":18,"end":34}],"category":"positive"}
-{"id":"pii-0091","text":"Pak, NPWP: 61.371.491.1-945.649","spans":[{"type":"NPWP","start":11,"end":31}],"category":"positive"}
-{"id":"pii-0092","text":"Mohon dicek ya, no. HP 62 895.5048.9074 dan NPWP perusahaan 04.251.110.6-998.788, tagihan INV/2023/12/52808. Lalu nomor kartu saya 4000006145395017. Makasih!","spans":[{"type":"PHONE_ID","start":23,"end":39},{"type":"NPWP","start":60,"end":80},{"type":"CARD","start":131,"end":147}],"category":"positive"}
-{"id":"pii-0093","text":"kartu kredit 5105 1078 1752 1756. Makasih!","spans":[{"type":"CARD","start":13,"end":32}],"category":"positive"}
-{"id":"pii-0094","text":"Tolong update data: no. NIK 7204211703140845 ya.","spans":[{"type":"NIK","start":28,"end":44}],"category":"positive"}
-{"id":"pii-0095","text":"card number 4111-1111-3580-9443 and email me at siti.pratama73@example.org, my phone number is 0811.3800.632, thanks.","spans":[{"type":"CARD","start":12,"end":31},{"type":"EMAIL","start":48,"end":74},{"type":"PHONE_ID","start":95,"end":108}],"category":"positive"}
-{"id":"pii-0096","text":"Tolong update data: kirim ke dewi_kusuma@example.org. Makasih!","spans":[{"type":"EMAIL","start":29,"end":52}],"category":"positive"}
-{"id":"pii-0097","text":"Tolong update data: totalnya Rp1.422.000, email saya rina7@example.com. Lalu NPWP: 332620208017584","spans":[{"type":"EMAIL","start":53,"end":70},{"type":"NPWP","start":83,"end":98}],"category":"positive"}
-{"id":"pii-0098","text":"Tolong update data: NPWP: 74.075.158.5-696.851, terima kasih.","spans":[{"type":"NPWP","start":26,"end":46}],"category":"positive"}
-{"id":"pii-0099","text":"For the record, our NPWP is 39.311.106.7-307.057, contact: Agus_santoso@example.com. Also, the total is Rp648.000. Also, charge it to 4000003354956407","spans":[{"type":"NPWP","start":28,"end":48},{"type":"EMAIL","start":59,"end":83},{"type":"CARD","start":134,"end":150}],"category":"positive"}
-{"id":"pii-0100","text":"Tolong update data: NPWP perusahaan 72.091.744.3-173.151 dan kirim ke siti.saputra90@example.com","spans":[{"type":"NPWP","start":36,"end":56},{"type":"EMAIL","start":70,"end":96}],"category":"positive"}
-{"id":"pii-0101","text":"Tolong update data: no. HP 0821 7742 685. Lalu kode registrasi 9946605036955412, terima kasih.","spans":[{"type":"PHONE_ID","start":27,"end":40}],"category":"positive"}
-{"id":"pii-0102","text":"Mohon dicek ya, nomor pesanan 4772780960455183. Lalu NPWP: 26.229.143.7-572.047","spans":[{"type":"NPWP","start":59,"end":79}],"category":"positive"}
-{"id":"pii-0103","text":"Mohon dicek ya, NIK saya 3107035707620430, resi TKP2021214789. Makasih!","spans":[{"type":"NIK","start":25,"end":41}],"category":"positive"}
-{"id":"pii-0104","text":"Pak, email saya rina.lestari27@example.com. Lalu nomor NPWP saya 118387179957812.","spans":[{"type":"EMAIL","start":16,"end":42},{"type":"NPWP","start":65,"end":80}],"category":"positive"}
-{"id":"pii-0105","text":"Mohon dicek ya, ID transaksi 766718760262970, hubungi saya di 0812-6093-188 ya.","spans":[{"type":"PHONE_ID","start":62,"end":75}],"category":"positive"}
-{"id":"pii-0106","text":"Mohon dicek ya, nomor telepon: +6285267718807","spans":[{"type":"PHONE_ID","start":31,"end":45}],"category":"positive"}
-{"id":"pii-0107","text":"bayar pakai kartu 5200 8282 7528 1013","spans":[{"type":"CARD","start":18,"end":37}],"category":"positive"}
-{"id":"pii-0108","text":"totalnya Rp5.352.000, kartu kredit 4000 0005 6623 3864 dan NPWP: 92.884.705.8-079.614 dan no. NIK 7409286109130465","spans":[{"type":"CARD","start":35,"end":54},{"type":"NPWP","start":65,"end":85},{"type":"NIK","start":98,"end":114}],"category":"positive"}
-{"id":"pii-0109","text":"Pak, kirim ke siti@example.com, terima kasih.","spans":[{"type":"EMAIL","start":14,"end":30}],"category":"positive"}
-{"id":"pii-0110","text":"totalnya Rp1.575.000 dan nomor kartu saya 5555 5592 5299 5561. Lalu NPWP perusahaan 454402473597287. Lalu kirim ke maya@example.org","spans":[{"type":"CARD","start":42,"end":61},{"type":"NPWP","start":84,"end":99},{"type":"EMAIL","start":115,"end":131}],"category":"positive"}
-{"id":"pii-0111","text":"For the record, NIK: 3509186306800552","spans":[{"type":"NIK","start":21,"end":37}],"category":"positive"}
-{"id":"pii-0112","text":"Halo, WA ke 08113091403. Lalu NPWP perusahaan 09.295.468.2-177.898, kartu kredit 5200 8298 9990 7314, terima kasih.","spans":[{"type":"PHONE_ID","start":12,"end":23},{"type":"NPWP","start":46,"end":66},{"type":"CARD","start":81,"end":100}],"category":"positive"}
-{"id":"pii-0113","text":"nomor telepon: 62 811.1656.469. Lalu kode registrasi 0057285723287082, terima kasih.","spans":[{"type":"PHONE_ID","start":15,"end":30}],"category":"positive"}
-{"id":"pii-0114","text":"Mohon dicek ya, bayar pakai kartu 5555 5507 6775 7182, nomor telepon: 62 821.8528.2839 ya.","spans":[{"type":"CARD","start":34,"end":53},{"type":"PHONE_ID","start":70,"end":86}],"category":"positive"}
-{"id":"pii-0115","text":"NPWP perusahaan 271048860751605.","spans":[{"type":"NPWP","start":16,"end":31}],"category":"positive"}
-{"id":"pii-0116","text":"Mohon dicek ya, ID transaksi 355213345773485. Lalu nomor kartu saya 5200 8277 6538 3032 ya.","spans":[{"type":"CARD","start":68,"end":87}],"category":"positive"}
-{"id":"pii-0117","text":"Mohon dicek ya, hubungi saya di 6289608918909 ya.","spans":[{"type":"PHONE_ID","start":32,"end":45}],"category":"positive"}
-{"id":"pii-0118","text":"Pak, NPWP perusahaan 831515221974473, no. NIK 7507112305150047. Makasih!","spans":[{"type":"NPWP","start":21,"end":36},{"type":"NIK","start":46,"end":62}],"category":"positive"}
-{"id":"pii-0119","text":"NPWP perusahaan 36.215.792.6-970.494. Lalu nomor KTP: 3516152605180905","spans":[{"type":"NPWP","start":16,"end":36},{"type":"NIK","start":54,"end":70}],"category":"positive"}
-{"id":"pii-0120","text":"Halo, surel: putri_santoso@example.com dan nomor kartu saya 5200-8267-7117-9517. Makasih!","spans":[{"type":"EMAIL","start":13,"end":38},{"type":"CARD","start":60,"end":79}],"category":"positive"}
-{"id":"pii-0121","text":"Tolong update data: nomor NPWP saya 917769992479027 dan jatuh tempo 11-02-2024, terima kasih.","spans":[{"type":"NPWP","start":36,"end":51}],"category":"positive"}
-{"id":"pii-0122","text":"voucher code 9747 3991 7988 8942, email me at andi.pratama10@example.org and charge it to 4111 1157 4217 1824, thanks.","spans":[{"type":"EMAIL","start":46,"end":72},{"type":"CARD","start":90,"end":109}],"category":"positive"}
-{"id":"pii-0123","text":"NPWP: 499734189846333 dan nomor telepon: 0878.7844.689. Makasih!","spans":[{"type":"NPWP","start":6,"end":21},{"type":"PHONE_ID","start":41,"end":54}],"category":"positive"}
-{"id":"pii-0124","text":"Pak, NPWP perusahaan 45.842.861.7-335.620. Lalu kirim ke siti_wijaya@example.org, jatuh tempo 03-01-2023.","spans":[{"type":"NPWP","start":21,"end":41},{"type":"EMAIL","start":57,"end":80}],"category":"positive"}
-{"id":"pii-0125","text":"Please update my details: our NPWP is 586778538075358, thanks.","spans":[{"type":"NPWP","start":38,"end":53}],"category":"positive"}
-{"id":"pii-0126","text":"Halo, nomor pesanan 8180167504304780, nomor KTP: 6503184408930983. Makasih!","spans":[{"type":"NIK","start":49,"end":65}],"category":"positive"}
-{"id":"pii-0127","text":"Mohon dicek ya, WA ke 0895.9126.507. Lalu no. NIK 6415244608350330 ya.","spans":[{"type":"PHONE_ID","start":22,"end":35},{"type":"NIK","start":50,"end":66}],"category":"positive"}
-{"id":"pii-0128","text":"Pak, nomor kartu saya 5105106975118967, hubungi saya di 0895.1178.925 dan NPWP perusahaan 54.785.451.3-863.485 ya.","spans":[{"type":"CARD","start":22,"end":38},{"type":"PHONE_ID","start":56,"end":69},{"type":"NPWP","start":90,"end":110}],"category":"positive"}
-{"id":"pii-0129","text":"Pak, surel: Andi_wijaya@example.org, kartu kredit 4000006611291047. Lalu ID transaksi 949430940491329 dan nomor telepon: +62 812-4325-825.","spans":[{"type":"EMAIL","start":12,"end":35},{"type":"CARD","start":50,"end":66},{"type":"PHONE_ID","start":121,"end":137}],"category":"positive"}
-{"id":"pii-0130","text":"Halo, no. NIK 7409062509060222 ya.","spans":[{"type":"NIK","start":14,"end":30}],"category":"positive"}
-{"id":"pii-0131","text":"kartu kredit 5555550347136329 dan NIK saya 7216226304870286 dan totalnya Rp2.808.000. Makasih!","spans":[{"type":"CARD","start":13,"end":29},{"type":"NIK","start":43,"end":59}],"category":"positive"}
-{"id":"pii-0132","text":"Halo, WA ke +62 821 7593 456, bayar pakai kartu 4000 0032 3164 6692 ya.","spans":[{"type":"PHONE_ID","start":12,"end":28},{"type":"CARD","start":48,"end":67}],"category":"positive"}
-{"id":"pii-0133","text":"Mohon dicek ya, kartu kredit 5105 1011 3864 2680 dan NIK saya 7613230601900569, jatuh tempo 18-06-2020 ya.","spans":[{"type":"CARD","start":29,"end":48},{"type":"NIK","start":62,"end":78}],"category":"positive"}
-{"id":"pii-0134","text":"Mohon dicek ya, no. NIK 1811092510830894. Lalu kirim ke andi62@example.org. Lalu NPWP: 13.585.005.3-357.048 ya.","spans":[{"type":"NIK","start":24,"end":40},{"type":"EMAIL","start":56,"end":74},{"type":"NPWP","start":87,"end":107}],"category":"positive"}
-{"id":"pii-0135","text":"Please update my details: the total is Rp3.417.000. Also, email me at Rizky@example.org, call me at 0852-1823-716","spans":[{"type":"EMAIL","start":70,"end":87},{"type":"PHONE_ID","start":100,"end":113}],"category":"positive"}
-{"id":"pii-0136","text":"Pak, jatuh tempo 21-06-2024, NPWP perusahaan 10.408.825.4-905.985. Makasih!","spans":[{"type":"NPWP","start":45,"end":65}],"category":"positive"}
-{"id":"pii-0137","text":"Halo, nomor telepon: 62811.0017.3833, terima kasih.","spans":[{"type":"PHONE_ID","start":21,"end":36}],"category":"positive"}
-{"id":"pii-0138","text":"Halo, nomor telepon: +62 821 7281 143. Lalu email saya Budi_hidayat@example.com, no. NIK 1701036503620965, terima kasih.","spans":[{"type":"PHONE_ID","start":21,"end":37},{"type":"EMAIL","start":55,"end":79},{"type":"NIK","start":89,"end":105}],"category":"positive"}
-{"id":"pii-0139","text":"NPWP perusahaan 28.788.261.2-882.858, kartu kredit 5555550808164216. Makasih!","spans":[{"type":"NPWP","start":16,"end":36},{"type":"CARD","start":51,"end":67}],"category":"positive"}
-{"id":"pii-0140","text":"our NPWP is 338826285973631, thanks.","spans":[{"type":"NPWP","start":12,"end":27}],"category":"positive"}
-{"id":"pii-0141","text":"Mohon dicek ya, NIK pemohon 1609151012060952.","spans":[{"type":"NIK","start":28,"end":44}],"category":"positive"}
-{"id":"pii-0142","text":"NPWP: 18.427.840.6-681.240, NIK pemohon 5212111302740439","spans":[{"type":"NPWP","start":6,"end":26},{"type":"NIK","start":40,"end":56}],"category":"positive"}
-{"id":"pii-0143","text":"Pak, no. NIK 5110106009480155 dan resi JP0744968064, terima kasih.","spans":[{"type":"NIK","start":13,"end":29}],"category":"positive"}
-{"id":"pii-0144","text":"Mohon dicek ya, no. NIK 7112245503930023. Lalu email saya siti@example.org","spans":[{"type":"NIK","start":24,"end":40},{"type":"EMAIL","start":58,"end":74}],"category":"positive"}
-{"id":"pii-0145","text":"Please update my details: contact: dewi.kusuma1@example.com and my national ID (NIK) is 1602301204740759","spans":[{"type":"EMAIL","start":35,"end":59},{"type":"NIK","start":88,"end":104}],"category":"positive"}
-{"id":"pii-0146","text":"Pak, surel: maya.wijaya@example.org. Makasih!","spans":[{"type":"EMAIL","start":12,"end":35}],"category":"positive"}
-{"id":"pii-0147","text":"Halo, NPWP perusahaan 56.041.303.8-325.477. Makasih!","spans":[{"type":"NPWP","start":22,"end":42}],"category":"positive"}
-{"id":"pii-0148","text":"Tolong update data: nomor kartu saya 4000 0023 7590 0527, NPWP perusahaan 73.475.021.3-533.726. Lalu nomor KTP: 7605035012620081 ya.","spans":[{"type":"CARD","start":37,"end":56},{"type":"NPWP","start":74,"end":94},{"type":"NIK","start":112,"end":128}],"category":"positive"}
-{"id":"pii-0149","text":"Tolong update data: NPWP: 11.079.068.8-200.360, NIK pemohon 6206212512460188 ya.","spans":[{"type":"NPWP","start":26,"end":46},{"type":"NIK","start":60,"end":76}],"category":"positive"}
-{"id":"pii-0150","text":"tax ID (NPWP) 18.541.617.2-881.746, email me at dewi_hidayat@example.com.","spans":[{"type":"NPWP","start":14,"end":34},{"type":"EMAIL","start":48,"end":72}],"category":"positive"}
-{"id":"pii-0151","text":"tax ID (NPWP) 38.778.458.5-253.857. Thank you!","spans":[{"type":"NPWP","start":14,"end":34}],"category":"positive"}
-{"id":"pii-0152","text":"Hi, order number 8958365118438868. Also, tax ID (NPWP) 405262409819757","spans":[{"type":"NPWP","start":55,"end":70}],"category":"positive"}
-{"id":"pii-0153","text":"Mohon dicek ya, nomor kartu saya 4111-1152-5608-2433 dan hubungi saya di 628523448170","spans":[{"type":"CARD","start":33,"end":52},{"type":"PHONE_ID","start":73,"end":85}],"category":"positive"}
-{"id":"pii-0154","text":"Hi, tax ID (NPWP) 974226416082437. Also, contact: siti_saputra@example.org.","spans":[{"type":"NPWP","start":18,"end":33},{"type":"EMAIL","start":50,"end":74}],"category":"positive"}
-{"id":"pii-0155","text":"kartu kredit 5105 1054 5202 3047, nomor NPWP saya 68.546.769.2-794.889.","spans":[{"type":"CARD","start":13,"end":32},{"type":"NPWP","start":50,"end":70}],"category":"positive"}
-{"id":"pii-0156","text":"Tolong update data: bayar pakai kartu 4000 0051 2786 8751","spans":[{"type":"CARD","start":38,"end":57}],"category":"positive"}
-{"id":"pii-0157","text":"Mohon dicek ya, no. NIK 7103082608350447 dan resi JX7179224561. Lalu hubungi saya di 0852 7354 446","spans":[{"type":"NIK","start":24,"end":40},{"type":"PHONE_ID","start":85,"end":98}],"category":"positive"}
-{"id":"pii-0158","text":"Tolong update data: NPWP: 10.131.014.4-492.502, terima kasih.","spans":[{"type":"NPWP","start":26,"end":46}],"category":"positive"}
-{"id":"pii-0159","text":"NIK saya 7304285607590746 dan hubungi saya di 0857 8920 054, tagihan INV/2023/07/38371, terima kasih.","spans":[{"type":"NIK","start":9,"end":25},{"type":"PHONE_ID","start":46,"end":59}],"category":"positive"}
-{"id":"pii-0160","text":"nomor NPWP saya 75.993.991.5-759.634. Makasih!","spans":[{"type":"NPWP","start":16,"end":36}],"category":"positive"}
-{"id":"pii-0161","text":"For the record, transaction ID 665459725259685. Also, contact: rina.lestari@example.org.","spans":[{"type":"EMAIL","start":63,"end":87}],"category":"positive"}
-{"id":"pii-0162","text":"Pak, no. HP 0822-3920-2244. Makasih!","spans":[{"type":"PHONE_ID","start":12,"end":26}],"category":"positive"}
-{"id":"pii-0163","text":"Pak, nomor KTP: 3202054310940431 ya.","spans":[{"type":"NIK","start":16,"end":32}],"category":"positive"}
-{"id":"pii-0164","text":"Pak, surel: maya_lestari@example.com dan kode registrasi 0005820326873114.","spans":[{"type":"EMAIL","start":12,"end":36}],"category":"positive"}
-{"id":"pii-0165","text":"Pak, nomor NPWP saya 19.174.622.6-590.636 dan email saya siti_saputra@example.com. Makasih!","spans":[{"type":"NPWP","start":21,"end":41},{"type":"EMAIL","start":57,"end":81}],"category":"positive"}
-{"id":"pii-0166","text":"Tolong update data: bayar pakai kartu 5105109966762223 dan nomor KTP: 3308070602430456.","spans":[{"type":"CARD","start":38,"end":54},{"type":"NIK","start":70,"end":86}],"category":"positive"}
-{"id":"pii-0167","text":"Halo, nomor telepon: 6281343460859, nomor NPWP saya 73.842.386.7-524.401 ya.","spans":[{"type":"PHONE_ID","start":21,"end":34},{"type":"NPWP","start":52,"end":72}],"category":"positive"}
-{"id":"pii-0168","text":"Halo, jatuh tempo 27-07-2022 dan no. NIK 6302081810130847. Lalu NPWP perusahaan 219894029802149. Makasih!","spans":[{"type":"NIK","start":41,"end":57},{"type":"NPWP","start":80,"end":95}],"category":"positive"}
-{"id":"pii-0169","text":"Hi, NIK: 3113201708970343","spans":[{"type":"NIK","start":9,"end":25}],"category":"positive"}
-{"id":"pii-0170","text":"NIK saya 3512111606970102, resi JX1206695795 dan kirim ke Budi_saputra@example.org. Lalu nomor telepon: 62811 1143 6634","spans":[{"type":"NIK","start":9,"end":25},{"type":"EMAIL","start":58,"end":82},{"type":"PHONE_ID","start":104,"end":119}],"category":"positive"}
-{"id":"pii-0171","text":"kirim ke putri32@example.com, terima kasih.","spans":[{"type":"EMAIL","start":9,"end":28}],"category":"positive"}
-{"id":"pii-0172","text":"Mohon dicek ya, WA ke 6282198364883 dan surel: budi@example.com. Makasih!","spans":[{"type":"PHONE_ID","start":22,"end":35},{"type":"EMAIL","start":47,"end":63}],"category":"positive"}
-{"id":"pii-0173","text":"Mohon dicek ya, nomor kartu saya 5555 5518 4991 6788. Lalu no. HP 0895.9559.631. Lalu kode registrasi 8811269402065081. Makasih!","spans":[{"type":"CARD","start":33,"end":52},{"type":"PHONE_ID","start":66,"end":79}],"category":"positive"}
-{"id":"pii-0174","text":"For the record, email me at putri38@example.org","spans":[{"type":"EMAIL","start":28,"end":47}],"category":"positive"}
-{"id":"pii-0175","text":"For the record, email me at andi@example.org.","spans":[{"type":"EMAIL","start":28,"end":44}],"category":"positive"}
-{"id":"pii-0176","text":"Pak, nomor kartu saya 4111114864662637 dan nomor NPWP saya 26.403.717.5-020.180 dan NIK pemohon 7315102308350057 ya.","spans":[{"type":"CARD","start":22,"end":38},{"type":"NPWP","start":59,"end":79},{"type":"NIK","start":96,"end":112}],"category":"positive"}
-{"id":"pii-0177","text":"Mohon dicek ya, NIK saya 1302152412220285. Lalu kode voucher 2019 8474 8642 4686.","spans":[{"type":"NIK","start":25,"end":41}],"category":"positive"}
-{"id":"pii-0178","text":"Pak, kartu kredit 4111 1104 6575 9426.","spans":[{"type":"CARD","start":18,"end":37}],"category":"positive"}
-{"id":"pii-0179","text":"Mohon dicek ya, kartu kredit 5105 1037 5397 4281, nomor NPWP saya 82.192.333.0-103.416. Makasih!","spans":[{"type":"CARD","start":29,"end":48},{"type":"NPWP","start":66,"end":86}],"category":"positive"}
-{"id":"pii-0180","text":"Please update my details: NIK: 5103284809410438. Also, charge it to 4111-1114-5313-2493","spans":[{"type":"NIK","start":31,"end":47},{"type":"CARD","start":68,"end":87}],"category":"positive"}
-{"id":"pii-0181","text":"my phone number is 08579138221, thanks.","spans":[{"type":"PHONE_ID","start":19,"end":30}],"category":"positive"}
-{"id":"pii-0182","text":"NPWP: 49.165.641.3-621.264, NIK pemohon 3419164911410763, terima kasih.","spans":[{"type":"NPWP","start":6,"end":26},{"type":"NIK","start":40,"end":56}],"category":"positive"}
-{"id":"pii-0183","text":"Halo, NIK saya 6416295903580515.","spans":[{"type":"NIK","start":15,"end":31}],"category":"positive"}
-{"id":"pii-0184","text":"my phone number is 08120733095, email me at Siti_wijaya@example.com","spans":[{"type":"PHONE_ID","start":19,"end":30},{"type":"EMAIL","start":44,"end":67}],"category":"positive"}
-{"id":"pii-0185","text":"For the record, contact: dewi.hidayat16@example.org and my phone number is +628111854873. Thank you!","spans":[{"type":"EMAIL","start":25,"end":51},{"type":"PHONE_ID","start":75,"end":88}],"category":"positive"}
-{"id":"pii-0186","text":"Halo, nomor kartu saya 5200-8283-7839-9084, kirim ke maya_pratama@example.org. Makasih!","spans":[{"type":"CARD","start":23,"end":42},{"type":"EMAIL","start":53,"end":77}],"category":"positive"}
-{"id":"pii-0187","text":"nomor pesanan 3851585070528810, hubungi saya di 62895-3323-782","spans":[{"type":"PHONE_ID","start":48,"end":62}],"category":"positive"}
-{"id":"pii-0188","text":"Mohon dicek ya, NPWP perusahaan 27.364.012.1-042.546 ya.","spans":[{"type":"NPWP","start":32,"end":52}],"category":"positive"}
-{"id":"pii-0189","text":"Hi, transaction ID 145084064669384, my phone number is +62821.3990.423","spans":[{"type":"PHONE_ID","start":55,"end":70}],"category":"positive"}
-{"id":"pii-0190","text":"Tolong update data: no. NIK 8112146811450617. Lalu hubungi saya di 0812 1356 0332 dan kartu kredit 4111-1142-5790-4257. Makasih!","spans":[{"type":"NIK","start":28,"end":44},{"type":"PHONE_ID","start":67,"end":81},{"type":"CARD","start":99,"end":118}],"category":"positive"}
-{"id":"pii-0191","text":"Hi, contact: andi@example.org. Also, tax ID (NPWP) 38.169.535.4-783.795. Also, the total is Rp915.000, thanks.","spans":[{"type":"EMAIL","start":13,"end":29},{"type":"NPWP","start":51,"end":71}],"category":"positive"}
-{"id":"pii-0192","text":"hubungi saya di 62878-9501-0284, email saya siti@example.org. Lalu nomor NPWP saya 015507945154047. Makasih!","spans":[{"type":"PHONE_ID","start":16,"end":31},{"type":"EMAIL","start":44,"end":60},{"type":"NPWP","start":83,"end":98}],"category":"positive"}
-{"id":"pii-0193","text":"hubungi saya di 082166842549","spans":[{"type":"PHONE_ID","start":16,"end":28}],"category":"positive"}
-{"id":"pii-0194","text":"Mohon dicek ya, no. HP +6289614325502","spans":[{"type":"PHONE_ID","start":23,"end":37}],"category":"positive"}
-{"id":"pii-0195","text":"Halo, hubungi saya di +62857-7313-4170 ya.","spans":[{"type":"PHONE_ID","start":22,"end":38}],"category":"positive"}
-{"id":"pii-0196","text":"Mohon dicek ya, no. HP 0895.1068.6205, nomor kartu saya 5105104909649983.","spans":[{"type":"PHONE_ID","start":23,"end":37},{"type":"CARD","start":56,"end":72}],"category":"positive"}
-{"id":"pii-0197","text":"kirim ke Putri.saputra@example.org, nomor NPWP saya 56.386.076.9-205.801.","spans":[{"type":"EMAIL","start":9,"end":34},{"type":"NPWP","start":52,"end":72}],"category":"positive"}
-{"id":"pii-0198","text":"Please update my details: call me at 0812-0805-782 and email me at putri.hidayat13@example.com. Thank you!","spans":[{"type":"PHONE_ID","start":37,"end":50},{"type":"EMAIL","start":67,"end":94}],"category":"positive"}
-{"id":"pii-0199","text":"Mohon dicek ya, NPWP perusahaan 54.432.031.5-642.864 dan WA ke +628220072141","spans":[{"type":"NPWP","start":32,"end":52},{"type":"PHONE_ID","start":63,"end":76}],"category":"positive"}
-{"id":"pii-0200","text":"Tolong update data: bayar pakai kartu 5200-8217-5998-2776 ya.","spans":[{"type":"CARD","start":38,"end":57}],"category":"positive"}
-{"id":"pii-0201","text":"NIK saya 1920155607820551 dan no. HP +62895-2967-463. Makasih!","spans":[{"type":"NIK","start":9,"end":25},{"type":"PHONE_ID","start":37,"end":52}],"category":"positive"}
-{"id":"pii-0202","text":"Tolong update data: NIK pemohon 1404084802240472 ya.","spans":[{"type":"NIK","start":32,"end":48}],"category":"positive"}
-{"id":"pii-0203","text":"Mohon dicek ya, kartu kredit 4111 1133 8854 6698, no. HP 0895 9761 897. Makasih!","spans":[{"type":"CARD","start":29,"end":48},{"type":"PHONE_ID","start":57,"end":70}],"category":"positive"}
-{"id":"pii-0204","text":"Please update my details: our NPWP is 918086815130570, card number 5555558948937664 and voucher code 3903 2058 7066 4586 and contact: agus_lestari@example.org. Thank you!","spans":[{"type":"NPWP","start":38,"end":53},{"type":"CARD","start":67,"end":83},{"type":"EMAIL","start":134,"end":158}],"category":"positive"}
-{"id":"pii-0205","text":"Halo, WA ke +62 822.2512.0805. Lalu kirim ke putri.hidayat11@example.org, nomor KTP: 5104034903720557","spans":[{"type":"PHONE_ID","start":12,"end":29},{"type":"EMAIL","start":45,"end":72},{"type":"NIK","start":85,"end":101}],"category":"positive"}
-{"id":"pii-0206","text":"totalnya Rp8.373.000 dan nomor telepon: +62822-1048-969.","spans":[{"type":"PHONE_ID","start":40,"end":55}],"category":"positive"}
-{"id":"pii-0207","text":"Halo, tagihan INV/2025/12/50857. Lalu surel: budi_santoso@example.com.","spans":[{"type":"EMAIL","start":45,"end":69}],"category":"positive"}
-{"id":"pii-0208","text":"Halo, jatuh tempo 25-01-2020. Lalu nomor kartu saya 4111 1193 0490 6627 ya.","spans":[{"type":"CARD","start":52,"end":71}],"category":"positive"}
-{"id":"pii-0209","text":"bayar pakai kartu 4000008346068336 dan kode voucher 9466 2802 9342 4181. Makasih!","spans":[{"type":"CARD","start":18,"end":34}],"category":"positive"}
-{"id":"pii-0210","text":"Halo, kirim ke siti48@example.com, no. HP 0896 8118 849","spans":[{"type":"EMAIL","start":15,"end":33},{"type":"PHONE_ID","start":42,"end":55}],"category":"positive"}
-{"id":"pii-0211","text":"WA ke 0878-7357-7201. Lalu kartu kredit 4111110379805141. Lalu kode voucher 7965 9994 3280 9315, terima kasih.","spans":[{"type":"PHONE_ID","start":6,"end":20},{"type":"CARD","start":40,"end":56}],"category":"positive"}
-{"id":"pii-0212","text":"Mohon dicek ya, NPWP perusahaan 810809241987588, tagihan INV/2022/03/45466 ya.","spans":[{"type":"NPWP","start":32,"end":47}],"category":"positive"}
-{"id":"pii-0213","text":"Tolong update data: no. HP 62812 2323 229, bayar pakai kartu 5555 5506 2157 1035, terima kasih.","spans":[{"type":"PHONE_ID","start":27,"end":41},{"type":"CARD","start":61,"end":80}],"category":"positive"}
-{"id":"pii-0214","text":"Mohon dicek ya, kirim ke agus.pratama@example.com dan nomor kartu saya 4111 1175 6358 0398, terima kasih.","spans":[{"type":"EMAIL","start":25,"end":49},{"type":"CARD","start":71,"end":90}],"category":"positive"}
-{"id":"pii-0215","text":"Tolong update data: bayar pakai kartu 5200829444479801, kode registrasi 4567498440192406. Lalu kirim ke dewi.hidayat@example.org","spans":[{"type":"CARD","start":38,"end":54},{"type":"EMAIL","start":104,"end":128}],"category":"positive"}
-{"id":"pii-0216","text":"Mohon dicek ya, WA ke 0852-9008-962.","spans":[{"type":"PHONE_ID","start":22,"end":35}],"category":"positive"}
-{"id":"pii-0217","text":"Tolong update data: nomor pesanan 1828474541672970 dan surel: Maya_saputra@example.com.","spans":[{"type":"EMAIL","start":62,"end":86}],"category":"positive"}
-{"id":"pii-0218","text":"Mohon dicek ya, hubungi saya di 0813 4535 613 dan NPWP: 646827856943693. Makasih!","spans":[{"type":"PHONE_ID","start":32,"end":45},{"type":"NPWP","start":56,"end":71}],"category":"positive"}
-{"id":"pii-0219","text":"Tolong update data: NPWP: 700163579672372","spans":[{"type":"NPWP","start":26,"end":41}],"category":"positive"}
-{"id":"pii-0220","text":"Please update my details: call me at 0857.7250.7885.","spans":[{"type":"PHONE_ID","start":37,"end":51}],"category":"positive"}
-{"id":"pii-0221","text":"Pak, nomor NPWP saya 61.180.662.2-672.700. Makasih!","spans":[{"type":"NPWP","start":21,"end":41}],"category":"positive"}
-{"id":"pii-0222","text":"kirim ke putri_wijaya@example.org dan NPWP perusahaan 38.134.225.7-695.815 ya.","spans":[{"type":"EMAIL","start":9,"end":33},{"type":"NPWP","start":54,"end":74}],"category":"positive"}
-{"id":"pii-0223","text":"Tolong update data: nomor NPWP saya 662369419318002. Makasih!","spans":[{"type":"NPWP","start":36,"end":51}],"category":"positive"}
-{"id":"pii-0224","text":"Pak, nomor telepon: 0878-0343-2624.","spans":[{"type":"PHONE_ID","start":20,"end":34}],"category":"positive"}
-{"id":"pii-0225","text":"Please update my details: call me at +6282206570124.","spans":[{"type":"PHONE_ID","start":37,"end":51}],"category":"positive"}
-{"id":"pii-0226","text":"Pak, nomor telepon: 0857 4783 3262 ya.","spans":[{"type":"PHONE_ID","start":20,"end":34}],"category":"positive"}
-{"id":"pii-0227","text":"Halo, surel: agus.saputra@example.com, no. NIK 1202111601500802, kode voucher 8107 0345 1724 9720","spans":[{"type":"EMAIL","start":13,"end":37},{"type":"NIK","start":47,"end":63}],"category":"positive"}
-{"id":"pii-0228","text":"Mohon dicek ya, nomor telepon: 0895.4751.149 dan nomor kartu saya 4000-0077-0645-2395, terima kasih.","spans":[{"type":"PHONE_ID","start":31,"end":44},{"type":"CARD","start":66,"end":85}],"category":"positive"}
-{"id":"pii-0229","text":"Halo, bayar pakai kartu 5105 1071 2331 4664, hubungi saya di +62813-6978-444. Lalu nomor NPWP saya 50.829.888.6-183.971 ya.","spans":[{"type":"CARD","start":24,"end":43},{"type":"PHONE_ID","start":61,"end":76},{"type":"NPWP","start":99,"end":119}],"category":"positive"}
-{"id":"pii-0230","text":"Tolong update data: nomor pesanan 5998936899585391 dan kartu kredit 5200 8295 2635 6737. Makasih!","spans":[{"type":"CARD","start":68,"end":87}],"category":"positive"}
-{"id":"pii-0231","text":"Mohon dicek ya, nomor KTP: 5209064301680143 ya.","spans":[{"type":"NIK","start":27,"end":43}],"category":"positive"}
-{"id":"pii-0232","text":"Mohon dicek ya, nomor kartu saya 5555550460582705. Lalu NIK saya 1917106807260375, ID transaksi 216679671422640. Makasih!","spans":[{"type":"CARD","start":33,"end":49},{"type":"NIK","start":65,"end":81}],"category":"positive"}
-{"id":"pii-0233","text":"Tolong update data: no. HP +6289567079073. Lalu NPWP perusahaan 61.234.839.0-998.700. Makasih!","spans":[{"type":"PHONE_ID","start":27,"end":41},{"type":"NPWP","start":64,"end":84}],"category":"positive"}
-{"id":"pii-0234","text":"Mohon dicek ya, NIK pemohon 1717052810250317 dan jatuh tempo 14-07-2024 dan kirim ke siti67@example.org. Makasih!","spans":[{"type":"NIK","start":28,"end":44},{"type":"EMAIL","start":85,"end":103}],"category":"positive"}
-{"id":"pii-0235","text":"Please update my details: my national ID (NIK) is 5216292302710054. Thank you!","spans":[{"type":"NIK","start":50,"end":66}],"category":"positive"}
-{"id":"pii-0236","text":"nomor telepon: 62 813-1278-0480 ya.","spans":[{"type":"PHONE_ID","start":15,"end":31}],"category":"positive"}
-{"id":"pii-0237","text":"Halo, nomor kartu saya 5200829879276383.","spans":[{"type":"CARD","start":23,"end":39}],"category":"positive"}
-{"id":"pii-0238","text":"Mohon dicek ya, NPWP: 65.946.697.5-766.368 ya.","spans":[{"type":"NPWP","start":22,"end":42}],"category":"positive"}
-{"id":"pii-0239","text":"kartu kredit 5105 1091 0425 9397, NPWP: 985574924108349, terima kasih.","spans":[{"type":"CARD","start":13,"end":32},{"type":"NPWP","start":40,"end":55}],"category":"positive"}
-{"id":"pii-0240","text":"my phone number is 0852.9253.179, my national ID (NIK) is 1602286805020977 and contact: Putri_pratama@example.com, thanks.","spans":[{"type":"PHONE_ID","start":19,"end":32},{"type":"NIK","start":58,"end":74},{"type":"EMAIL","start":88,"end":113}],"category":"positive"}
-{"id":"pii-0241","text":"Hi, email me at budi_santoso@example.org. Also, our NPWP is 149564105815673, thanks.","spans":[{"type":"EMAIL","start":16,"end":40},{"type":"NPWP","start":60,"end":75}],"category":"positive"}
-{"id":"pii-0242","text":"Halo, nomor pesanan 4112949756991778. Lalu NPWP perusahaan 846562325959296, NIK saya 1401010810520711, email saya Rizky75@example.com. Makasih!","spans":[{"type":"NPWP","start":59,"end":74},{"type":"NIK","start":85,"end":101},{"type":"EMAIL","start":114,"end":133}],"category":"positive"}
-{"id":"pii-0243","text":"no. HP 0852-0788-238, terima kasih.","spans":[{"type":"PHONE_ID","start":7,"end":20}],"category":"positive"}
-{"id":"pii-0244","text":"Tolong update data: WA ke 0813 5017 2699 ya.","spans":[{"type":"PHONE_ID","start":26,"end":40}],"category":"positive"}
-{"id":"pii-0245","text":"Tolong update data: NPWP perusahaan 56.077.176.9-907.621. Makasih!","spans":[{"type":"NPWP","start":36,"end":56}],"category":"positive"}
-{"id":"pii-0246","text":"Please update my details: the total is Rp2.799.000, NIK: 5311264411140858, thanks.","spans":[{"type":"NIK","start":57,"end":73}],"category":"positive"}
-{"id":"pii-0247","text":"Tolong update data: nomor telepon: 0857 9590 565 dan NPWP perusahaan 57.735.157.9-925.757. Lalu kirim ke Rizky@example.com","spans":[{"type":"PHONE_ID","start":35,"end":48},{"type":"NPWP","start":69,"end":89},{"type":"EMAIL","start":105,"end":122}],"category":"positive"}
-{"id":"pii-0248","text":"For the record, card number 4000007325070016, thanks.","spans":[{"type":"CARD","start":28,"end":44}],"category":"positive"}
-{"id":"pii-0249","text":"Halo, nomor KTP: 1610252007640451, email saya Joko@example.org ya.","spans":[{"type":"NIK","start":17,"end":33},{"type":"EMAIL","start":46,"end":62}],"category":"positive"}
-{"id":"pii-0250","text":"Halo, NPWP perusahaan 609587800431697. Makasih!","spans":[{"type":"NPWP","start":22,"end":37}],"category":"positive"}
-{"id":"pii-0251","text":"Mohon dicek ya, kartu kredit 4111-1121-6641-0044 dan kirim ke agus_santoso@example.org dan WA ke +62896.6183.092 ya.","spans":[{"type":"CARD","start":29,"end":48},{"type":"EMAIL","start":62,"end":86},{"type":"PHONE_ID","start":97,"end":112}],"category":"positive"}
-{"id":"pii-0252","text":"NPWP: 971774922197079. Makasih!","spans":[{"type":"NPWP","start":6,"end":21}],"category":"positive"}
-{"id":"pii-0253","text":"Pak, no. NIK 7403252110740062 ya.","spans":[{"type":"NIK","start":13,"end":29}],"category":"positive"}
-{"id":"pii-0254","text":"For the record, my phone number is 62821.0270.082. Also, my national ID (NIK) is 1204011711250073, thanks.","spans":[{"type":"PHONE_ID","start":35,"end":49},{"type":"NIK","start":81,"end":97}],"category":"positive"}
-{"id":"pii-0255","text":"For the record, tax ID (NPWP) 75.796.630.4-029.772. Also, invoice INV/2023/06/95394. Thank you!","spans":[{"type":"NPWP","start":30,"end":50}],"category":"positive"}
-{"id":"pii-0256","text":"NIK pemohon 3516065610650782 dan NPWP: 77.681.215.2-513.540 ya.","spans":[{"type":"NIK","start":12,"end":28},{"type":"NPWP","start":39,"end":59}],"category":"positive"}
-{"id":"pii-0257","text":"Mohon dicek ya, no. HP 62813 8834 1823 dan kirim ke putri.hidayat@example.com.","spans":[{"type":"PHONE_ID","start":23,"end":38},{"type":"EMAIL","start":52,"end":77}],"category":"positive"}
-{"id":"pii-0258","text":"Tolong update data: hubungi saya di 0813.6282.640, kartu kredit 4000 0015 2615 3333","spans":[{"type":"PHONE_ID","start":36,"end":49},{"type":"CARD","start":64,"end":83}],"category":"positive"}
-{"id":"pii-0259","text":"Mohon dicek ya, NIK saya 7419275710520278 ya.","spans":[{"type":"NIK","start":25,"end":41}],"category":"positive"}
-{"id":"pii-0260","text":"Pak, NIK pemohon 8213140209740702. Lalu kartu kredit 4111-1146-6713-1426","spans":[{"type":"NIK","start":17,"end":33},{"type":"CARD","start":53,"end":72}],"category":"positive"}
-{"id":"pii-0261","text":"Hi, contact: maya.hidayat71@example.org.","spans":[{"type":"EMAIL","start":13,"end":39}],"category":"positive"}
-{"id":"pii-0262","text":"Tolong update data: nomor kartu saya 5555-5579-9684-6322. Lalu hubungi saya di 62 896-2948-4153","spans":[{"type":"CARD","start":37,"end":56},{"type":"PHONE_ID","start":79,"end":95}],"category":"positive"}
-{"id":"pii-0263","text":"Mohon dicek ya, nomor telepon: 628214306358.","spans":[{"type":"PHONE_ID","start":31,"end":43}],"category":"positive"}
-{"id":"pii-0264","text":"surel: rizky.saputra28@example.org, nomor NPWP saya 765271271375046 dan kode registrasi 8872597485893329","spans":[{"type":"EMAIL","start":7,"end":34},{"type":"NPWP","start":52,"end":67}],"category":"positive"}
-{"id":"pii-0265","text":"Halo, bayar pakai kartu 4000 0008 5315 2967 dan resi JX1631340325 ya.","spans":[{"type":"CARD","start":24,"end":43}],"category":"positive"}
-{"id":"pii-0266","text":"Pak, nomor NPWP saya 204179750824156. Lalu kode voucher 3828 4084 7177 0199. Lalu WA ke +62857 1120 692","spans":[{"type":"NPWP","start":21,"end":36},{"type":"PHONE_ID","start":88,"end":103}],"category":"positive"}
-{"id":"pii-0267","text":"Halo, email saya joko.lestari38@example.com. Makasih!","spans":[{"type":"EMAIL","start":17,"end":43}],"category":"positive"}
-{"id":"pii-0268","text":"Mohon dicek ya, NPWP perusahaan 54.638.266.5-766.894 dan jatuh tempo 22-10-2022 dan kirim ke putri@example.com, terima kasih.","spans":[{"type":"NPWP","start":32,"end":52},{"type":"EMAIL","start":93,"end":110}],"category":"positive"}
-{"id":"pii-0269","text":"Tolong update data: NIK saya 1206212810080037. Lalu surel: rizky51@example.com ya.","spans":[{"type":"NIK","start":29,"end":45},{"type":"EMAIL","start":59,"end":78}],"category":"positive"}
-{"id":"pii-0270","text":"Pak, nomor NPWP saya 40.853.569.2-900.993 dan kartu kredit 5105108348035126 ya.","spans":[{"type":"NPWP","start":21,"end":41},{"type":"CARD","start":59,"end":75}],"category":"positive"}
-{"id":"pii-0271","text":"hubungi saya di 085705241769, NIK saya 7218200212510137","spans":[{"type":"PHONE_ID","start":16,"end":28},{"type":"NIK","start":39,"end":55}],"category":"positive"}
-{"id":"pii-0272","text":"Pak, NIK saya 8220015404710043","spans":[{"type":"NIK","start":14,"end":30}],"category":"positive"}
-{"id":"pii-0273","text":"For the record, tax ID (NPWP) 56.053.218.7-398.999, thanks.","spans":[{"type":"NPWP","start":30,"end":50}],"category":"positive"}
-{"id":"pii-0274","text":"Tolong update data: NPWP perusahaan 35.243.485.1-412.383 dan no. HP +62821 5962 5597, kirim ke andi_pratama@example.org","spans":[{"type":"NPWP","start":36,"end":56},{"type":"PHONE_ID","start":68,"end":84},{"type":"EMAIL","start":95,"end":119}],"category":"positive"}
-{"id":"pii-0275","text":"Tolong update data: kartu kredit 4111-1127-1124-6836, terima kasih.","spans":[{"type":"CARD","start":33,"end":52}],"category":"positive"}
-{"id":"pii-0276","text":"Please update my details: my national ID (NIK) is 8119012605350883. Also, our NPWP is 89.603.678.6-496.921.","spans":[{"type":"NIK","start":50,"end":66},{"type":"NPWP","start":86,"end":106}],"category":"positive"}
-{"id":"pii-0277","text":"WA ke 62852-2601-2187, bayar pakai kartu 5105-1025-2661-8522 ya.","spans":[{"type":"PHONE_ID","start":6,"end":21},{"type":"CARD","start":41,"end":60}],"category":"positive"}
-{"id":"pii-0278","text":"For the record, tax ID (NPWP) 565259423570225, call me at +62 895 4424 121. Thank you!","spans":[{"type":"NPWP","start":30,"end":45},{"type":"PHONE_ID","start":58,"end":74}],"category":"positive"}
-{"id":"pii-0279","text":"Mohon dicek ya, NIK saya 8205235002890956 ya.","spans":[{"type":"NIK","start":25,"end":41}],"category":"positive"}
-{"id":"pii-0280","text":"Pak, WA ke +62895 7549 8228 dan bayar pakai kartu 5200824906534672. Lalu kirim ke Andi.kusuma69@example.com.","spans":[{"type":"PHONE_ID","start":11,"end":27},{"type":"CARD","start":50,"end":66},{"type":"EMAIL","start":82,"end":107}],"category":"positive"}
-{"id":"pii-0281","text":"Pak, NIK pemohon 1711036401660356 dan ID transaksi 672028594058609 ya.","spans":[{"type":"NIK","start":17,"end":33}],"category":"positive"}
-{"id":"pii-0282","text":"Tolong update data: jatuh tempo 06-05-2025, no. HP 0857 1657 8926.","spans":[{"type":"PHONE_ID","start":51,"end":65}],"category":"positive"}
-{"id":"pii-0283","text":"Tolong update data: no. HP +62878-8082-9499. Lalu ID transaksi 872410604763001, NPWP perusahaan 22.516.497.2-401.806. Makasih!","spans":[{"type":"PHONE_ID","start":27,"end":43},{"type":"NPWP","start":96,"end":116}],"category":"positive"}
-{"id":"pii-0284","text":"Pak, WA ke +62 852-2943-9953, terima kasih.","spans":[{"type":"PHONE_ID","start":11,"end":28}],"category":"positive"}
-{"id":"pii-0285","text":"Please update my details: charge it to 4000007900479079.","spans":[{"type":"CARD","start":39,"end":55}],"category":"positive"}
-{"id":"pii-0286","text":"Please update my details: charge it to 5105 1017 3688 9758","spans":[{"type":"CARD","start":39,"end":58}],"category":"positive"}
-{"id":"pii-0287","text":"Mohon dicek ya, nomor kartu saya 4111116948688389, terima kasih.","spans":[{"type":"CARD","start":33,"end":49}],"category":"positive"}
-{"id":"pii-0288","text":"Halo, WA ke +62896 0723 8123. Lalu kirim ke putri_lestari@example.org, jatuh tempo 18-03-2023, terima kasih.","spans":[{"type":"PHONE_ID","start":12,"end":28},{"type":"EMAIL","start":44,"end":69}],"category":"positive"}
-{"id":"pii-0289","text":"Mohon dicek ya, email saya putri_wijaya@example.org. Makasih!","spans":[{"type":"EMAIL","start":27,"end":51}],"category":"positive"}
-{"id":"pii-0290","text":"Halo, nomor telepon: +62821.4643.7363","spans":[{"type":"PHONE_ID","start":21,"end":37}],"category":"positive"}
-{"id":"pii-0291","text":"Halo, NPWP perusahaan 93.409.230.6-859.045 dan resi JX3927862086. Makasih!","spans":[{"type":"NPWP","start":22,"end":42}],"category":"positive"}
-{"id":"pii-0292","text":"Pak, nomor kartu saya 4000003191408299, terima kasih.","spans":[{"type":"CARD","start":22,"end":38}],"category":"positive"}
-{"id":"pii-0293","text":"Halo, NIK pemohon 2109026309470916, kode registrasi 0011221333171829.","spans":[{"type":"NIK","start":18,"end":34}],"category":"positive"}
-{"id":"pii-0294","text":"my phone number is 62 896.5163.609 and contact: andi_saputra@example.org","spans":[{"type":"PHONE_ID","start":19,"end":34},{"type":"EMAIL","start":48,"end":72}],"category":"positive"}
-{"id":"pii-0295","text":"hubungi saya di 0852.6083.7385 dan kartu kredit 4000 0097 6028 3328. Lalu ID transaksi 497728065999745, terima kasih.","spans":[{"type":"PHONE_ID","start":16,"end":30},{"type":"CARD","start":48,"end":67}],"category":"positive"}
-{"id":"pii-0296","text":"kirim ke joko_wijaya@example.org. Lalu resi JP1350928183. Makasih!","spans":[{"type":"EMAIL","start":9,"end":32}],"category":"positive"}
-{"id":"pii-0297","text":"Tolong update data: kartu kredit 5555 5576 8057 9205. Lalu WA ke 6281264582875 ya.","spans":[{"type":"CARD","start":33,"end":52},{"type":"PHONE_ID","start":65,"end":78}],"category":"positive"}
-{"id":"pii-0298","text":"Please update my details: call me at +6282282740646. Also, charge it to 5105107199514452.","spans":[{"type":"PHONE_ID","start":37,"end":51},{"type":"CARD","start":72,"end":88}],"category":"positive"}
-{"id":"pii-0299","text":"nomor kartu saya 4000-0066-6399-1502, NIK pemohon 3507104612010805 dan tagihan INV/2022/03/67207, nomor telepon: 62 813.7774.6601.","spans":[{"type":"CARD","start":17,"end":36},{"type":"NIK","start":50,"end":66},{"type":"PHONE_ID","start":113,"end":129}],"category":"positive"}
-{"id":"pii-0300","text":"Pak, NPWP perusahaan 994499431380283, email saya joko.kusuma93@example.org. Lalu NIK saya 9102191007110083. Makasih!","spans":[{"type":"NPWP","start":21,"end":36},{"type":"EMAIL","start":49,"end":74},{"type":"NIK","start":90,"end":106}],"category":"positive"}
-{"id":"pii-0301","text":"Pak, kode registrasi 4547561942627197. Lalu NPWP: 62.383.956.8-499.862 ya.","spans":[{"type":"NPWP","start":50,"end":70}],"category":"positive"}
-{"id":"pii-0302","text":"Tolong update data: kartu kredit 5200 8297 4400 8912 dan totalnya Rp4.089.000.","spans":[{"type":"CARD","start":33,"end":52}],"category":"positive"}
-{"id":"pii-0303","text":"Tolong update data: email saya dewi.pratama31@example.org dan WA ke 0857 7858 302 ya.","spans":[{"type":"EMAIL","start":31,"end":57},{"type":"PHONE_ID","start":68,"end":81}],"category":"positive"}
-{"id":"pii-0304","text":"Mohon dicek ya, NIK pemohon 6519132611360239 dan ID transaksi 117729773194936, nomor telepon: 0822.3890.530","spans":[{"type":"NIK","start":28,"end":44},{"type":"PHONE_ID","start":94,"end":107}],"category":"positive"}
-{"id":"pii-0305","text":"Hi, voucher code 7913 4334 8192 2716. Also, email me at andi@example.com, thanks.","spans":[{"type":"EMAIL","start":56,"end":72}],"category":"positive"}
-{"id":"pii-0306","text":"Halo, no. HP 0813.4584.2159, terima kasih.","spans":[{"type":"PHONE_ID","start":13,"end":27}],"category":"positive"}
-{"id":"pii-0307","text":"Mohon dicek ya, nomor NPWP saya 333327445960092. Makasih!","spans":[{"type":"NPWP","start":32,"end":47}],"category":"positive"}
-{"id":"pii-0308","text":"Halo, NIK saya 3119144406920048. Lalu WA ke 62 857-4020-8299. Makasih!","spans":[{"type":"NIK","start":15,"end":31},{"type":"PHONE_ID","start":44,"end":60}],"category":"positive"}
-{"id":"pii-0309","text":"Hi, NIK: 3214092102380798. Also, charge it to 4111-1128-3594-4175. Also, contact: joko.pratama4@example.org, thanks.","spans":[{"type":"NIK","start":9,"end":25},{"type":"CARD","start":46,"end":65},{"type":"EMAIL","start":82,"end":107}],"category":"positive"}
-{"id":"pii-0310","text":"jatuh tempo 02-04-2021, NIK pemohon 3517226201120461 dan hubungi saya di 62811.5608.182. Makasih!","spans":[{"type":"NIK","start":36,"end":52},{"type":"PHONE_ID","start":73,"end":87}],"category":"positive"}
-{"id":"pii-0311","text":"For the record, my national ID (NIK) is 1319296208040991","spans":[{"type":"NIK","start":40,"end":56}],"category":"positive"}
-{"id":"pii-0312","text":"For the record, call me at 62 852.2936.2058, thanks.","spans":[{"type":"PHONE_ID","start":27,"end":43}],"category":"positive"}
-{"id":"pii-0313","text":"WA ke +62 812.3904.2747 ya.","spans":[{"type":"PHONE_ID","start":6,"end":23}],"category":"positive"}
-{"id":"pii-0314","text":"Mohon dicek ya, surel: rizky.kusuma41@example.org. Lalu bayar pakai kartu 5105-1085-6973-6659. Lalu hubungi saya di +62 878 8994 8821","spans":[{"type":"EMAIL","start":23,"end":49},{"type":"CARD","start":74,"end":93},{"type":"PHONE_ID","start":116,"end":133}],"category":"positive"}
-{"id":"pii-0315","text":"Tolong update data: NPWP: 484152843246116. Lalu nomor KTP: 7401214504190933.","spans":[{"type":"NPWP","start":26,"end":41},{"type":"NIK","start":59,"end":75}],"category":"positive"}
-{"id":"pii-0316","text":"Mohon dicek ya, NPWP: 029465479044751 dan kartu kredit 4000 0037 5470 9406. Lalu no. NIK 3111065509710337. Makasih!","spans":[{"type":"NPWP","start":22,"end":37},{"type":"CARD","start":55,"end":74},{"type":"NIK","start":89,"end":105}],"category":"positive"}
-{"id":"pii-0317","text":"bayar pakai kartu 5200-8266-8644-3289, kode registrasi 8857791337459236, no. HP +62 821 9644 397. Makasih!","spans":[{"type":"CARD","start":18,"end":37},{"type":"PHONE_ID","start":80,"end":96}],"category":"positive"}
-{"id":"pii-0318","text":"Pak, nomor telepon: 08952684983, NPWP perusahaan 40.453.364.6-156.761. Makasih!","spans":[{"type":"PHONE_ID","start":20,"end":31},{"type":"NPWP","start":49,"end":69}],"category":"positive"}
-{"id":"pii-0319","text":"NIK pemohon 9105070105360201, terima kasih.","spans":[{"type":"NIK","start":12,"end":28}],"category":"positive"}
-{"id":"pii-0320","text":"Tolong update data: nomor NPWP saya 84.786.606.6-413.774, terima kasih.","spans":[{"type":"NPWP","start":36,"end":56}],"category":"positive"}
-{"id":"pii-0321","text":"Halo, ID transaksi 140686794871034 dan no. HP 0813.9730.904 dan NIK pemohon 7105112105330561, terima kasih.","spans":[{"type":"PHONE_ID","start":46,"end":59},{"type":"NIK","start":76,"end":92}],"category":"positive"}
-{"id":"pii-0322","text":"bayar pakai kartu 5555 5540 3019 8125. Makasih!","spans":[{"type":"CARD","start":18,"end":37}],"category":"positive"}
-{"id":"pii-0323","text":"Mohon dicek ya, nomor NPWP saya 02.657.090.9-905.368. Lalu bayar pakai kartu 5200828880641668. Lalu tagihan INV/2025/04/76004, no. NIK 8217210903670154.","spans":[{"type":"NPWP","start":32,"end":52},{"type":"CARD","start":77,"end":93},{"type":"NIK","start":135,"end":151}],"category":"positive"}
-{"id":"pii-0324","text":"our NPWP is 41.563.351.1-610.747, my phone number is +62811.3326.681. Thank you!","spans":[{"type":"NPWP","start":12,"end":32},{"type":"PHONE_ID","start":53,"end":68}],"category":"positive"}
-{"id":"pii-0325","text":"Halo, email saya agus.santoso37@example.org. Lalu kartu kredit 5105-1025-4955-3847. Lalu kode voucher 6161 3318 0722 5183, terima kasih.","spans":[{"type":"EMAIL","start":17,"end":43},{"type":"CARD","start":63,"end":82}],"category":"positive"}
-{"id":"pii-0326","text":"Halo, kirim ke budi.saputra@example.com.","spans":[{"type":"EMAIL","start":15,"end":39}],"category":"positive"}
-{"id":"pii-0327","text":"Halo, nomor NPWP saya 310826241455358. Lalu NIK saya 8116064108620006. Lalu surel: dewi@example.com dan resi TKP6134363422","spans":[{"type":"NPWP","start":22,"end":37},{"type":"NIK","start":53,"end":69},{"type":"EMAIL","start":83,"end":99}],"category":"positive"}
-{"id":"pii-0328","text":"Pak, nomor telepon: 62852-7410-846","spans":[{"type":"PHONE_ID","start":20,"end":34}],"category":"positive"}
-{"id":"pii-0329","text":"Mohon dicek ya, totalnya Rp7.028.000. Lalu NIK pemohon 3506132708050013 ya.","spans":[{"type":"NIK","start":55,"end":71}],"category":"positive"}
-{"id":"pii-0330","text":"WA ke 62812.2860.6730, email saya rizky_kusuma@example.com dan kode registrasi 9991427799468270, terima kasih.","spans":[{"type":"PHONE_ID","start":6,"end":21},{"type":"EMAIL","start":34,"end":58}],"category":"positive"}
-{"id":"pii-0331","text":"Pak, NIK pemohon 6403065105590811 dan nomor telepon: +62 896-5386-8937","spans":[{"type":"NIK","start":17,"end":33},{"type":"PHONE_ID","start":53,"end":70}],"category":"positive"}
-{"id":"pii-0332","text":"Mohon dicek ya, nomor telepon: +628578385683 dan kartu kredit 4000-0088-1159-0426. Lalu nomor pesanan 1795852144963362. Lalu NPWP: 689019624095356, terima kasih.","spans":[{"type":"PHONE_ID","start":31,"end":44},{"type":"CARD","start":62,"end":81},{"type":"NPWP","start":131,"end":146}],"category":"positive"}
-{"id":"pii-0333","text":"Pak, no. HP 62878.3662.298, terima kasih.","spans":[{"type":"PHONE_ID","start":12,"end":26}],"category":"positive"}
-{"id":"pii-0334","text":"Pak, NPWP perusahaan 43.145.455.2-319.652. Lalu email saya Maya.kusuma@example.org ya.","spans":[{"type":"NPWP","start":21,"end":41},{"type":"EMAIL","start":59,"end":82}],"category":"positive"}
-{"id":"pii-0335","text":"resi JP6500653862, no. NIK 3619065710600395, terima kasih.","spans":[{"type":"NIK","start":27,"end":43}],"category":"positive"}
-{"id":"pii-0336","text":"contact: rizky@example.org","spans":[{"type":"EMAIL","start":9,"end":26}],"category":"positive"}
-{"id":"pii-0337","text":"Tolong update data: nomor kartu saya 5105-1086-9074-8136 dan kode voucher 2648 1003 7438 0174, no. NIK 6309154909580651, nomor telepon: 62852.7331.1679.","spans":[{"type":"CARD","start":37,"end":56},{"type":"NIK","start":103,"end":119},{"type":"PHONE_ID","start":136,"end":151}],"category":"positive"}
-{"id":"pii-0338","text":"invoice INV/2026/10/27189 and NIK: 6410054409280165, thanks.","spans":[{"type":"NIK","start":35,"end":51}],"category":"positive"}
-{"id":"pii-0339","text":"Hi, card number 5555555466101509. Also, our NPWP is 764663674191457, thanks.","spans":[{"type":"CARD","start":16,"end":32},{"type":"NPWP","start":52,"end":67}],"category":"positive"}
-{"id":"pii-0340","text":"Pak, nomor kartu saya 5200 8282 6762 6290, kode registrasi 0039174080250099 ya.","spans":[{"type":"CARD","start":22,"end":41}],"category":"positive"}
-{"id":"pii-0341","text":"NPWP perusahaan 32.055.438.4-685.848. Makasih!","spans":[{"type":"NPWP","start":16,"end":36}],"category":"positive"}
-{"id":"pii-0342","text":"Pak, email saya budi15@example.org dan NPWP: 64.433.106.1-766.242","spans":[{"type":"EMAIL","start":16,"end":34},{"type":"NPWP","start":45,"end":65}],"category":"positive"}
-{"id":"pii-0343","text":"Halo, NPWP perusahaan 331133474237853, terima kasih.","spans":[{"type":"NPWP","start":22,"end":37}],"category":"positive"}
-{"id":"pii-0344","text":"Please update my details: charge it to 4111117016224750, the total is Rp1.305.000, thanks.","spans":[{"type":"CARD","start":39,"end":55}],"category":"positive"}
-{"id":"pii-0345","text":"Tolong update data: nomor KTP: 9109255009180894. Makasih!","spans":[{"type":"NIK","start":31,"end":47}],"category":"positive"}
-{"id":"pii-0346","text":"my national ID (NIK) is 6514260308030319. Thank you!","spans":[{"type":"NIK","start":24,"end":40}],"category":"positive"}
-{"id":"pii-0347","text":"Tolong update data: jatuh tempo 13-07-2020 dan NPWP: 966836258195900, nomor kartu saya 5555 5519 2733 9788. Lalu kirim ke siti@example.org ya.","spans":[{"type":"NPWP","start":53,"end":68},{"type":"CARD","start":87,"end":106},{"type":"EMAIL","start":122,"end":138}],"category":"positive"}
-{"id":"pii-0348","text":"Mohon dicek ya, ID transaksi 315703256771422. Lalu NPWP: 07.328.737.0-760.105. Lalu kirim ke budi53@example.com ya.","spans":[{"type":"NPWP","start":57,"end":77},{"type":"EMAIL","start":93,"end":111}],"category":"positive"}
-{"id":"pii-0349","text":"Please update my details: my national ID (NIK) is 3206244901800673, contact: agus_hidayat@example.org.","spans":[{"type":"NIK","start":50,"end":66},{"type":"EMAIL","start":77,"end":101}],"category":"positive"}
-{"id":"pii-0350","text":"Tolong update data: WA ke 0857.1332.812. Makasih!","spans":[{"type":"PHONE_ID","start":26,"end":39}],"category":"positive"}
-{"id":"pii-0351","text":"Pak, hubungi saya di (0857) 6635-9249, terima kasih.","spans":[{"type":"PHONE_ID","start":21,"end":37}],"category":"unsupported_format"}
-{"id":"pii-0352","text":"NIK: 8212 0313 0806 0390","spans":[{"type":"NIK","start":5,"end":24}],"category":"unsupported_format"}
-{"id":"pii-0353","text":"Tolong update data: kirim ke agus [at] example.com ya.","spans":[{"type":"EMAIL","start":29,"end":50}],"category":"unsupported_format"}
-{"id":"pii-0354","text":"Tolong update data: no. NIK 1817 0923 0154 0215.","spans":[{"type":"NIK","start":28,"end":47}],"category":"unsupported_format"}
-{"id":"pii-0355","text":"Pak, NIK saya 1210 2616 0204 0149.","spans":[{"type":"NIK","start":14,"end":33}],"category":"unsupported_format"}
-{"id":"pii-0356","text":"Halo, WA ke +62 (878) 7851 377. Makasih!","spans":[{"type":"PHONE_ID","start":12,"end":30}],"category":"unsupported_format"}
-{"id":"pii-0357","text":"Mohon dicek ya, NIK saya 7414 3042 0763 0165, terima kasih.","spans":[{"type":"NIK","start":25,"end":44}],"category":"unsupported_format"}
-{"id":"pii-0358","text":"NIK pemohon 1507 1707 0417 0562","spans":[{"type":"NIK","start":12,"end":31}],"category":"unsupported_format"}
-{"id":"pii-0359","text":"Mohon dicek ya, WA ke (0878) 5529-1564.","spans":[{"type":"PHONE_ID","start":22,"end":38}],"category":"unsupported_format"}
-{"id":"pii-0360","text":"Tolong update data: WA ke +62 (821) 2408 8630.","spans":[{"type":"PHONE_ID","start":26,"end":45}],"category":"unsupported_format"}
-{"id":"pii-0361","text":"Halo, NIK pemohon 1308 2725 1091 0482 ya.","spans":[{"type":"NIK","start":18,"end":37}],"category":"unsupported_format"}
-{"id":"pii-0362","text":"NIK pemohon 6407 2844 1239 0983","spans":[{"type":"NIK","start":12,"end":31}],"category":"unsupported_format"}
-{"id":"pii-0363","text":"Please update my details: my phone number is (0857) 6272-4862. Thank you!","spans":[{"type":"PHONE_ID","start":45,"end":61}],"category":"unsupported_format"}
-{"id":"pii-0364","text":"Please update my details: contact: budi44 [at] example.org. Thank you!","spans":[{"type":"EMAIL","start":35,"end":58}],"category":"unsupported_format"}
-{"id":"pii-0365","text":"Halo, NIK saya 9412 2551 0387 0851.","spans":[{"type":"NIK","start":15,"end":34}],"category":"unsupported_format"}
-{"id":"pii-0366","text":"kirim ke agus_santoso [at] example.org.","spans":[{"type":"EMAIL","start":9,"end":38}],"category":"unsupported_format"}
-{"id":"pii-0367","text":"Halo, hubungi saya di (0811) 0032-6565. Makasih!","spans":[{"type":"PHONE_ID","start":22,"end":38}],"category":"unsupported_format"}
-{"id":"pii-0368","text":"Mohon dicek ya, email saya dewi44 [at] example.org. Makasih!","spans":[{"type":"EMAIL","start":27,"end":50}],"category":"unsupported_format"}
-{"id":"pii-0369","text":"Halo, email saya putri_pratama [at] example.org","spans":[{"type":"EMAIL","start":17,"end":47}],"category":"unsupported_format"}
-{"id":"pii-0370","text":"Mohon dicek ya, nomor KTP: 6302 2859 0815 0394 ya.","spans":[{"type":"NIK","start":27,"end":46}],"category":"unsupported_format"}
-{"id":"pii-0371","text":"Mohon dicek ya, surel: andi [at] example.com ya.","spans":[{"type":"EMAIL","start":23,"end":44}],"category":"unsupported_format"}
-{"id":"pii-0372","text":"Please update my details: NIK: 1604 1714 0123 0594. Thank you!","spans":[{"type":"NIK","start":31,"end":50}],"category":"unsupported_format"}
-{"id":"pii-0373","text":"Mohon dicek ya, kirim ke rizky [at] example.com. Makasih!","spans":[{"type":"EMAIL","start":25,"end":47}],"category":"unsupported_format"}
-{"id":"pii-0374","text":"Mohon dicek ya, WA ke (0811) 7979-9867 ya.","spans":[{"type":"PHONE_ID","start":22,"end":38}],"category":"unsupported_format"}
-{"id":"pii-0375","text":"For the record, contact: budi.hidayat [at] example.com.","spans":[{"type":"EMAIL","start":25,"end":54}],"category":"unsupported_format"}
-{"id":"pii-0376","text":"Mohon dicek ya, email saya putri.saputra [at] example.org.","spans":[{"type":"EMAIL","start":27,"end":57}],"category":"unsupported_format"}
-{"id":"pii-0377","text":"Pak, nomor telepon: (0812) 7392-355.","spans":[{"type":"PHONE_ID","start":20,"end":35}],"category":"unsupported_format"}
-{"id":"pii-0378","text":"nomor telepon: (0857) 5987-0186. Makasih!","spans":[{"type":"PHONE_ID","start":15,"end":31}],"category":"unsupported_format"}
-{"id":"pii-0379","text":"email saya budi.lestari [at] example.com","spans":[{"type":"EMAIL","start":11,"end":40}],"category":"unsupported_format"}
-{"id":"pii-0380","text":"Pak, hubungi saya di (0822) 8756-830.","spans":[{"type":"PHONE_ID","start":21,"end":36}],"category":"unsupported_format"}
-{"id":"pii-0381","text":"Mohon dicek ya, email saya rizky30 [at] example.org","spans":[{"type":"EMAIL","start":27,"end":51}],"category":"unsupported_format"}
-{"id":"pii-0382","text":"email me at dewi.kusuma98 [at] example.org, thanks.","spans":[{"type":"EMAIL","start":12,"end":42}],"category":"unsupported_format"}
-{"id":"pii-0383","text":"Pak, nomor telepon: (0852) 6371-638","spans":[{"type":"PHONE_ID","start":20,"end":35}],"category":"unsupported_format"}
-{"id":"pii-0384","text":"Tolong update data: kirim ke maya [at] example.org, terima kasih.","spans":[{"type":"EMAIL","start":29,"end":50}],"category":"unsupported_format"}
-{"id":"pii-0385","text":"For the record, my phone number is +62 (895) 2069 4391.","spans":[{"type":"PHONE_ID","start":35,"end":54}],"category":"unsupported_format"}
-{"id":"pii-0386","text":"Mohon dicek ya, kirim ke putri.hidayat [at] example.org.","spans":[{"type":"EMAIL","start":25,"end":55}],"category":"unsupported_format"}
-{"id":"pii-0387","text":"Tolong update data: WA ke +62 (896) 1147 5100. Makasih!","spans":[{"type":"PHONE_ID","start":26,"end":45}],"category":"unsupported_format"}
-{"id":"pii-0388","text":"Tolong update data: nomor telepon: +62 (822) 4630 5239. Makasih!","spans":[{"type":"PHONE_ID","start":35,"end":54}],"category":"unsupported_format"}
-{"id":"pii-0389","text":"Pak, no. NIK 7405 2823 0766 0404.","spans":[{"type":"NIK","start":13,"end":32}],"category":"unsupported_format"}
-{"id":"pii-0390","text":"hubungi saya di (0811) 8463-6970","spans":[{"type":"PHONE_ID","start":16,"end":32}],"category":"unsupported_format"}
-{"id":"pii-0391","text":"Pak, email saya siti_pratama [at] example.com ya.","spans":[{"type":"EMAIL","start":16,"end":45}],"category":"unsupported_format"}
-{"id":"pii-0392","text":"Mohon dicek ya, nomor KTP: 1614 0548 0823 0135","spans":[{"type":"NIK","start":27,"end":46}],"category":"unsupported_format"}
-{"id":"pii-0393","text":"Pak, no. HP (0822) 7313-149","spans":[{"type":"PHONE_ID","start":12,"end":27}],"category":"unsupported_format"}
-{"id":"pii-0394","text":"Mohon dicek ya, surel: andi [at] example.org. Makasih!","spans":[{"type":"EMAIL","start":23,"end":44}],"category":"unsupported_format"}
-{"id":"pii-0395","text":"NIK pemohon 7216 0148 0874 0937, terima kasih.","spans":[{"type":"NIK","start":12,"end":31}],"category":"unsupported_format"}
-{"id":"pii-0396","text":"email saya andi_santoso [at] example.com","spans":[{"type":"EMAIL","start":11,"end":40}],"category":"unsupported_format"}
-{"id":"pii-0397","text":"Please update my details: my phone number is (0813) 6465-4745, thanks.","spans":[{"type":"PHONE_ID","start":45,"end":61}],"category":"unsupported_format"}
-{"id":"pii-0398","text":"no. HP +62 (812) 4158 942. Makasih!","spans":[{"type":"PHONE_ID","start":7,"end":25}],"category":"unsupported_format"}
-{"id":"pii-0399","text":"Halo, WA ke (0822) 7892-155","spans":[{"type":"PHONE_ID","start":12,"end":27}],"category":"unsupported_format"}
-{"id":"pii-0400","text":"Halo, surel: maya.pratama34 [at] example.com, terima kasih.","spans":[{"type":"EMAIL","start":13,"end":44}],"category":"unsupported_format"}
-{"id":"pii-0401","text":"Mohon dicek ya, jatuh tempo 22-06-2022, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0402","text":"Mohon dicek ya, nomor pesanan 6081870179141044, kode voucher 4972 5007 9726 2661, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0403","text":"Mohon dicek ya, nomor pesanan 6138855956870658","spans":[],"category":"hard_negative"}
-{"id":"pii-0404","text":"Please update my details: order number 4790737391514150. Also, voucher code 9895 5031 0508 3193","spans":[],"category":"hard_negative"}
-{"id":"pii-0405","text":"Hi, invoice INV/2025/11/45151 and transaction ID 688379775733310.","spans":[],"category":"hard_negative"}
-{"id":"pii-0406","text":"Please update my details: voucher code 0636 6152 8053 7549 and order number 3229798666430447. Thank you!","spans":[],"category":"hard_negative"}
-{"id":"pii-0407","text":"ID transaksi 441756099422124.","spans":[],"category":"hard_negative"}
-{"id":"pii-0408","text":"Tolong update data: kode voucher 6089 9335 8531 2696 ya.","spans":[],"category":"hard_negative"}
-{"id":"pii-0409","text":"Pak, ID transaksi 378055742530408, totalnya Rp1.885.000. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0410","text":"Mohon dicek ya, tagihan INV/2026/06/61960","spans":[],"category":"hard_negative"}
-{"id":"pii-0411","text":"Halo, kode voucher 6412 2843 2686 6540.","spans":[],"category":"hard_negative"}
-{"id":"pii-0412","text":"Mohon dicek ya, totalnya Rp4.281.000. Lalu kode voucher 7255 9769 4628 8512, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0413","text":"Tolong update data: totalnya Rp8.669.000. Lalu totalnya Rp3.843.000. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0414","text":"jatuh tempo 18-11-2022 dan kode voucher 5141 4384 9489 0839. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0415","text":"Mohon dicek ya, totalnya Rp515.000, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0416","text":"Pak, kode registrasi 4568233405670523, jatuh tempo 10-02-2023","spans":[],"category":"hard_negative"}
-{"id":"pii-0417","text":"Pak, totalnya Rp8.702.000, resi JP8292540669","spans":[],"category":"hard_negative"}
-{"id":"pii-0418","text":"Please update my details: order number 3404969527797787. Thank you!","spans":[],"category":"hard_negative"}
-{"id":"pii-0419","text":"Pak, ID transaksi 627401613240834. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0420","text":"Pak, jatuh tempo 02-01-2026","spans":[],"category":"hard_negative"}
-{"id":"pii-0421","text":"tagihan INV/2026/11/68398.","spans":[],"category":"hard_negative"}
-{"id":"pii-0422","text":"Halo, totalnya Rp834.000, tagihan INV/2022/06/50662, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0423","text":"Tolong update data: kode registrasi 4576446281513199. Lalu kode registrasi 8862657107377351 ya.","spans":[],"category":"hard_negative"}
-{"id":"pii-0424","text":"voucher code 3577 3663 5921 4694.","spans":[],"category":"hard_negative"}
-{"id":"pii-0425","text":"Pak, jatuh tempo 23-04-2025","spans":[],"category":"hard_negative"}
-{"id":"pii-0426","text":"Tolong update data: nomor pesanan 9913134428881505.","spans":[],"category":"hard_negative"}
-{"id":"pii-0427","text":"Tolong update data: tagihan INV/2023/03/51213, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0428","text":"Hi, voucher code 7129 3197 8543 1006. Also, transaction ID 806967416566802","spans":[],"category":"hard_negative"}
-{"id":"pii-0429","text":"jatuh tempo 04-08-2021","spans":[],"category":"hard_negative"}
-{"id":"pii-0430","text":"Pak, tagihan INV/2023/12/45555. Lalu kode registrasi 9962677852051647.","spans":[],"category":"hard_negative"}
-{"id":"pii-0431","text":"Halo, resi TKP0259780250. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0432","text":"Mohon dicek ya, kode registrasi 8828735348635410, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0433","text":"Mohon dicek ya, totalnya Rp2.452.000 dan kode voucher 7017 1795 8689 9630","spans":[],"category":"hard_negative"}
-{"id":"pii-0434","text":"tagihan INV/2022/02/67136","spans":[],"category":"hard_negative"}
-{"id":"pii-0435","text":"Mohon dicek ya, kode registrasi 0005046229512724.","spans":[],"category":"hard_negative"}
-{"id":"pii-0436","text":"Halo, nomor pesanan 9796420171731674.","spans":[],"category":"hard_negative"}
-{"id":"pii-0437","text":"Please update my details: transaction ID 437801551390212.","spans":[],"category":"hard_negative"}
-{"id":"pii-0438","text":"Tolong update data: kode registrasi 0034890596449332, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0439","text":"kode voucher 8896 9459 8788 5350, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0440","text":"kode registrasi 4504279611617679, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0441","text":"Mohon dicek ya, kode voucher 7594 6940 8669 9351.","spans":[],"category":"hard_negative"}
-{"id":"pii-0442","text":"Pak, ID transaksi 549268924591953. Lalu resi JP1419293887. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0443","text":"kode voucher 2364 1515 3162 1257","spans":[],"category":"hard_negative"}
-{"id":"pii-0444","text":"Tolong update data: jatuh tempo 26-05-2025 dan ID transaksi 458966277283333. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0445","text":"Pak, kode voucher 6043 3622 9813 8969","spans":[],"category":"hard_negative"}
-{"id":"pii-0446","text":"For the record, the total is Rp3.605.000, thanks.","spans":[],"category":"hard_negative"}
-{"id":"pii-0447","text":"Halo, kode registrasi 0062514629089697, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0448","text":"Halo, nomor pesanan 1499973089908074.","spans":[],"category":"hard_negative"}
-{"id":"pii-0449","text":"nomor pesanan 3849409339534967 dan jatuh tempo 25-10-2026, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0450","text":"Hi, order number 2255545067883076, thanks.","spans":[],"category":"hard_negative"}
-{"id":"pii-0451","text":"Hi, due on 16-05-2025, order number 4466277841464168. Thank you!","spans":[],"category":"hard_negative"}
-{"id":"pii-0452","text":"Mohon dicek ya, resi JX4971851676 dan kode registrasi 0089237055375281, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0453","text":"Pak, ID transaksi 197127744784281","spans":[],"category":"hard_negative"}
-{"id":"pii-0454","text":"For the record, order number 2455138531203071, thanks.","spans":[],"category":"hard_negative"}
-{"id":"pii-0455","text":"Mohon dicek ya, ID transaksi 720766212412880 ya.","spans":[],"category":"hard_negative"}
-{"id":"pii-0456","text":"Pak, resi TKP7005029565, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0457","text":"Please update my details: transaction ID 350838331581477, thanks.","spans":[],"category":"hard_negative"}
-{"id":"pii-0458","text":"the total is Rp6.653.000, thanks.","spans":[],"category":"hard_negative"}
-{"id":"pii-0459","text":"Mohon dicek ya, tagihan INV/2025/04/95481, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0460","text":"Tolong update data: nomor pesanan 2092294318050305. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0461","text":"Pak, totalnya Rp541.000. Lalu totalnya Rp2.723.000.","spans":[],"category":"hard_negative"}
-{"id":"pii-0462","text":"Pak, tagihan INV/2024/08/95565. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0463","text":"the total is Rp2.671.000. Thank you!","spans":[],"category":"hard_negative"}
-{"id":"pii-0464","text":"Tolong update data: totalnya Rp1.582.000. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0465","text":"Mohon dicek ya, jatuh tempo 07-01-2022.","spans":[],"category":"hard_negative"}
-{"id":"pii-0466","text":"Pak, kode voucher 7825 7757 8562 6053. Lalu tagihan INV/2023/06/70292, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0467","text":"Tolong update data: resi JX0260016152","spans":[],"category":"hard_negative"}
-{"id":"pii-0468","text":"Pak, kode voucher 7490 0067 8192 2233. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0469","text":"Mohon dicek ya, kode registrasi 8808665137354515 ya.","spans":[],"category":"hard_negative"}
-{"id":"pii-0470","text":"Halo, tagihan INV/2025/03/23195. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0471","text":"Pak, jatuh tempo 05-06-2021. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0472","text":"totalnya Rp2.717.000","spans":[],"category":"hard_negative"}
-{"id":"pii-0473","text":"tagihan INV/2022/11/92042 ya.","spans":[],"category":"hard_negative"}
-{"id":"pii-0474","text":"Mohon dicek ya, jatuh tempo 13-05-2022. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0475","text":"the total is Rp5.947.000","spans":[],"category":"hard_negative"}
-{"id":"pii-0476","text":"Pak, kode voucher 3175 5803 4658 4732. Lalu tagihan INV/2024/04/16661 ya.","spans":[],"category":"hard_negative"}
-{"id":"pii-0477","text":"Tolong update data: kode voucher 5593 5608 7356 3714, kode registrasi 4586783266233858. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0478","text":"Pak, jatuh tempo 06-05-2026. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0479","text":"Pak, kode registrasi 4514091312992478. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0480","text":"For the record, due on 20-01-2022, thanks.","spans":[],"category":"hard_negative"}
-{"id":"pii-0481","text":"Halo, tagihan INV/2024/12/81900, kode voucher 6905 5889 5275 0796. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0482","text":"tagihan INV/2025/02/87811, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0483","text":"Halo, tagihan INV/2024/01/43808, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0484","text":"For the record, the total is Rp6.608.000","spans":[],"category":"hard_negative"}
-{"id":"pii-0485","text":"nomor pesanan 8308223339254462","spans":[],"category":"hard_negative"}
-{"id":"pii-0486","text":"Tolong update data: resi TKP5031943181. Lalu nomor pesanan 2813360017209119. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0487","text":"Halo, nomor pesanan 4436294761404774.","spans":[],"category":"hard_negative"}
-{"id":"pii-0488","text":"totalnya Rp8.063.000, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0489","text":"Mohon dicek ya, kode registrasi 0031717622491907. Lalu ID transaksi 535443582854711. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0490","text":"Hi, invoice INV/2025/04/98953. Thank you!","spans":[],"category":"hard_negative"}
-{"id":"pii-0491","text":"For the record, voucher code 4738 7366 7013 7137. Thank you!","spans":[],"category":"hard_negative"}
-{"id":"pii-0492","text":"Halo, totalnya Rp3.825.000. Lalu resi TKP0387439725. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0493","text":"Mohon dicek ya, kode voucher 1666 7465 3285 4992.","spans":[],"category":"hard_negative"}
-{"id":"pii-0494","text":"Mohon dicek ya, kode voucher 8252 3345 6573 7095 ya.","spans":[],"category":"hard_negative"}
-{"id":"pii-0495","text":"For the record, transaction ID 152083303017107. Also, voucher code 1772 1980 5867 6147, thanks.","spans":[],"category":"hard_negative"}
-{"id":"pii-0496","text":"Mohon dicek ya, totalnya Rp6.614.000","spans":[],"category":"hard_negative"}
-{"id":"pii-0497","text":"Please update my details: order number 7587616777386130. Thank you!","spans":[],"category":"hard_negative"}
-{"id":"pii-0498","text":"Mohon dicek ya, resi JP5316712675. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0499","text":"jatuh tempo 13-10-2025, jatuh tempo 26-08-2026, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0500","text":"Hi, order number 2215473482203790 and the total is Rp2.877.000","spans":[],"category":"hard_negative"}
-{"id":"pii-0501","text":"the total is Rp977.000, thanks.","spans":[],"category":"hard_negative"}
-{"id":"pii-0502","text":"Halo, resi JX2955118681","spans":[],"category":"hard_negative"}
-{"id":"pii-0503","text":"Pak, totalnya Rp2.803.000, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0504","text":"invoice INV/2024/08/17447, thanks.","spans":[],"category":"hard_negative"}
-{"id":"pii-0505","text":"Pak, nomor pesanan 1953419724606563","spans":[],"category":"hard_negative"}
-{"id":"pii-0506","text":"Halo, resi JX9188923363.","spans":[],"category":"hard_negative"}
-{"id":"pii-0507","text":"Please update my details: order number 2322211844407723","spans":[],"category":"hard_negative"}
-{"id":"pii-0508","text":"Halo, kode registrasi 8878070870815553 ya.","spans":[],"category":"hard_negative"}
-{"id":"pii-0509","text":"Halo, kode registrasi 0066894829892212, kode voucher 6860 5986 6312 7026.","spans":[],"category":"hard_negative"}
-{"id":"pii-0510","text":"Halo, kode registrasi 8867720059376526.","spans":[],"category":"hard_negative"}
-{"id":"pii-0511","text":"Pak, kode registrasi 8849515355367821.","spans":[],"category":"hard_negative"}
-{"id":"pii-0512","text":"ID transaksi 608942745397462","spans":[],"category":"hard_negative"}
-{"id":"pii-0513","text":"totalnya Rp4.419.000","spans":[],"category":"hard_negative"}
-{"id":"pii-0514","text":"Mohon dicek ya, nomor pesanan 4568080569192681, kode voucher 3132 4838 3931 5013, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0515","text":"Halo, totalnya Rp4.719.000, kode voucher 8977 1947 1400 7346, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0516","text":"Tolong update data: tagihan INV/2023/10/51043 dan nomor pesanan 3025783165222641 ya.","spans":[],"category":"hard_negative"}
-{"id":"pii-0517","text":"Tolong update data: kode voucher 5451 6512 0414 2143.","spans":[],"category":"hard_negative"}
-{"id":"pii-0518","text":"Hi, transaction ID 526152779079854 and order number 7663962141445794.","spans":[],"category":"hard_negative"}
-{"id":"pii-0519","text":"nomor pesanan 5454621161835740. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0520","text":"Halo, totalnya Rp2.132.000. Lalu totalnya Rp8.226.000 ya.","spans":[],"category":"hard_negative"}
-{"id":"pii-0521","text":"ID transaksi 832117957017992 ya.","spans":[],"category":"hard_negative"}
-{"id":"pii-0522","text":"kode registrasi 0004455875062758, ID transaksi 592051864177634","spans":[],"category":"hard_negative"}
-{"id":"pii-0523","text":"Please update my details: voucher code 8065 5408 1206 7340. Thank you!","spans":[],"category":"hard_negative"}
-{"id":"pii-0524","text":"Please update my details: order number 7764707459650342, thanks.","spans":[],"category":"hard_negative"}
-{"id":"pii-0525","text":"Tolong update data: kode registrasi 9981917941651401","spans":[],"category":"hard_negative"}
-{"id":"pii-0526","text":"Tolong update data: nomor pesanan 3511066133510608.","spans":[],"category":"hard_negative"}
-{"id":"pii-0527","text":"Halo, kode registrasi 8809576054167255, ID transaksi 628079743545202, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0528","text":"Hi, due on 19-09-2025, thanks.","spans":[],"category":"hard_negative"}
-{"id":"pii-0529","text":"Please update my details: order number 8247123548894968, due on 13-07-2021. Thank you!","spans":[],"category":"hard_negative"}
-{"id":"pii-0530","text":"Pak, kode registrasi 0097702075149922, tagihan INV/2025/09/76781.","spans":[],"category":"hard_negative"}
-{"id":"pii-0531","text":"tagihan INV/2023/04/31130 ya.","spans":[],"category":"hard_negative"}
-{"id":"pii-0532","text":"Mohon dicek ya, jatuh tempo 21-07-2024. Lalu kode voucher 7953 0806 4480 8778. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0533","text":"Halo, jatuh tempo 06-11-2020. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0534","text":"Pak, kode registrasi 8819847013453359 ya.","spans":[],"category":"hard_negative"}
-{"id":"pii-0535","text":"Mohon dicek ya, kode voucher 3788 1745 2789 3806. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0536","text":"Pak, tagihan INV/2026/06/50517.","spans":[],"category":"hard_negative"}
-{"id":"pii-0537","text":"For the record, invoice INV/2024/04/24882, transaction ID 153652985562536, thanks.","spans":[],"category":"hard_negative"}
-{"id":"pii-0538","text":"Tolong update data: totalnya Rp9.128.000","spans":[],"category":"hard_negative"}
-{"id":"pii-0539","text":"Pak, totalnya Rp7.416.000 ya.","spans":[],"category":"hard_negative"}
-{"id":"pii-0540","text":"Tolong update data: tagihan INV/2026/04/98317 dan kode registrasi 9965426247815180","spans":[],"category":"hard_negative"}
-{"id":"pii-0541","text":"Halo, tagihan INV/2024/06/76722 dan ID transaksi 307631802214858","spans":[],"category":"hard_negative"}
-{"id":"pii-0542","text":"Pak, jatuh tempo 03-06-2022. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0543","text":"Mohon dicek ya, kode registrasi 9923513436536347. Lalu resi TKP1556493804. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0544","text":"Halo, ID transaksi 276130480603666","spans":[],"category":"hard_negative"}
-{"id":"pii-0545","text":"Mohon dicek ya, totalnya Rp8.691.000. Lalu ID transaksi 215436966308590. Makasih!","spans":[],"category":"hard_negative"}
-{"id":"pii-0546","text":"Pak, nomor pesanan 4281169714290041, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0547","text":"kode voucher 3213 4586 4981 9261 ya.","spans":[],"category":"hard_negative"}
-{"id":"pii-0548","text":"Tolong update data: totalnya Rp9.020.000, terima kasih.","spans":[],"category":"hard_negative"}
-{"id":"pii-0549","text":"Tolong update data: tagihan INV/2025/11/10151 ya.","spans":[],"category":"hard_negative"}
-{"id":"pii-0550","text":"Hi, invoice INV/2026/11/92944, thanks.","spans":[],"category":"hard_negative"}
+{"id":"pii-0001","text":"Hi, our NPWP is 0343119157392769 and SKU SPT-767323. Thank you!","spans":[{"type":"NPWP","start":16,"end":32}],"category":"positive"}
+{"id":"pii-0002","text":"Tolong update data: nomor telepon: +62 (821) 4807 958 dan timestamp 1647921504261, terima kasih.","spans":[{"type":"PHONE_ID","start":35,"end":53}],"category":"positive"}
+{"id":"pii-0003","text":"kartu kredit 4000 0029 5866 9333. Makasih!","spans":[{"type":"CARD","start":13,"end":32}],"category":"positive"}
+{"id":"pii-0004","text":"Tolong update data: timestamp 1701107531809. Lalu no. HP 0812.6510.1639. Lalu bayar pakai kartu 4000-0011-9150-3374 dan kirim ke putri@example.org. Makasih!","spans":[{"type":"PHONE_ID","start":57,"end":71},{"type":"CARD","start":96,"end":115},{"type":"EMAIL","start":129,"end":146}],"category":"positive"}
+{"id":"pii-0005","text":"Mohon dicek ya, NPWP perusahaan 08.237.992.8-972.259. Lalu bayar pakai kartu 4111 1109 8417 0147, terima kasih.","spans":[{"type":"NPWP","start":32,"end":52},{"type":"CARD","start":77,"end":96}],"category":"positive"}
+{"id":"pii-0006","text":"hubungi saya di 089622287525 dan bayar pakai kartu 5105 1089 7852 0454, terima kasih.","spans":[{"type":"PHONE_ID","start":16,"end":28},{"type":"CARD","start":51,"end":70}],"category":"positive"}
+{"id":"pii-0007","text":"NPWP: 82.455.480.2-498.612. Lalu kartu kredit 4000-0081-0840-2566 ya.","spans":[{"type":"NPWP","start":6,"end":26},{"type":"CARD","start":46,"end":65}],"category":"positive"}
+{"id":"pii-0008","text":"Mohon dicek ya, nomor telepon: 0813.7281.944. Makasih!","spans":[{"type":"PHONE_ID","start":31,"end":44}],"category":"positive"}
+{"id":"pii-0009","text":"Halo, surel: Andi@example.org.","spans":[{"type":"EMAIL","start":13,"end":29}],"category":"positive"}
+{"id":"pii-0010","text":"bayar pakai kartu 5200-8218-7668-6334. Makasih!","spans":[{"type":"CARD","start":18,"end":37}],"category":"positive"}
+{"id":"pii-0011","text":"Mohon dicek ya, nomor kartu saya 5555-5503-3204-6756 ya.","spans":[{"type":"CARD","start":33,"end":52}],"category":"positive"}
+{"id":"pii-0012","text":"For the record, charge it to 5555 5506 7930 9676, contact: maya53@example.com. Thank you!","spans":[{"type":"CARD","start":29,"end":48},{"type":"EMAIL","start":59,"end":77}],"category":"positive"}
+{"id":"pii-0013","text":"hubungi saya di +628574741560. Lalu no. NIK 6317261312690327. Makasih!","spans":[{"type":"PHONE_ID","start":16,"end":29},{"type":"NIK","start":44,"end":60}],"category":"positive"}
+{"id":"pii-0014","text":"Tolong update data: kartu kredit 5105100284349850. Makasih!","spans":[{"type":"CARD","start":33,"end":49}],"category":"positive"}
+{"id":"pii-0015","text":"Mohon dicek ya, nomor NPWP saya 0321502662851447.","spans":[{"type":"NPWP","start":32,"end":48}],"category":"positive"}
+{"id":"pii-0016","text":"Pak, kartu kredit 5105-1096-4029-2233, no. referensi transfer 479589090428393488. Lalu NIK pemohon 6514044509280469, NPWP: 0953303803184910.","spans":[{"type":"CARD","start":18,"end":37},{"type":"NIK","start":99,"end":115},{"type":"NPWP","start":123,"end":139}],"category":"positive"}
+{"id":"pii-0017","text":"Tolong update data: email saya andi43@example.org, terima kasih.","spans":[{"type":"EMAIL","start":31,"end":49}],"category":"positive"}
+{"id":"pii-0018","text":"nomor NPWP saya 0677695329582255, nomor kartu saya 4000 0089 4527 0432.","spans":[{"type":"NPWP","start":16,"end":32},{"type":"CARD","start":51,"end":70}],"category":"positive"}
+{"id":"pii-0019","text":"Tolong update data: nomor KTP: 7601271508890080, surel: Andi_lestari@example.org. Makasih!","spans":[{"type":"NIK","start":31,"end":47},{"type":"EMAIL","start":56,"end":80}],"category":"positive"}
+{"id":"pii-0020","text":"Please update my details: my national ID (NIK) is 6203281006840666, our NPWP is 19.390.869.7-788.259. Also, call me at +628212856658.","spans":[{"type":"NIK","start":50,"end":66},{"type":"NPWP","start":80,"end":100},{"type":"PHONE_ID","start":119,"end":132}],"category":"positive"}
+{"id":"pii-0021","text":"Tolong update data: NIK pemohon 7202210105380509 dan NPWP perusahaan 29.159.023.3-418.368","spans":[{"type":"NIK","start":32,"end":48},{"type":"NPWP","start":69,"end":89}],"category":"positive"}
+{"id":"pii-0022","text":"Tolong update data: no. HP 62895 4206 113, bayar pakai kartu 5555554784919957. Lalu ID transaksi 257722989596889 dan kirim ke budi46@example.com, terima kasih.","spans":[{"type":"PHONE_ID","start":27,"end":41},{"type":"CARD","start":61,"end":77},{"type":"EMAIL","start":126,"end":144}],"category":"positive"}
+{"id":"pii-0023","text":"Halo, WA ke 62811 3985 6440, email saya andi.wijaya39@example.org, NIK saya 3416200212590917. Makasih!","spans":[{"type":"PHONE_ID","start":12,"end":27},{"type":"EMAIL","start":40,"end":65},{"type":"NIK","start":76,"end":92}],"category":"positive"}
+{"id":"pii-0024","text":"Tolong update data: nomor kartu saya 4000-0000-6285-8586. Makasih!","spans":[{"type":"CARD","start":37,"end":56}],"category":"positive"}
+{"id":"pii-0025","text":"Tolong update data: hubungi saya di +62 811-0620-5228 dan nomor kartu saya 5555-5580-6176-7765","spans":[{"type":"PHONE_ID","start":36,"end":53},{"type":"CARD","start":75,"end":94}],"category":"positive"}
+{"id":"pii-0026","text":"Please update my details: email me at rizky_pratama@example.com.","spans":[{"type":"EMAIL","start":38,"end":63}],"category":"positive"}
+{"id":"pii-0027","text":"Please update my details: our NPWP is 232078675740011. Thank you!","spans":[{"type":"NPWP","start":38,"end":53}],"category":"positive"}
+{"id":"pii-0028","text":"bayar pakai kartu 4000 0090 7081 0711. Lalu nomor NPWP saya 82.934.623.1-053.892.","spans":[{"type":"CARD","start":18,"end":37},{"type":"NPWP","start":60,"end":80}],"category":"positive"}
+{"id":"pii-0029","text":"Pak, no. HP +62 812-7764-5911 dan ID transaksi 417827545616282, terima kasih.","spans":[{"type":"PHONE_ID","start":12,"end":29}],"category":"positive"}
+{"id":"pii-0030","text":"Tolong update data: ID transaksi 601540266948160, NPWP perusahaan 01.980.079.7-458.682. Lalu NIK saya 6101112603330227 dan nomor kartu saya 5200 8232 5699 7349, terima kasih.","spans":[{"type":"NPWP","start":66,"end":86},{"type":"NIK","start":102,"end":118},{"type":"CARD","start":140,"end":159}],"category":"positive"}
+{"id":"pii-0031","text":"Halo, kartu kredit 5105 1028 8360 5591, surel: joko_pratama@example.org.","spans":[{"type":"CARD","start":19,"end":38},{"type":"EMAIL","start":47,"end":71}],"category":"positive"}
+{"id":"pii-0032","text":"For the record, contact: budi.wijaya96@example.org.","spans":[{"type":"EMAIL","start":25,"end":50}],"category":"positive"}
+{"id":"pii-0033","text":"Pak, WA ke 0812-0815-444 dan surel: budi@example.com, terima kasih.","spans":[{"type":"PHONE_ID","start":11,"end":24},{"type":"EMAIL","start":36,"end":52}],"category":"positive"}
+{"id":"pii-0034","text":"Hi, order number 1699841872709256 and charge it to 4000003815908773. Also, contact: andi@example.org","spans":[{"type":"CARD","start":51,"end":67},{"type":"EMAIL","start":84,"end":100}],"category":"positive"}
+{"id":"pii-0035","text":"email saya rina.wijaya60@example.org, bayar pakai kartu 5105 1043 3398 7900. Lalu NPWP perusahaan 999287340809539 ya.","spans":[{"type":"EMAIL","start":11,"end":36},{"type":"CARD","start":56,"end":75},{"type":"NPWP","start":98,"end":113}],"category":"positive"}
+{"id":"pii-0036","text":"Pak, surel: andi_wijaya@example.com. Lalu hubungi saya di 62852 6575 045 dan bayar pakai kartu 4111 1193 0968 9285. Makasih!","spans":[{"type":"EMAIL","start":12,"end":35},{"type":"PHONE_ID","start":58,"end":72},{"type":"CARD","start":95,"end":114}],"category":"positive"}
+{"id":"pii-0037","text":"Tolong update data: nomor kartu saya 4000004468425313. Lalu WA ke +62 (878) 5350 5577 ya.","spans":[{"type":"CARD","start":37,"end":53},{"type":"PHONE_ID","start":66,"end":85}],"category":"positive"}
+{"id":"pii-0038","text":"Halo, NPWP: 38.386.349.2-170.291, bayar pakai kartu 5200822578034930.","spans":[{"type":"NPWP","start":12,"end":32},{"type":"CARD","start":52,"end":68}],"category":"positive"}
+{"id":"pii-0039","text":"Mohon dicek ya, NPWP: 336042331687922.","spans":[{"type":"NPWP","start":22,"end":37}],"category":"positive"}
+{"id":"pii-0040","text":"NIK: 1803171308230509.","spans":[{"type":"NIK","start":5,"end":21}],"category":"positive"}
+{"id":"pii-0041","text":"Please update my details: contact: joko99@example.org, thanks.","spans":[{"type":"EMAIL","start":35,"end":53}],"category":"positive"}
+{"id":"pii-0042","text":"Tolong update data: surel: putri_pratama@example.com, kode voucher 7370 1507 2223 7102","spans":[{"type":"EMAIL","start":27,"end":52}],"category":"positive"}
+{"id":"pii-0043","text":"Pak, hubungi saya di 0852-5366-9308 dan tagihan INV/2023/08/07539. Lalu surel: rina69@example.com, NPWP: 717770811138697","spans":[{"type":"PHONE_ID","start":21,"end":35},{"type":"EMAIL","start":79,"end":97},{"type":"NPWP","start":105,"end":120}],"category":"positive"}
+{"id":"pii-0044","text":"Hi, order number 7887496770746181, charge it to 5200-8202-3547-7294.","spans":[{"type":"CARD","start":48,"end":67}],"category":"positive"}
+{"id":"pii-0045","text":"ID transaksi 222101731111390, WA ke 0895 1568 887. Makasih!","spans":[{"type":"PHONE_ID","start":36,"end":49}],"category":"positive"}
+{"id":"pii-0046","text":"Please update my details: tax ID (NPWP) 95.692.647.3-339.506, NIK: 1202091905520920","spans":[{"type":"NPWP","start":40,"end":60},{"type":"NIK","start":67,"end":83}],"category":"positive"}
+{"id":"pii-0047","text":"Tolong update data: no. HP 0812-8377-9847 dan kirim ke Maya.santoso68@example.com ya.","spans":[{"type":"PHONE_ID","start":27,"end":41},{"type":"EMAIL","start":55,"end":81}],"category":"positive"}
+{"id":"pii-0048","text":"For the record, call me at 0896 1797 7040","spans":[{"type":"PHONE_ID","start":27,"end":41}],"category":"positive"}
+{"id":"pii-0049","text":"Pak, nomor NPWP saya 474856457102902","spans":[{"type":"NPWP","start":21,"end":36}],"category":"positive"}
+{"id":"pii-0050","text":"Pak, surel: andi_pratama@example.org ya.","spans":[{"type":"EMAIL","start":12,"end":36}],"category":"positive"}
+{"id":"pii-0051","text":"Please update my details: charge it to 5105 1072 1041 4328 and call me at +62 (813) 2101 877, email me at agus@example.org. Thank you!","spans":[{"type":"CARD","start":39,"end":58},{"type":"PHONE_ID","start":74,"end":92},{"type":"EMAIL","start":106,"end":122}],"category":"positive"}
+{"id":"pii-0052","text":"Mohon dicek ya, email saya rizky.pratama@example.org, nomor pesanan 9124842253511019. Makasih!","spans":[{"type":"EMAIL","start":27,"end":52}],"category":"positive"}
+{"id":"pii-0053","text":"Halo, NPWP: 60.443.432.0-564.514 dan WA ke (0895) 4720-4106, no. NIK 1919210701250029","spans":[{"type":"NPWP","start":12,"end":32},{"type":"PHONE_ID","start":43,"end":59},{"type":"NIK","start":69,"end":85}],"category":"positive"}
+{"id":"pii-0054","text":"Pak, surel: agus.santoso@example.com dan NPWP perusahaan 66.987.604.3-904.446 dan no. NIK 1319012701760892. Makasih!","spans":[{"type":"EMAIL","start":12,"end":36},{"type":"NPWP","start":57,"end":77},{"type":"NIK","start":90,"end":106}],"category":"positive"}
+{"id":"pii-0055","text":"Mohon dicek ya, nomor telepon: 62896 5682 5829","spans":[{"type":"PHONE_ID","start":31,"end":46}],"category":"positive"}
+{"id":"pii-0056","text":"Pak, NPWP perusahaan 51.066.090.7-968.021.","spans":[{"type":"NPWP","start":21,"end":41}],"category":"positive"}
+{"id":"pii-0057","text":"Mohon dicek ya, nomor telepon: +62 812-4463-9894 dan nomor KTP: 9405015706060354. Lalu nomor kartu saya 5200-8216-9122-8460. Makasih!","spans":[{"type":"PHONE_ID","start":31,"end":48},{"type":"NIK","start":64,"end":80},{"type":"CARD","start":104,"end":123}],"category":"positive"}
+{"id":"pii-0058","text":"Mohon dicek ya, timestamp 1730971251054, WA ke +62 (813) 0248 600. Lalu email saya Budi_santoso@example.com.","spans":[{"type":"PHONE_ID","start":47,"end":65},{"type":"EMAIL","start":83,"end":107}],"category":"positive"}
+{"id":"pii-0059","text":"charge it to 4000-0057-4495-3275, contact: andi_lestari@example.com and my phone number is 0852 5738 755, thanks.","spans":[{"type":"CARD","start":13,"end":32},{"type":"EMAIL","start":43,"end":67},{"type":"PHONE_ID","start":91,"end":104}],"category":"positive"}
+{"id":"pii-0060","text":"Halo, no. referensi transfer 336511957499652559 dan email saya agus@example.org dan NIK pemohon 1905104904160480","spans":[{"type":"EMAIL","start":63,"end":79},{"type":"NIK","start":96,"end":112}],"category":"positive"}
+{"id":"pii-0061","text":"resi TKP9336750684 dan kartu kredit 5105-1047-1027-3478. Makasih!","spans":[{"type":"CARD","start":36,"end":55}],"category":"positive"}
+{"id":"pii-0062","text":"Mohon dicek ya, bayar pakai kartu 4111 1125 7979 5130","spans":[{"type":"CARD","start":34,"end":53}],"category":"positive"}
+{"id":"pii-0063","text":"kode voucher 5780 1247 8473 5745, no. NIK 1818054205930849, terima kasih.","spans":[{"type":"NIK","start":42,"end":58}],"category":"positive"}
+{"id":"pii-0064","text":"kirim ke rina_wijaya@example.org dan no. NIK 1318102305230438. Lalu no. HP 62 857.5047.055 ya.","spans":[{"type":"EMAIL","start":9,"end":32},{"type":"NIK","start":45,"end":61},{"type":"PHONE_ID","start":75,"end":90}],"category":"positive"}
+{"id":"pii-0065","text":"Halo, kirim ke andi_pratama@example.org. Lalu no. NIK 3101124109250264. Makasih!","spans":[{"type":"EMAIL","start":15,"end":39},{"type":"NIK","start":54,"end":70}],"category":"positive"}
+{"id":"pii-0066","text":"Halo, kartu kredit 5555554742032588 ya.","spans":[{"type":"CARD","start":19,"end":35}],"category":"positive"}
+{"id":"pii-0067","text":"Pak, NPWP: 48.525.446.3-374.779.","spans":[{"type":"NPWP","start":11,"end":31}],"category":"positive"}
+{"id":"pii-0068","text":"Halo, kartu kredit 5200-8264-9434-0073 dan nomor telepon: 62857-6513-7095. Makasih!","spans":[{"type":"CARD","start":19,"end":38},{"type":"PHONE_ID","start":58,"end":73}],"category":"positive"}
+{"id":"pii-0069","text":"Mohon dicek ya, SKU BJU-204010, nomor KTP: 7214121506630442.","spans":[{"type":"NIK","start":43,"end":59}],"category":"positive"}
+{"id":"pii-0070","text":"Pak, NPWP: 019619067743143 dan nomor kartu saya 5105-1089-6731-4232 ya.","spans":[{"type":"NPWP","start":11,"end":26},{"type":"CARD","start":48,"end":67}],"category":"positive"}
+{"id":"pii-0071","text":"Tolong update data: NPWP: 51.313.708.2-161.769 dan hubungi saya di 0857 0737 5552, terima kasih.","spans":[{"type":"NPWP","start":26,"end":46},{"type":"PHONE_ID","start":67,"end":81}],"category":"positive"}
+{"id":"pii-0072","text":"Pak, no. NIK 2106082404720744. Lalu NPWP perusahaan 27.891.629.4-086.523, nomor kartu saya 5555 5598 9262 1973. Makasih!","spans":[{"type":"NIK","start":13,"end":29},{"type":"NPWP","start":52,"end":72},{"type":"CARD","start":91,"end":110}],"category":"positive"}
+{"id":"pii-0073","text":"hubungi saya di 0852 9939 8282 dan bayar pakai kartu 4000 0073 0396 3554 ya.","spans":[{"type":"PHONE_ID","start":16,"end":30},{"type":"CARD","start":53,"end":72}],"category":"positive"}
+{"id":"pii-0074","text":"Halo, surel: rina12@example.com","spans":[{"type":"EMAIL","start":13,"end":31}],"category":"positive"}
+{"id":"pii-0075","text":"nomor telepon: 0813.0442.3170","spans":[{"type":"PHONE_ID","start":15,"end":29}],"category":"positive"}
+{"id":"pii-0076","text":"Pak, NPWP: 30.209.387.9-515.045. Lalu no. HP +62857-2725-439. Lalu kode registrasi 0034550622551290. Makasih!","spans":[{"type":"NPWP","start":11,"end":31},{"type":"PHONE_ID","start":45,"end":60}],"category":"positive"}
+{"id":"pii-0077","text":"Mohon dicek ya, WA ke 62 813.2175.356 dan nomor NPWP saya 171677137532473 ya.","spans":[{"type":"PHONE_ID","start":22,"end":37},{"type":"NPWP","start":58,"end":73}],"category":"positive"}
+{"id":"pii-0078","text":"Mohon dicek ya, hubungi saya di 62852.2046.0243, NPWP: 47.933.974.3-290.884. Makasih!","spans":[{"type":"PHONE_ID","start":32,"end":47},{"type":"NPWP","start":55,"end":75}],"category":"positive"}
+{"id":"pii-0079","text":"Tolong update data: no. HP (0852) 5883-342, terima kasih.","spans":[{"type":"PHONE_ID","start":27,"end":42}],"category":"positive"}
+{"id":"pii-0080","text":"Halo, NPWP: 73.354.709.9-784.656. Makasih!","spans":[{"type":"NPWP","start":12,"end":32}],"category":"positive"}
+{"id":"pii-0081","text":"Pak, nomor KTP: 6410234802980275, NPWP perusahaan 448404891590760 ya.","spans":[{"type":"NIK","start":16,"end":32},{"type":"NPWP","start":50,"end":65}],"category":"positive"}
+{"id":"pii-0082","text":"Hi, our NPWP is 0851633773275648, thanks.","spans":[{"type":"NPWP","start":16,"end":32}],"category":"positive"}
+{"id":"pii-0083","text":"Mohon dicek ya, nomor NPWP saya 0931317134048420 dan no. HP 08575362665. Lalu no. NIK 1407051911620967.","spans":[{"type":"NPWP","start":32,"end":48},{"type":"PHONE_ID","start":60,"end":71},{"type":"NIK","start":86,"end":102}],"category":"positive"}
+{"id":"pii-0084","text":"card number 4000 0019 8786 9278, tax ID (NPWP) 86.662.861.4-634.637. Thank you!","spans":[{"type":"CARD","start":12,"end":31},{"type":"NPWP","start":47,"end":67}],"category":"positive"}
+{"id":"pii-0085","text":"Halo, nomor KTP: 9101152011190780, bayar pakai kartu 4000 0088 5048 9076, terima kasih.","spans":[{"type":"NIK","start":17,"end":33},{"type":"CARD","start":53,"end":72}],"category":"positive"}
+{"id":"pii-0086","text":"For the record, order number 6998788920829528, my national ID (NIK) is 1512014204580147.","spans":[{"type":"NIK","start":71,"end":87}],"category":"positive"}
+{"id":"pii-0087","text":"Tolong update data: kirim ke Siti.kusuma@example.org, no. NIK 1917105001740766. Makasih!","spans":[{"type":"EMAIL","start":29,"end":52},{"type":"NIK","start":62,"end":78}],"category":"positive"}
+{"id":"pii-0088","text":"Tolong update data: no. NIK 7204211703140845 ya.","spans":[{"type":"NIK","start":28,"end":44}],"category":"positive"}
+{"id":"pii-0089","text":"card number 4111-1111-3580-9443 and email me at siti.pratama73@example.org, my phone number is +62 (812) 8006 321, thanks.","spans":[{"type":"CARD","start":12,"end":31},{"type":"EMAIL","start":48,"end":74},{"type":"PHONE_ID","start":95,"end":113}],"category":"positive"}
+{"id":"pii-0090","text":"Tolong update data: kirim ke dewi_kusuma@example.org. Makasih!","spans":[{"type":"EMAIL","start":29,"end":52}],"category":"positive"}
+{"id":"pii-0091","text":"email saya maya_lestari@example.com. Lalu NPWP: 276202080175843 ya.","spans":[{"type":"EMAIL","start":11,"end":35},{"type":"NPWP","start":48,"end":63}],"category":"positive"}
+{"id":"pii-0092","text":"For the record, contact: joko@example.com and invoice INV/2023/08/21158 and tax ID (NPWP) 054707515856968","spans":[{"type":"EMAIL","start":25,"end":41},{"type":"NPWP","start":90,"end":105}],"category":"positive"}
+{"id":"pii-0093","text":"Hi, tax ID (NPWP) 700576733354956. Also, transfer reference 260573909908650761","spans":[{"type":"NPWP","start":18,"end":33}],"category":"positive"}
+{"id":"pii-0094","text":"Mohon dicek ya, resi JP4418370063. Lalu bayar pakai kartu 4111117443173158 ya.","spans":[{"type":"CARD","start":58,"end":74}],"category":"positive"}
+{"id":"pii-0095","text":"Mohon dicek ya, NPWP perusahaan 03.369.554.1-294.764, email saya rizky48@example.org.","spans":[{"type":"NPWP","start":32,"end":52},{"type":"EMAIL","start":65,"end":84}],"category":"positive"}
+{"id":"pii-0096","text":"Pak, no. HP +62 852.2047.8820","spans":[{"type":"PHONE_ID","start":12,"end":29}],"category":"positive"}
+{"id":"pii-0097","text":"Halo, ID transaksi 312147897718668, nomor telepon: 0852.2305.642. Lalu nomor kartu saya 4111-1183-0791-4158.","spans":[{"type":"PHONE_ID","start":51,"end":64},{"type":"CARD","start":88,"end":107}],"category":"positive"}
+{"id":"pii-0098","text":"Mohon dicek ya, nomor NPWP saya 353828924331361 dan SKU SPT-188241 dan kartu kredit 5555557812347414, terima kasih.","spans":[{"type":"NPWP","start":32,"end":47},{"type":"CARD","start":84,"end":100}],"category":"positive"}
+{"id":"pii-0099","text":"For the record, charge it to 5105106771880752 and our NPWP is 26.970.371.4-332.807, my national ID (NIK) is 1708042303660196. Thank you!","spans":[{"type":"CARD","start":29,"end":45},{"type":"NPWP","start":62,"end":82},{"type":"NIK","start":108,"end":124}],"category":"positive"}
+{"id":"pii-0100","text":"card number 4111-1108-9481-0980, thanks.","spans":[{"type":"CARD","start":12,"end":31}],"category":"positive"}
+{"id":"pii-0101","text":"Halo, no. HP 62 822 2056 6233. Makasih!","spans":[{"type":"PHONE_ID","start":13,"end":29}],"category":"positive"}
+{"id":"pii-0102","text":"Tolong update data: no. HP (0822) 7315-533, kartu kredit 4000005571502468. Lalu nomor NPWP saya 88.758.413.8-935.338. Makasih!","spans":[{"type":"PHONE_ID","start":27,"end":42},{"type":"CARD","start":57,"end":73},{"type":"NPWP","start":96,"end":116}],"category":"positive"}
+{"id":"pii-0103","text":"NIK pemohon 1503166102080742, bayar pakai kartu 5555554024735973 dan totalnya Rp7.146.000. Makasih!","spans":[{"type":"NIK","start":12,"end":28},{"type":"CARD","start":48,"end":64}],"category":"positive"}
+{"id":"pii-0104","text":"Pak, hubungi saya di 62822.5768.1591. Lalu NIK pemohon 6110200811200134, terima kasih.","spans":[{"type":"PHONE_ID","start":21,"end":36},{"type":"NIK","start":55,"end":71}],"category":"positive"}
+{"id":"pii-0105","text":"For the record, my national ID (NIK) is 7208056805010071. Also, our NPWP is 0029140311583329, my phone number is +62812 7310 016.","spans":[{"type":"NIK","start":40,"end":56},{"type":"NPWP","start":76,"end":92},{"type":"PHONE_ID","start":113,"end":128}],"category":"positive"}
+{"id":"pii-0106","text":"Please update my details: my national ID (NIK) is 3105276209070845. Also, card number 5105 1007 7687 2138, thanks.","spans":[{"type":"NIK","start":50,"end":66},{"type":"CARD","start":86,"end":105}],"category":"positive"}
+{"id":"pii-0107","text":"Pak, surel: andi.kusuma@example.com. Makasih!","spans":[{"type":"EMAIL","start":12,"end":35}],"category":"positive"}
+{"id":"pii-0108","text":"Mohon dicek ya, surel: siti_santoso@example.com, nomor KTP: 6510134402990168 ya.","spans":[{"type":"EMAIL","start":23,"end":47},{"type":"NIK","start":60,"end":76}],"category":"positive"}
+{"id":"pii-0109","text":"For the record, tax ID (NPWP) 0570058776538303 and voucher code 2552 1334 5773 4854.","spans":[{"type":"NPWP","start":30,"end":46}],"category":"positive"}
+{"id":"pii-0110","text":"Mohon dicek ya, kartu kredit 5105100891890981 ya.","spans":[{"type":"CARD","start":29,"end":45}],"category":"positive"}
+{"id":"pii-0111","text":"Pak, NPWP perusahaan 16.515.221.9-744.731, no. NIK 7507112305150047. Makasih!","spans":[{"type":"NPWP","start":21,"end":41},{"type":"NIK","start":51,"end":67}],"category":"positive"}
+{"id":"pii-0112","text":"Mohon dicek ya, no. NIK 7310115803900251, NPWP: 0241579269704947, terima kasih.","spans":[{"type":"NIK","start":24,"end":40},{"type":"NPWP","start":48,"end":64}],"category":"positive"}
+{"id":"pii-0113","text":"Tolong update data: WA ke +6287811795194","spans":[{"type":"PHONE_ID","start":26,"end":40}],"category":"positive"}
+{"id":"pii-0114","text":"Tolong update data: kartu kredit 5105107699924797, surel: andi_lestari@example.com, terima kasih.","spans":[{"type":"CARD","start":33,"end":49},{"type":"EMAIL","start":58,"end":82}],"category":"positive"}
+{"id":"pii-0115","text":"Halo, nomor KTP: 6205025910940642 dan ID transaksi 267405742171824","spans":[{"type":"NIK","start":17,"end":33}],"category":"positive"}
+{"id":"pii-0116","text":"Pak, bayar ke VA 8277888942541137, NPWP: 79.182.974.5-974.739. Makasih!","spans":[{"type":"NPWP","start":41,"end":61}],"category":"positive"}
+{"id":"pii-0117","text":"kode voucher 4288 6448 4286 1733. Lalu nomor KTP: 6418295204810774, nomor kartu saya 5200 8273 4189 8461, WA ke 0811 8215 8265, terima kasih.","spans":[{"type":"NIK","start":50,"end":66},{"type":"CARD","start":85,"end":104},{"type":"PHONE_ID","start":112,"end":126}],"category":"positive"}
+{"id":"pii-0118","text":"Please update my details: my national ID (NIK) is 3204016109700982. Thank you!","spans":[{"type":"NIK","start":50,"end":66}],"category":"positive"}
+{"id":"pii-0119","text":"Mohon dicek ya, NIK saya 7406162107760918. Lalu kartu kredit 4000-0071-5599-4202 dan kirim ke Rina_pratama@example.org","spans":[{"type":"NIK","start":25,"end":41},{"type":"CARD","start":61,"end":80},{"type":"EMAIL","start":94,"end":118}],"category":"positive"}
+{"id":"pii-0120","text":"Mohon dicek ya, bayar pakai kartu 4111 1112 1955 8445, SKU BJU-265071.","spans":[{"type":"CARD","start":34,"end":53}],"category":"positive"}
+{"id":"pii-0121","text":"Mohon dicek ya, bayar pakai kartu 5200827679569189 dan NIK pemohon 1704236311980211, no. referensi transfer 357854513863485517","spans":[{"type":"CARD","start":34,"end":50},{"type":"NIK","start":67,"end":83}],"category":"positive"}
+{"id":"pii-0122","text":"Pak, WA ke (0811) 3258-255, NPWP: 61.100.816.7-266.112, nomor pesanan 4101184943094049 dan bayar pakai kartu 5555551904598141. Makasih!","spans":[{"type":"PHONE_ID","start":11,"end":26},{"type":"NPWP","start":34,"end":54},{"type":"CARD","start":109,"end":125}],"category":"positive"}
+{"id":"pii-0123","text":"Hi, charge it to 5555 5516 0286 2427, my national ID (NIK) is 6417022409790731, contact: agus@example.org.","spans":[{"type":"CARD","start":17,"end":36},{"type":"NIK","start":62,"end":78},{"type":"EMAIL","start":89,"end":105}],"category":"positive"}
+{"id":"pii-0124","text":"Mohon dicek ya, email saya siti.wijaya59@example.com. Makasih!","spans":[{"type":"EMAIL","start":27,"end":52}],"category":"positive"}
+{"id":"pii-0125","text":"Tolong update data: hubungi saya di 62 811 5934 5645 dan bayar pakai kartu 4000 0032 3164 6692. Makasih!","spans":[{"type":"PHONE_ID","start":36,"end":52},{"type":"CARD","start":75,"end":94}],"category":"positive"}
+{"id":"pii-0126","text":"bayar pakai kartu 5200 8267 0952 7118, nomor NPWP saya 49.268.332.6-641.836 dan NIK saya 7420184208210048.","spans":[{"type":"CARD","start":18,"end":37},{"type":"NPWP","start":55,"end":75},{"type":"NIK","start":89,"end":105}],"category":"positive"}
+{"id":"pii-0127","text":"Tolong update data: tagihan INV/2022/02/39456, bayar pakai kartu 5200-8286-3265-2757 dan WA ke 62 852.8889.727","spans":[{"type":"CARD","start":65,"end":84},{"type":"PHONE_ID","start":95,"end":110}],"category":"positive"}
+{"id":"pii-0128","text":"Please update my details: voucher code 0408 8254 9059 8541 and NIK: 7102071303200114 and email me at andi.santoso32@example.com.","spans":[{"type":"NIK","start":68,"end":84},{"type":"EMAIL","start":101,"end":127}],"category":"positive"}
+{"id":"pii-0129","text":"Halo, nomor NPWP saya 23.609.001.7-383.398.","spans":[{"type":"NPWP","start":22,"end":42}],"category":"positive"}
+{"id":"pii-0130","text":"hubungi saya di 0821.0016.983 dan NIK saya 6404264911070044.","spans":[{"type":"PHONE_ID","start":16,"end":29},{"type":"NIK","start":43,"end":59}],"category":"positive"}
+{"id":"pii-0131","text":"Tolong update data: nomor telepon: 0813.2745.4813, no. NIK 6504096511800222 ya.","spans":[{"type":"PHONE_ID","start":35,"end":49},{"type":"NIK","start":59,"end":75}],"category":"positive"}
+{"id":"pii-0132","text":"Please update my details: order number 7515528996361449 and tax ID (NPWP) 73.238.826.2-859.736. Also, my phone number is 0813-2398-009.","spans":[{"type":"NPWP","start":74,"end":94},{"type":"PHONE_ID","start":121,"end":134}],"category":"positive"}
+{"id":"pii-0133","text":"NPWP: 442784066812409, NIK pemohon 5212111302740439.","spans":[{"type":"NPWP","start":6,"end":21},{"type":"NIK","start":35,"end":51}],"category":"positive"}
+{"id":"pii-0134","text":"NIK saya 5107235206150877","spans":[{"type":"NIK","start":9,"end":25}],"category":"positive"}
+{"id":"pii-0135","text":"Mohon dicek ya, NIK pemohon 3517250208650419.","spans":[{"type":"NIK","start":28,"end":44}],"category":"positive"}
+{"id":"pii-0136","text":"Please update my details: SKU SPT-079008 and NIK: 5205226508780169, thanks.","spans":[{"type":"NIK","start":50,"end":66}],"category":"positive"}
+{"id":"pii-0137","text":"Tolong update data: surel: putri@example.com, resi JP3576984248 dan NPWP perusahaan 76.037.302.3-276.153","spans":[{"type":"EMAIL","start":27,"end":44},{"type":"NPWP","start":84,"end":104}],"category":"positive"}
+{"id":"pii-0138","text":"Halo, nomor telepon: +62 822.7807.2979. Makasih!","spans":[{"type":"PHONE_ID","start":21,"end":38}],"category":"positive"}
+{"id":"pii-0139","text":"Halo, NPWP perusahaan 283759005266747. Lalu ID transaksi 453372681500529. Makasih!","spans":[{"type":"NPWP","start":22,"end":37}],"category":"positive"}
+{"id":"pii-0140","text":"Halo, jatuh tempo 04-08-2020, nomor NPWP saya 06.688.200.3-605.640 dan NIK pemohon 9410060809100093 ya.","spans":[{"type":"NPWP","start":46,"end":66},{"type":"NIK","start":83,"end":99}],"category":"positive"}
+{"id":"pii-0141","text":"Please update my details: call me at 62812.4682.3609, tax ID (NPWP) 73.103.104.7-123.778, thanks.","spans":[{"type":"PHONE_ID","start":37,"end":52},{"type":"NPWP","start":68,"end":88}],"category":"positive"}
+{"id":"pii-0142","text":"Halo, nomor KTP: 1519222808720273. Lalu NPWP perusahaan 09.812.767.3-352.624, ID transaksi 895836511843886, terima kasih.","spans":[{"type":"NIK","start":17,"end":33},{"type":"NPWP","start":56,"end":76}],"category":"positive"}
+{"id":"pii-0143","text":"Halo, WA ke 08214817071. Lalu kirim ke agus.pratama@example.com.","spans":[{"type":"PHONE_ID","start":12,"end":23},{"type":"EMAIL","start":39,"end":63}],"category":"positive"}
+{"id":"pii-0144","text":"Pak, hubungi saya di +62 (857) 9422 641, email saya Joko_wijaya@example.com, terima kasih.","spans":[{"type":"PHONE_ID","start":21,"end":39},{"type":"EMAIL","start":52,"end":75}],"category":"positive"}
+{"id":"pii-0145","text":"Tolong update data: nomor KTP: 7113281303740983, kartu kredit 5200828944654525. Lalu kirim ke rizky.hidayat13@example.org","spans":[{"type":"NIK","start":31,"end":47},{"type":"CARD","start":62,"end":78},{"type":"EMAIL","start":94,"end":121}],"category":"positive"}
+{"id":"pii-0146","text":"Hi, charge it to 5200-8245-3512-7864. Thank you!","spans":[{"type":"CARD","start":17,"end":36}],"category":"positive"}
+{"id":"pii-0147","text":"bayar pakai kartu 5200 8257 9571 2634 dan kirim ke putri@example.com","spans":[{"type":"CARD","start":18,"end":37},{"type":"EMAIL","start":51,"end":68}],"category":"positive"}
+{"id":"pii-0148","text":"Please update my details: tax ID (NPWP) 71.480.508.8-230.131. Also, contact: maya43@example.com, my national ID (NIK) is 3610304604560043, thanks.","spans":[{"type":"NPWP","start":40,"end":60},{"type":"EMAIL","start":77,"end":95},{"type":"NIK","start":121,"end":137}],"category":"positive"}
+{"id":"pii-0149","text":"Halo, NIK pemohon 5310246102910514. Lalu email saya joko.saputra2@example.com.","spans":[{"type":"NIK","start":18,"end":34},{"type":"EMAIL","start":52,"end":77}],"category":"positive"}
+{"id":"pii-0150","text":"email saya joko.wijaya59@example.org, terima kasih.","spans":[{"type":"EMAIL","start":11,"end":36}],"category":"positive"}
+{"id":"pii-0151","text":"Please update my details: my national ID (NIK) is 6116166812670363, call me at 62 852-0810-5259.","spans":[{"type":"NIK","start":50,"end":66},{"type":"PHONE_ID","start":79,"end":95}],"category":"positive"}
+{"id":"pii-0152","text":"Halo, NIK pemohon 6206176212620859, bayar pakai kartu 4000 0087 3416 1446.","spans":[{"type":"NIK","start":18,"end":34},{"type":"CARD","start":54,"end":73}],"category":"positive"}
+{"id":"pii-0153","text":"Pak, nomor kartu saya 5105 1098 2345 9500 dan ID transaksi 894399553147093 ya.","spans":[{"type":"CARD","start":22,"end":41}],"category":"positive"}
+{"id":"pii-0154","text":"Tolong update data: WA ke 0813-3268-731.","spans":[{"type":"PHONE_ID","start":26,"end":39}],"category":"positive"}
+{"id":"pii-0155","text":"Tolong update data: NPWP perusahaan 137462265906369. Lalu kirim ke Maya@example.com.","spans":[{"type":"NPWP","start":36,"end":51},{"type":"EMAIL","start":67,"end":83}],"category":"positive"}
+{"id":"pii-0156","text":"Halo, kartu kredit 5200-8296-6762-2228.","spans":[{"type":"CARD","start":19,"end":38}],"category":"positive"}
+{"id":"pii-0157","text":"Mohon dicek ya, NIK saya 3208232008050093. Makasih!","spans":[{"type":"NIK","start":25,"end":41}],"category":"positive"}
+{"id":"pii-0158","text":"Tolong update data: NIK saya 3610025503490405.","spans":[{"type":"NIK","start":29,"end":45}],"category":"positive"}
+{"id":"pii-0159","text":"nomor telepon: 0878.7602.8187, nomor kartu saya 5105-1019-4230-4683. Makasih!","spans":[{"type":"PHONE_ID","start":15,"end":29},{"type":"CARD","start":48,"end":67}],"category":"positive"}
+{"id":"pii-0160","text":"Halo, kirim ke dewi_wijaya@example.com ya.","spans":[{"type":"EMAIL","start":15,"end":38}],"category":"positive"}
+{"id":"pii-0161","text":"email saya dewi_santoso@example.com dan no. referensi transfer 564534910097918518 dan bayar pakai kartu 5105-1076-6366-6937. Lalu WA ke +62 (895) 1436 634 ya.","spans":[{"type":"EMAIL","start":11,"end":35},{"type":"CARD","start":104,"end":123},{"type":"PHONE_ID","start":136,"end":154}],"category":"positive"}
+{"id":"pii-0162","text":"Halo, NPWP: 283712240595913 dan surel: budi.lestari@example.org dan nomor kartu saya 4111 1132 0007 4317. Makasih!","spans":[{"type":"NPWP","start":12,"end":27},{"type":"EMAIL","start":39,"end":63},{"type":"CARD","start":85,"end":104}],"category":"positive"}
+{"id":"pii-0163","text":"email saya siti_kusuma@example.org. Makasih!","spans":[{"type":"EMAIL","start":11,"end":34}],"category":"positive"}
+{"id":"pii-0164","text":"Pak, no. NIK 1602276005500176. Makasih!","spans":[{"type":"NIK","start":13,"end":29}],"category":"positive"}
+{"id":"pii-0165","text":"my phone number is (0821) 1126-9402 and our NPWP is 08.816.177.7-801.514.","spans":[{"type":"PHONE_ID","start":19,"end":35},{"type":"NPWP","start":52,"end":72}],"category":"positive"}
+{"id":"pii-0166","text":"Mohon dicek ya, surel: Budi71@example.org. Lalu no. NIK 6511071712820405","spans":[{"type":"EMAIL","start":23,"end":41},{"type":"NIK","start":56,"end":72}],"category":"positive"}
+{"id":"pii-0167","text":"Halo, email saya Rina.hidayat28@example.org, terima kasih.","spans":[{"type":"EMAIL","start":17,"end":43}],"category":"positive"}
+{"id":"pii-0168","text":"Pak, NIK pemohon 6308074812590465. Lalu nomor pesanan 5536860049220142 dan no. HP +62 (852) 4864 662, terima kasih.","spans":[{"type":"NIK","start":17,"end":33},{"type":"PHONE_ID","start":82,"end":100}],"category":"positive"}
+{"id":"pii-0169","text":"Halo, bayar pakai kartu 5105-1086-6672-9219. Lalu no. HP 0811-4657-594, terima kasih.","spans":[{"type":"CARD","start":24,"end":43},{"type":"PHONE_ID","start":57,"end":70}],"category":"positive"}
+{"id":"pii-0170","text":"surel: rina_pratama@example.com, nomor KTP: 7503285704340303, ID transaksi 134168436618062 ya.","spans":[{"type":"EMAIL","start":7,"end":31},{"type":"NIK","start":44,"end":60}],"category":"positive"}
+{"id":"pii-0171","text":"Mohon dicek ya, email saya Maya.kusuma@example.com ya.","spans":[{"type":"EMAIL","start":27,"end":50}],"category":"positive"}
+{"id":"pii-0172","text":"Mohon dicek ya, kirim ke Siti_santoso@example.org. Lalu WA ke 62896.3822.102, terima kasih.","spans":[{"type":"EMAIL","start":25,"end":49},{"type":"PHONE_ID","start":62,"end":76}],"category":"positive"}
+{"id":"pii-0173","text":"Halo, nomor kartu saya 5200824754165645","spans":[{"type":"CARD","start":23,"end":39}],"category":"positive"}
+{"id":"pii-0174","text":"Halo, jatuh tempo 01-02-2021 dan nomor NPWP saya 67.267.925.5-162.205, nomor KTP: 2113224104330604. Makasih!","spans":[{"type":"NPWP","start":49,"end":69},{"type":"NIK","start":82,"end":98}],"category":"positive"}
+{"id":"pii-0175","text":"Mohon dicek ya, nomor NPWP saya 399121981000580 ya.","spans":[{"type":"NPWP","start":32,"end":47}],"category":"positive"}
+{"id":"pii-0176","text":"our NPWP is 148548733273684.","spans":[{"type":"NPWP","start":12,"end":27}],"category":"positive"}
+{"id":"pii-0177","text":"Pak, nomor KTP: 3317262505750833","spans":[{"type":"NIK","start":16,"end":32}],"category":"positive"}
+{"id":"pii-0178","text":"Tolong update data: bayar pakai kartu 5200 8221 0103 8515, NIK saya 7302165503890848 dan kode registrasi 0000936990236401 dan NPWP perusahaan 928370428233237, terima kasih.","spans":[{"type":"CARD","start":38,"end":57},{"type":"NIK","start":68,"end":84},{"type":"NPWP","start":142,"end":157}],"category":"positive"}
+{"id":"pii-0179","text":"Pak, nomor kartu saya 5555553341343990 dan kode voucher 4726 0304 5084 0646. Makasih!","spans":[{"type":"CARD","start":22,"end":38}],"category":"positive"}
+{"id":"pii-0180","text":"Tolong update data: email saya maya_wijaya@example.org ya.","spans":[{"type":"EMAIL","start":31,"end":54}],"category":"positive"}
+{"id":"pii-0181","text":"Halo, NPWP perusahaan 587904258017135.","spans":[{"type":"NPWP","start":22,"end":37}],"category":"positive"}
+{"id":"pii-0182","text":"card number 5555 5595 9051 5022, my phone number is +62896.3547.8379 and virtual account 7001396250724986. Thank you!","spans":[{"type":"CARD","start":12,"end":31},{"type":"PHONE_ID","start":52,"end":68}],"category":"positive"}
+{"id":"pii-0183","text":"call me at 62852.5404.705, charge it to 5200 8246 3410 5506 and transfer reference 964024435668425492, my national ID (NIK) is 5220170801100072.","spans":[{"type":"PHONE_ID","start":11,"end":25},{"type":"CARD","start":40,"end":59},{"type":"NIK","start":127,"end":143}],"category":"positive"}
+{"id":"pii-0184","text":"Hi, transfer reference 333667313417033406, my phone number is +62821.5502.502, thanks.","spans":[{"type":"PHONE_ID","start":62,"end":77}],"category":"positive"}
+{"id":"pii-0185","text":"Hi, my national ID (NIK) is 6418214603070549, thanks.","spans":[{"type":"NIK","start":28,"end":44}],"category":"positive"}
+{"id":"pii-0186","text":"Halo, hubungi saya di +62857 2058 0174, kartu kredit 5555 5598 1195 5387 dan nomor NPWP saya 97.816.896.1-285.417, terima kasih.","spans":[{"type":"PHONE_ID","start":22,"end":38},{"type":"CARD","start":53,"end":72},{"type":"NPWP","start":93,"end":113}],"category":"positive"}
+{"id":"pii-0187","text":"NPWP perusahaan 0434375787702941 dan hubungi saya di (0822) 2080-578","spans":[{"type":"NPWP","start":16,"end":32},{"type":"PHONE_ID","start":53,"end":68}],"category":"positive"}
+{"id":"pii-0188","text":"Mohon dicek ya, resi JP6406238719 dan nomor kartu saya 4000 0003 1564 2860. Makasih!","spans":[{"type":"CARD","start":55,"end":74}],"category":"positive"}
+{"id":"pii-0189","text":"Tolong update data: nomor kartu saya 5200-8252-2945-8515. Lalu SKU TAS-746352, NIK pemohon 5211272207770405 ya.","spans":[{"type":"CARD","start":37,"end":56},{"type":"NIK","start":91,"end":107}],"category":"positive"}
+{"id":"pii-0190","text":"nomor NPWP saya 77.163.133.8-854.669. Lalu bayar pakai kartu 5105100833809768, nomor telepon: 62813-0121-246. Lalu jatuh tempo 09-09-2020.","spans":[{"type":"NPWP","start":16,"end":36},{"type":"CARD","start":61,"end":77},{"type":"PHONE_ID","start":94,"end":108}],"category":"positive"}
+{"id":"pii-0191","text":"Mohon dicek ya, NIK pemohon 7601251709820163, totalnya Rp784.000","spans":[{"type":"NIK","start":28,"end":44}],"category":"positive"}
+{"id":"pii-0192","text":"nomor KTP: 6514216801040239, WA ke 62896 3205 870.","spans":[{"type":"NIK","start":11,"end":27},{"type":"PHONE_ID","start":35,"end":49}],"category":"positive"}
+{"id":"pii-0193","text":"Halo, kode voucher 0805 6856 5531 2763 dan NIK pemohon 3604222806940207","spans":[{"type":"NIK","start":55,"end":71}],"category":"positive"}
+{"id":"pii-0194","text":"Hi, card number 5105 1083 9102 4209","spans":[{"type":"CARD","start":16,"end":35}],"category":"positive"}
+{"id":"pii-0195","text":"Hi, my national ID (NIK) is 5120095207830438, thanks.","spans":[{"type":"NIK","start":28,"end":44}],"category":"positive"}
+{"id":"pii-0196","text":"Mohon dicek ya, bayar ke VA 3901537743093049, nomor KTP: 9111032411530750 dan email saya Budi.santoso85@example.org ya.","spans":[{"type":"NIK","start":57,"end":73},{"type":"EMAIL","start":89,"end":115}],"category":"positive"}
+{"id":"pii-0197","text":"Hi, call me at 0821.7139.466. Also, our NPWP is 935615207283460. Also, SKU SPT-424181, thanks.","spans":[{"type":"PHONE_ID","start":15,"end":28},{"type":"NPWP","start":48,"end":63}],"category":"positive"}
+{"id":"pii-0198","text":"Please update my details: timestamp 1748137044422. Also, our NPWP is 20.188.492.6-212.143","spans":[{"type":"NPWP","start":69,"end":89}],"category":"positive"}
+{"id":"pii-0199","text":"NPWP: 96.805.140.1-797.357. Lalu nomor pesanan 2147147965999432.","spans":[{"type":"NPWP","start":6,"end":26}],"category":"positive"}
+{"id":"pii-0200","text":"Please update my details: call me at 0857.0077.1808 and our NPWP is 14.987.588.3-118.014, thanks.","spans":[{"type":"PHONE_ID","start":37,"end":51},{"type":"NPWP","start":68,"end":88}],"category":"positive"}
+{"id":"pii-0201","text":"Hi, email me at andi.lestari44@example.com. Also, voucher code 9970 4406 2157 1036, thanks.","spans":[{"type":"EMAIL","start":16,"end":42}],"category":"positive"}
+{"id":"pii-0202","text":"Tolong update data: bayar pakai kartu 5105 1040 7563 5808. Lalu email saya Rina_hidayat@example.com ya.","spans":[{"type":"CARD","start":38,"end":57},{"type":"EMAIL","start":75,"end":99}],"category":"positive"}
+{"id":"pii-0203","text":"Pak, nomor kartu saya 5105107498440193, kirim ke putri@example.com, resi JX8426163193. Lalu nomor NPWP saya 97.800.937.6-028.513. Makasih!","spans":[{"type":"CARD","start":22,"end":38},{"type":"EMAIL","start":49,"end":66},{"type":"NPWP","start":108,"end":128}],"category":"positive"}
+{"id":"pii-0204","text":"Pak, kode registrasi 8800082847454167. Lalu bayar pakai kartu 5105 1024 2270 6991","spans":[{"type":"CARD","start":62,"end":81}],"category":"positive"}
+{"id":"pii-0205","text":"Please update my details: contact: siti.santoso77@example.com, thanks.","spans":[{"type":"EMAIL","start":35,"end":61}],"category":"positive"}
+{"id":"pii-0206","text":"Hi, contact: andi_kusuma@example.org, thanks.","spans":[{"type":"EMAIL","start":13,"end":36}],"category":"positive"}
+{"id":"pii-0207","text":"Halo, kartu kredit 5105103994519168 ya.","spans":[{"type":"CARD","start":19,"end":35}],"category":"positive"}
+{"id":"pii-0208","text":"Halo, NIK saya 6204135208110881 dan NPWP: 27.176.401.0-000.665. Lalu no. HP +62852 7885 094.","spans":[{"type":"NIK","start":15,"end":31},{"type":"NPWP","start":42,"end":62},{"type":"PHONE_ID","start":76,"end":91}],"category":"positive"}
+{"id":"pii-0209","text":"Mohon dicek ya, bayar pakai kartu 5200 8299 5009 8524 ya.","spans":[{"type":"CARD","start":34,"end":53}],"category":"positive"}
+{"id":"pii-0210","text":"Tolong update data: email saya putri_hidayat@example.org","spans":[{"type":"EMAIL","start":31,"end":56}],"category":"positive"}
+{"id":"pii-0211","text":"no. HP +62 821.8002.239 dan kartu kredit 4111 1106 9162 3693. Lalu nomor pesanan 4275034326242397. Makasih!","spans":[{"type":"PHONE_ID","start":7,"end":23},{"type":"CARD","start":41,"end":60}],"category":"positive"}
+{"id":"pii-0212","text":"Hi, email me at putri.kusuma20@example.com, tax ID (NPWP) 0745354821665478. Also, timestamp 1647411912158.","spans":[{"type":"EMAIL","start":16,"end":42},{"type":"NPWP","start":58,"end":74}],"category":"positive"}
+{"id":"pii-0213","text":"Mohon dicek ya, surel: Budi_pratama@example.com. Lalu bayar pakai kartu 4111 1107 0345 1729, nomor KTP: 1320170511040078","spans":[{"type":"EMAIL","start":23,"end":47},{"type":"CARD","start":72,"end":91},{"type":"NIK","start":104,"end":120}],"category":"positive"}
+{"id":"pii-0214","text":"Hi, charge it to 4000 0023 7706 4520. Thank you!","spans":[{"type":"CARD","start":17,"end":36}],"category":"positive"}
+{"id":"pii-0215","text":"Halo, kode registrasi 4597844452307712, NPWP perusahaan 98.088.346.3-748.173 ya.","spans":[{"type":"NPWP","start":56,"end":76}],"category":"positive"}
+{"id":"pii-0216","text":"nomor KTP: 7617250709110875 dan hubungi saya di 62 878 6458 331. Makasih!","spans":[{"type":"NIK","start":11,"end":27},{"type":"PHONE_ID","start":48,"end":63}],"category":"positive"}
+{"id":"pii-0217","text":"Pak, no. NIK 3409091702090470 dan surel: maya@example.org.","spans":[{"type":"NIK","start":13,"end":29},{"type":"EMAIL","start":41,"end":57}],"category":"positive"}
+{"id":"pii-0218","text":"kartu kredit 5555550684902549 ya.","spans":[{"type":"CARD","start":13,"end":29}],"category":"positive"}
+{"id":"pii-0219","text":"Mohon dicek ya, kode registrasi 0066796714226407, NIK saya 8105240201220578. Lalu nomor NPWP saya 83.790.283.5-230.504 ya.","spans":[{"type":"NIK","start":59,"end":75},{"type":"NPWP","start":98,"end":118}],"category":"positive"}
+{"id":"pii-0220","text":"nomor KTP: 7402222112020757 ya.","spans":[{"type":"NIK","start":11,"end":27}],"category":"positive"}
+{"id":"pii-0221","text":"Pak, jatuh tempo 04-08-2025. Lalu email saya maya_santoso@example.org, terima kasih.","spans":[{"type":"EMAIL","start":45,"end":69}],"category":"positive"}
+{"id":"pii-0222","text":"Tolong update data: NIK saya 7404236804310606, terima kasih.","spans":[{"type":"NIK","start":29,"end":45}],"category":"positive"}
+{"id":"pii-0223","text":"Pak, kirim ke rizky@example.org dan NPWP perusahaan 0961252478557917","spans":[{"type":"EMAIL","start":14,"end":31},{"type":"NPWP","start":52,"end":68}],"category":"positive"}
+{"id":"pii-0224","text":"Hi, contact: dewi51@example.com and charge it to 4111-1127-8048-0746 and our NPWP is 175613761998792. Thank you!","spans":[{"type":"EMAIL","start":13,"end":31},{"type":"CARD","start":49,"end":68},{"type":"NPWP","start":85,"end":100}],"category":"positive"}
+{"id":"pii-0225","text":"Halo, nomor NPWP saya 49.381.783.9-557.492, nomor pesanan 8349387910425939, no. NIK 6408212210630933","spans":[{"type":"NPWP","start":22,"end":42},{"type":"NIK","start":84,"end":100}],"category":"positive"}
+{"id":"pii-0226","text":"Tolong update data: nomor telepon: +628961093090, tagihan INV/2023/02/79275 ya.","spans":[{"type":"PHONE_ID","start":35,"end":48}],"category":"positive"}
+{"id":"pii-0227","text":"Tolong update data: kartu kredit 5555551235078516, terima kasih.","spans":[{"type":"CARD","start":33,"end":49}],"category":"positive"}
+{"id":"pii-0228","text":"Mohon dicek ya, nomor NPWP saya 60.732.500.4-677.518, terima kasih.","spans":[{"type":"NPWP","start":32,"end":52}],"category":"positive"}
+{"id":"pii-0229","text":"Halo, nomor pesanan 4112949756991778. Lalu NPWP perusahaan 60.562.325.9-592.961, NIK saya 1401010810520711, email saya Rizky75@example.com. Makasih!","spans":[{"type":"NPWP","start":59,"end":79},{"type":"NIK","start":90,"end":106},{"type":"EMAIL","start":119,"end":138}],"category":"positive"}
+{"id":"pii-0230","text":"Pak, WA ke 0822-7882-380. Lalu bayar ke VA 3901420092750172.","spans":[{"type":"PHONE_ID","start":11,"end":24}],"category":"positive"}
+{"id":"pii-0231","text":"no. NIK 6303110407060705, no. HP (0878) 9907-6215. Makasih!","spans":[{"type":"NIK","start":8,"end":24},{"type":"PHONE_ID","start":33,"end":49}],"category":"positive"}
+{"id":"pii-0232","text":"Pak, nomor telepon: 0895 1852 5216","spans":[{"type":"PHONE_ID","start":20,"end":34}],"category":"positive"}
+{"id":"pii-0233","text":"Hi, NIK: 6214166802630794 and charge it to 5105 1035 1579 9257.","spans":[{"type":"NIK","start":9,"end":25},{"type":"CARD","start":43,"end":62}],"category":"positive"}
+{"id":"pii-0234","text":"Halo, ID transaksi 375682649671485. Lalu email saya Maya_kusuma@example.com, hubungi saya di 087832732507. Makasih!","spans":[{"type":"EMAIL","start":52,"end":75},{"type":"PHONE_ID","start":93,"end":105}],"category":"positive"}
+{"id":"pii-0235","text":"Pak, nomor KTP: 5119025011030919 ya.","spans":[{"type":"NIK","start":16,"end":32}],"category":"positive"}
+{"id":"pii-0236","text":"Pak, NPWP: 0156972093869033, WA ke (0857) 8309-259, kode voucher 1664 1004 8020 4883, terima kasih.","spans":[{"type":"NPWP","start":11,"end":27},{"type":"PHONE_ID","start":35,"end":50}],"category":"positive"}
+{"id":"pii-0237","text":"Mohon dicek ya, kirim ke siti.kusuma97@example.org dan NPWP perusahaan 22.219.707.9-374.084, terima kasih.","spans":[{"type":"EMAIL","start":25,"end":50},{"type":"NPWP","start":71,"end":91}],"category":"positive"}
+{"id":"pii-0238","text":"Halo, SKU HP-079376. Lalu nomor kartu saya 4111 1188 9506 6833, NPWP: 06.109.201.3-102.700","spans":[{"type":"CARD","start":43,"end":62},{"type":"NPWP","start":70,"end":90}],"category":"positive"}
+{"id":"pii-0239","text":"For the record, my phone number is +62 821 9349 539 and my national ID (NIK) is 5102095012780746, thanks.","spans":[{"type":"PHONE_ID","start":35,"end":51},{"type":"NIK","start":80,"end":96}],"category":"positive"}
+{"id":"pii-0240","text":"NIK saya 6416160610650816 dan bayar pakai kartu 4000 0015 2513 5406 ya.","spans":[{"type":"NIK","start":9,"end":25},{"type":"CARD","start":48,"end":67}],"category":"positive"}
+{"id":"pii-0241","text":"Halo, kirim ke putri.hidayat@example.com dan nomor telepon: 62895-8341-8237.","spans":[{"type":"EMAIL","start":15,"end":40},{"type":"PHONE_ID","start":60,"end":75}],"category":"positive"}
+{"id":"pii-0242","text":"timestamp 1657523932826, no. HP (0852) 6153-334. Makasih!","spans":[{"type":"PHONE_ID","start":32,"end":47}],"category":"positive"}
+{"id":"pii-0243","text":"For the record, email me at andi_wijaya@example.org. Thank you!","spans":[{"type":"EMAIL","start":28,"end":51}],"category":"positive"}
+{"id":"pii-0244","text":"bayar ke VA 8277646775918711 dan kartu kredit 4111-1146-6713-1426. Lalu email saya rizky@example.org. Makasih!","spans":[{"type":"CARD","start":46,"end":65},{"type":"EMAIL","start":83,"end":100}],"category":"positive"}
+{"id":"pii-0245","text":"Pak, nomor telepon: +62 895 3553 713 ya.","spans":[{"type":"PHONE_ID","start":20,"end":36}],"category":"positive"}
+{"id":"pii-0246","text":"Tolong update data: nomor KTP: 9109276106170580. Makasih!","spans":[{"type":"NIK","start":31,"end":47}],"category":"positive"}
+{"id":"pii-0247","text":"Hi, email me at rina24@example.com","spans":[{"type":"EMAIL","start":16,"end":34}],"category":"positive"}
+{"id":"pii-0248","text":"Pak, NPWP perusahaan 95.723.646.2-849.020, terima kasih.","spans":[{"type":"NPWP","start":21,"end":41}],"category":"positive"}
+{"id":"pii-0249","text":"Mohon dicek ya, WA ke +62 (821) 5046 1423, resi TKP7485893329.","spans":[{"type":"PHONE_ID","start":22,"end":41}],"category":"positive"}
+{"id":"pii-0250","text":"Mohon dicek ya, nomor kartu saya 4000-0072-0853-1522.","spans":[{"type":"CARD","start":33,"end":52}],"category":"positive"}
+{"id":"pii-0251","text":"Tolong update data: kirim ke dewi.pratama31@example.org, terima kasih.","spans":[{"type":"EMAIL","start":29,"end":55}],"category":"positive"}
+{"id":"pii-0252","text":"jatuh tempo 05-07-2024 dan nomor telepon: +628786241797, email saya budi.santoso21@example.org. Makasih!","spans":[{"type":"PHONE_ID","start":42,"end":55},{"type":"EMAIL","start":68,"end":94}],"category":"positive"}
+{"id":"pii-0253","text":"Halo, NPWP perusahaan 17.770.199.0-198.719 dan kartu kredit 4000002521939676 dan kirim ke budi_santoso@example.com ya.","spans":[{"type":"NPWP","start":22,"end":42},{"type":"CARD","start":60,"end":76},{"type":"EMAIL","start":90,"end":114}],"category":"positive"}
+{"id":"pii-0254","text":"Please update my details: NIK: 6511240809620844, the total is Rp7.155.000 and email me at rizky16@example.org.","spans":[{"type":"NIK","start":31,"end":47},{"type":"EMAIL","start":90,"end":109}],"category":"positive"}
+{"id":"pii-0255","text":"Pak, no. referensi transfer 874744660944853569, nomor kartu saya 4000 0067 0014 5450","spans":[{"type":"CARD","start":65,"end":84}],"category":"positive"}
+{"id":"pii-0256","text":"Mohon dicek ya, kartu kredit 5105 1086 9512 6502. Lalu WA ke +62812.8844.7678, NIK saya 3418036304590177.","spans":[{"type":"CARD","start":29,"end":48},{"type":"PHONE_ID","start":61,"end":77},{"type":"NIK","start":88,"end":104}],"category":"positive"}
+{"id":"pii-0257","text":"Hi, transfer reference 739899974995290091 and our NPWP is 194549409903700 and card number 4111 1114 7223 5053. Thank you!","spans":[{"type":"NPWP","start":58,"end":73},{"type":"CARD","start":90,"end":109}],"category":"positive"}
+{"id":"pii-0258","text":"Tolong update data: NPWP: 36.506.587.6-943.659. Lalu tagihan INV/2024/12/75602 ya.","spans":[{"type":"NPWP","start":26,"end":46}],"category":"positive"}
+{"id":"pii-0259","text":"Mohon dicek ya, nomor NPWP saya 74.902.711.2-468.382","spans":[{"type":"NPWP","start":32,"end":52}],"category":"positive"}
+{"id":"pii-0260","text":"Pak, no. HP 0852 2661 7487 dan no. NIK 8201112305880269, nomor NPWP saya 10.367.864.9-692.156. Makasih!","spans":[{"type":"PHONE_ID","start":12,"end":26},{"type":"NIK","start":39,"end":55},{"type":"NPWP","start":73,"end":93}],"category":"positive"}
+{"id":"pii-0261","text":"Pak, no. NIK 3203071707110532. Lalu email saya siti_lestari@example.com","spans":[{"type":"NIK","start":13,"end":29},{"type":"EMAIL","start":47,"end":71}],"category":"positive"}
+{"id":"pii-0262","text":"Halo, tagihan INV/2026/06/23570 dan kirim ke siti_hidayat@example.org.","spans":[{"type":"EMAIL","start":45,"end":69}],"category":"positive"}
+{"id":"pii-0263","text":"Pak, kartu kredit 5105 1035 4783 1920, nomor NPWP saya 95.077.479.0-315.877.","spans":[{"type":"CARD","start":18,"end":37},{"type":"NPWP","start":55,"end":75}],"category":"positive"}
+{"id":"pii-0264","text":"nomor KTP: 6503016401380932, terima kasih.","spans":[{"type":"NIK","start":11,"end":27}],"category":"positive"}
+{"id":"pii-0265","text":"Mohon dicek ya, NPWP perusahaan 99.459.372.3-366.768, tagihan INV/2022/01/63601","spans":[{"type":"NPWP","start":32,"end":52}],"category":"positive"}
+{"id":"pii-0266","text":"Halo, nomor kartu saya 5555558609986521 dan NIK pemohon 8113164102670577","spans":[{"type":"CARD","start":23,"end":39},{"type":"NIK","start":56,"end":72}],"category":"positive"}
+{"id":"pii-0267","text":"Pak, bayar pakai kartu 5200 8215 2238 7832","spans":[{"type":"CARD","start":23,"end":42}],"category":"positive"}
+{"id":"pii-0268","text":"Mohon dicek ya, nomor KTP: 1708075207100698.","spans":[{"type":"NIK","start":27,"end":43}],"category":"positive"}
+{"id":"pii-0269","text":"Mohon dicek ya, no. HP +628131872410.","spans":[{"type":"PHONE_ID","start":23,"end":36}],"category":"positive"}
+{"id":"pii-0270","text":"Hi, card number 5200 8218 9123 3856.","spans":[{"type":"CARD","start":16,"end":35}],"category":"positive"}
+{"id":"pii-0271","text":"Mohon dicek ya, no. NIK 1202152210960024, nomor kartu saya 5555 5555 9613 5435. Lalu email saya Agus69@example.com.","spans":[{"type":"NIK","start":24,"end":40},{"type":"CARD","start":59,"end":78},{"type":"EMAIL","start":96,"end":114}],"category":"positive"}
+{"id":"pii-0272","text":"Tolong update data: NIK saya 6412042312280586, nomor NPWP saya 15.069.486.8-838.237.","spans":[{"type":"NIK","start":29,"end":45},{"type":"NPWP","start":63,"end":83}],"category":"positive"}
+{"id":"pii-0273","text":"Hi, email me at agus.lestari@example.com. Also, tax ID (NPWP) 19.654.307.8-740.762","spans":[{"type":"EMAIL","start":16,"end":40},{"type":"NPWP","start":62,"end":82}],"category":"positive"}
+{"id":"pii-0274","text":"nomor telepon: +62 (852) 3664 505, terima kasih.","spans":[{"type":"PHONE_ID","start":15,"end":33}],"category":"positive"}
+{"id":"pii-0275","text":"Halo, NIK saya 7515044701930425, hubungi saya di 62822 7363 491, terima kasih.","spans":[{"type":"NIK","start":15,"end":31},{"type":"PHONE_ID","start":49,"end":63}],"category":"positive"}
+{"id":"pii-0276","text":"Mohon dicek ya, hubungi saya di +6289520866248, email saya rizky97@example.org.","spans":[{"type":"PHONE_ID","start":32,"end":46},{"type":"EMAIL","start":59,"end":78}],"category":"positive"}
+{"id":"pii-0277","text":"Hi, card number 4111 1130 1122 1339. Also, contact: siti_wijaya@example.org and my phone number is 62 896.6886.715.","spans":[{"type":"CARD","start":16,"end":35},{"type":"EMAIL","start":52,"end":75},{"type":"PHONE_ID","start":99,"end":114}],"category":"positive"}
+{"id":"pii-0278","text":"SKU HP-989900. Lalu NPWP: 0636933945992516 ya.","spans":[{"type":"NPWP","start":26,"end":42}],"category":"positive"}
+{"id":"pii-0279","text":"contact: andi@example.com. Thank you!","spans":[{"type":"EMAIL","start":9,"end":25}],"category":"positive"}
+{"id":"pii-0280","text":"call me at 62 895 3251 223, thanks.","spans":[{"type":"PHONE_ID","start":11,"end":26}],"category":"positive"}
+{"id":"pii-0281","text":"Tolong update data: nomor NPWP saya 84.704.776.4-322.282. Lalu hubungi saya di 62 811.2818.3619. Lalu nomor KTP: 8211016412170106. Makasih!","spans":[{"type":"NPWP","start":36,"end":56},{"type":"PHONE_ID","start":79,"end":95},{"type":"NIK","start":113,"end":129}],"category":"positive"}
+{"id":"pii-0282","text":"Please update my details: my phone number is 62822.4157.4164 and our NPWP is 03.166.458.2-875.916, thanks.","spans":[{"type":"PHONE_ID","start":45,"end":60},{"type":"NPWP","start":77,"end":97}],"category":"positive"}
+{"id":"pii-0283","text":"Halo, NPWP: 99.514.452.7-395.834. Makasih!","spans":[{"type":"NPWP","start":12,"end":32}],"category":"positive"}
+{"id":"pii-0284","text":"card number 5200 8291 5085 2241. Thank you!","spans":[{"type":"CARD","start":12,"end":31}],"category":"positive"}
+{"id":"pii-0285","text":"Halo, bayar ke VA 8808267207698123 dan no. NIK 6401061411760885. Makasih!","spans":[{"type":"NIK","start":47,"end":63}],"category":"positive"}
+{"id":"pii-0286","text":"nomor NPWP saya 94.943.138.0-283.103. Lalu kartu kredit 5200-8206-5102-8746 ya.","spans":[{"type":"NPWP","start":16,"end":36},{"type":"CARD","start":56,"end":75}],"category":"positive"}
+{"id":"pii-0287","text":"Pak, nomor NPWP saya 44.998.628.7-136.475. Lalu bayar pakai kartu 4000 0011 9363 8392 dan SKU SPT-262719. Makasih!","spans":[{"type":"NPWP","start":21,"end":41},{"type":"CARD","start":66,"end":85}],"category":"positive"}
+{"id":"pii-0288","text":"Mohon dicek ya, WA ke 08784008917 ya.","spans":[{"type":"PHONE_ID","start":22,"end":33}],"category":"positive"}
+{"id":"pii-0289","text":"Mohon dicek ya, kartu kredit 4111116637858301.","spans":[{"type":"CARD","start":29,"end":45}],"category":"positive"}
+{"id":"pii-0290","text":"Tolong update data: nomor KTP: 2112130307350616, terima kasih.","spans":[{"type":"NIK","start":31,"end":47}],"category":"positive"}
+{"id":"pii-0291","text":"Halo, NIK saya 5209105105860985, nomor telepon: 62821.0990.101. Makasih!","spans":[{"type":"NIK","start":15,"end":31},{"type":"PHONE_ID","start":48,"end":62}],"category":"positive"}
+{"id":"pii-0292","text":"Halo, NIK pemohon 2103051902340338, email saya agus_hidayat@example.org. Lalu bayar pakai kartu 4000 0024 7913 4338, SKU SPT-271634. Makasih!","spans":[{"type":"NIK","start":18,"end":34},{"type":"EMAIL","start":47,"end":71},{"type":"CARD","start":96,"end":115}],"category":"positive"}
+{"id":"pii-0293","text":"Mohon dicek ya, NIK pemohon 2115155006510929. Lalu NPWP perusahaan 0165908333740979 dan kirim ke Budi.santoso@example.org, terima kasih.","spans":[{"type":"NIK","start":28,"end":44},{"type":"NPWP","start":67,"end":83},{"type":"EMAIL","start":97,"end":121}],"category":"positive"}
+{"id":"pii-0294","text":"Mohon dicek ya, email saya rizky23@example.com. Lalu nomor pesanan 9299847575389182, terima kasih.","spans":[{"type":"EMAIL","start":27,"end":46}],"category":"positive"}
+{"id":"pii-0295","text":"Pak, bayar pakai kartu 5105109028359448. Makasih!","spans":[{"type":"CARD","start":23,"end":39}],"category":"positive"}
+{"id":"pii-0296","text":"Tolong update data: jatuh tempo 23-09-2020 dan nomor telepon: 62 822-8498-7587","spans":[{"type":"PHONE_ID","start":62,"end":78}],"category":"positive"}
+{"id":"pii-0297","text":"Pak, bayar pakai kartu 5200-8200-9765-7306, nomor NPWP saya 29.994.107.0-215.312, terima kasih.","spans":[{"type":"CARD","start":23,"end":42},{"type":"NPWP","start":60,"end":80}],"category":"positive"}
+{"id":"pii-0298","text":"Tolong update data: nomor NPWP saya 0575729362058775. Makasih!","spans":[{"type":"NPWP","start":36,"end":52}],"category":"positive"}
+{"id":"pii-0299","text":"Pak, hubungi saya di 62821 0427 4768, bayar pakai kartu 5555-5580-4289-6782, email saya rizky.hidayat@example.com, terima kasih.","spans":[{"type":"PHONE_ID","start":21,"end":36},{"type":"CARD","start":56,"end":75},{"type":"EMAIL","start":88,"end":113}],"category":"positive"}
+{"id":"pii-0300","text":"Tolong update data: email saya andi.wijaya82@example.com, NIK pemohon 7208191808500842 dan bayar pakai kartu 5200 8239 6991 4540.","spans":[{"type":"EMAIL","start":31,"end":56},{"type":"NIK","start":70,"end":86},{"type":"CARD","start":109,"end":128}],"category":"positive"}
+{"id":"pii-0301","text":"Halo, no. NIK 6404284609150405, timestamp 1772035715492, terima kasih.","spans":[{"type":"NIK","start":14,"end":30}],"category":"positive"}
+{"id":"pii-0302","text":"Mohon dicek ya, NPWP perusahaan 562094654790447 ya.","spans":[{"type":"NPWP","start":32,"end":47}],"category":"positive"}
+{"id":"pii-0303","text":"Pak, kirim ke Dewi_saputra@example.org, terima kasih.","spans":[{"type":"EMAIL","start":14,"end":38}],"category":"positive"}
+{"id":"pii-0304","text":"Mohon dicek ya, email saya andi@example.com. Lalu no. referensi transfer 993396443974593139. Makasih!","spans":[{"type":"EMAIL","start":27,"end":43}],"category":"positive"}
+{"id":"pii-0305","text":"Please update my details: my national ID (NIK) is 3413146808120333. Thank you!","spans":[{"type":"NIK","start":50,"end":66}],"category":"positive"}
+{"id":"pii-0306","text":"Please update my details: call me at 089648856099, charge it to 5105-1015-6761-6155. Also, tax ID (NPWP) 698498311744533","spans":[{"type":"PHONE_ID","start":37,"end":49},{"type":"CARD","start":64,"end":83},{"type":"NPWP","start":105,"end":120}],"category":"positive"}
+{"id":"pii-0307","text":"Please update my details: my phone number is 62 895-6066-4137, thanks.","spans":[{"type":"PHONE_ID","start":45,"end":61}],"category":"positive"}
+{"id":"pii-0308","text":"Pak, NIK pemohon 7105112105330561 dan jatuh tempo 01-09-2026. Lalu hubungi saya di 081273090417, terima kasih.","spans":[{"type":"NIK","start":17,"end":33},{"type":"PHONE_ID","start":83,"end":95}],"category":"positive"}
+{"id":"pii-0309","text":"Please update my details: transaction ID 981276509996680 and call me at +62852-7237-390, thanks.","spans":[{"type":"PHONE_ID","start":72,"end":87}],"category":"positive"}
+{"id":"pii-0310","text":"Hi, the total is Rp1.657.000, card number 5200 8288 0641 6617 and our NPWP is 37.686.429.9-862.618 and my phone number is 62 857.7600.435, thanks.","spans":[{"type":"CARD","start":42,"end":61},{"type":"NPWP","start":78,"end":98},{"type":"PHONE_ID","start":122,"end":137}],"category":"positive"}
+{"id":"pii-0311","text":"Mohon dicek ya, kartu kredit 4111 1107 4759 0037. Makasih!","spans":[{"type":"CARD","start":29,"end":48}],"category":"positive"}
+{"id":"pii-0312","text":"Please update my details: voucher code 4616 1331 8072 2518 and our NPWP is 370953725495538. Also, card number 5200821399522875. Thank you!","spans":[{"type":"NPWP","start":75,"end":90},{"type":"CARD","start":110,"end":126}],"category":"positive"}
+{"id":"pii-0313","text":"Mohon dicek ya, WA ke +62 811.6050.5323","spans":[{"type":"PHONE_ID","start":22,"end":39}],"category":"positive"}
+{"id":"pii-0314","text":"WA ke 628574145535 dan bayar pakai kartu 4111110309531833, NPWP perusahaan 927613436342296","spans":[{"type":"PHONE_ID","start":6,"end":18},{"type":"CARD","start":41,"end":57},{"type":"NPWP","start":75,"end":90}],"category":"positive"}
+{"id":"pii-0315","text":"Pak, nomor pesanan 6057167568331447 dan nomor NPWP saya 773919399679942 dan email saya rizky87@example.org.","spans":[{"type":"NPWP","start":56,"end":71},{"type":"EMAIL","start":87,"end":106}],"category":"positive"}
+{"id":"pii-0316","text":"For the record, card number 4000-0070-9411-5752 and call me at 0878.0791.622 and NIK: 7215305311490636.","spans":[{"type":"CARD","start":28,"end":47},{"type":"PHONE_ID","start":63,"end":76},{"type":"NIK","start":86,"end":102}],"category":"positive"}
+{"id":"pii-0317","text":"Pak, WA ke 0852.7928.5199. Lalu NIK saya 7219125806650149","spans":[{"type":"PHONE_ID","start":11,"end":25},{"type":"NIK","start":41,"end":57}],"category":"positive"}
+{"id":"pii-0318","text":"For the record, email me at andi_saputra@example.com. Also, SKU TAS-356082 and my phone number is +6281138385683. Thank you!","spans":[{"type":"EMAIL","start":28,"end":52},{"type":"PHONE_ID","start":98,"end":112}],"category":"positive"}
+{"id":"pii-0319","text":"Pak, bayar pakai kartu 5105 1033 6258 0743","spans":[{"type":"CARD","start":23,"end":42}],"category":"positive"}
+{"id":"pii-0320","text":"Mohon dicek ya, bayar pakai kartu 4000 0066 2298 9746. Makasih!","spans":[{"type":"CARD","start":34,"end":53}],"category":"positive"}
+{"id":"pii-0321","text":"Pak, NPWP: 435455231965273 dan nomor telepon: +628136269995 ya.","spans":[{"type":"NPWP","start":11,"end":26},{"type":"PHONE_ID","start":46,"end":59}],"category":"positive"}
+{"id":"pii-0322","text":"Tolong update data: hubungi saya di 62811 3650 0653 dan nomor NPWP saya 75.598.116.8-284.923. Lalu bayar pakai kartu 4111 1116 0215 1949 ya.","spans":[{"type":"PHONE_ID","start":36,"end":51},{"type":"NPWP","start":72,"end":92},{"type":"CARD","start":117,"end":136}],"category":"positive"}
+{"id":"pii-0323","text":"Tolong update data: resi JX8100374380, no. HP +6289590748138, surel: andi_kusuma@example.com, terima kasih.","spans":[{"type":"PHONE_ID","start":46,"end":60},{"type":"EMAIL","start":69,"end":92}],"category":"positive"}
+{"id":"pii-0324","text":"Pak, kartu kredit 4111 1158 5513 6416, tagihan INV/2022/11/87271","spans":[{"type":"CARD","start":18,"end":37}],"category":"positive"}
+{"id":"pii-0325","text":"Mohon dicek ya, nomor kartu saya 5105 1074 1914 5707. Lalu kirim ke budi@example.org","spans":[{"type":"CARD","start":33,"end":52},{"type":"EMAIL","start":68,"end":84}],"category":"positive"}
+{"id":"pii-0326","text":"Hi, timestamp 1653975965935, our NPWP is 442664162918826.","spans":[{"type":"NPWP","start":41,"end":56}],"category":"positive"}
+{"id":"pii-0327","text":"Tolong update data: no. HP (0813) 0099-5925.","spans":[{"type":"PHONE_ID","start":27,"end":43}],"category":"positive"}
+{"id":"pii-0328","text":"For the record, email me at dewi_saputra@example.org","spans":[{"type":"EMAIL","start":28,"end":52}],"category":"positive"}
+{"id":"pii-0329","text":"Pak, email saya andi.santoso@example.com. Makasih!","spans":[{"type":"EMAIL","start":16,"end":40}],"category":"positive"}
+{"id":"pii-0330","text":"bayar pakai kartu 4111 1161 7662 4270 dan kode voucher 1133 4742 3785 3134, NIK saya 6101092406730864","spans":[{"type":"CARD","start":18,"end":37},{"type":"NIK","start":85,"end":101}],"category":"positive"}
+{"id":"pii-0331","text":"Mohon dicek ya, NPWP: 26.247.515.2-516.606, tagihan INV/2023/11/53294. Makasih!","spans":[{"type":"NPWP","start":22,"end":42}],"category":"positive"}
+{"id":"pii-0332","text":"Mohon dicek ya, NPWP: 98.880.866.8-503.180. Lalu bayar pakai kartu 4000 0091 6171 3634.","spans":[{"type":"NPWP","start":22,"end":42},{"type":"CARD","start":67,"end":86}],"category":"positive"}
+{"id":"pii-0333","text":"Pak, nomor kartu saya 5555 5590 0275 1926, terima kasih.","spans":[{"type":"CARD","start":22,"end":41}],"category":"positive"}
+{"id":"pii-0334","text":"Halo, NPWP: 02.086.541.7-436.571. Lalu kirim ke budi53@example.com, totalnya Rp2.281.000, terima kasih.","spans":[{"type":"NPWP","start":12,"end":32},{"type":"EMAIL","start":48,"end":66}],"category":"positive"}
+{"id":"pii-0335","text":"Halo, email saya maya.wijaya26@example.org ya.","spans":[{"type":"EMAIL","start":17,"end":42}],"category":"positive"}
+{"id":"pii-0336","text":"Pak, hubungi saya di 62811.6895.0894. Lalu nomor kartu saya 4000-0027-0864-2770 ya.","spans":[{"type":"PHONE_ID","start":21,"end":36},{"type":"CARD","start":60,"end":79}],"category":"positive"}
+{"id":"pii-0337","text":"Mohon dicek ya, NPWP: 586313328123769, terima kasih.","spans":[{"type":"NPWP","start":22,"end":37}],"category":"positive"}
+{"id":"pii-0338","text":"Halo, WA ke +62896.5060.3900 dan NIK saya 8106024712730073 ya.","spans":[{"type":"PHONE_ID","start":12,"end":28},{"type":"NIK","start":42,"end":58}],"category":"positive"}
+{"id":"pii-0339","text":"Mohon dicek ya, nomor kartu saya 5200 8220 5274 2818, nomor KTP: 7503024202240823, terima kasih.","spans":[{"type":"CARD","start":33,"end":52},{"type":"NIK","start":65,"end":81}],"category":"positive"}
+{"id":"pii-0340","text":"Halo, email saya andi63@example.com dan nomor kartu saya 5200-8272-8300-0860.","spans":[{"type":"EMAIL","start":17,"end":35},{"type":"CARD","start":57,"end":76}],"category":"positive"}
+{"id":"pii-0341","text":"For the record, call me at 62 821 2408 8630. Also, our NPWP is 72.655.291.5-641.662","spans":[{"type":"PHONE_ID","start":27,"end":43},{"type":"NPWP","start":63,"end":83}],"category":"positive"}
+{"id":"pii-0342","text":"Mohon dicek ya, no. NIK 9104050702660347, NPWP: 87.624.669.0-903.146 dan hubungi saya di 0821.6110.4686.","spans":[{"type":"NIK","start":24,"end":40},{"type":"NPWP","start":48,"end":68},{"type":"PHONE_ID","start":89,"end":103}],"category":"positive"}
+{"id":"pii-0343","text":"nomor NPWP saya 98.402.230.6-003.265 dan surel: budi_wijaya@example.com. Makasih!","spans":[{"type":"NPWP","start":16,"end":36},{"type":"EMAIL","start":48,"end":71}],"category":"positive"}
+{"id":"pii-0344","text":"Mohon dicek ya, hubungi saya di +62 (821) 4063 609 dan nomor kartu saya 5105 1060 7897 5461.","spans":[{"type":"PHONE_ID","start":32,"end":50},{"type":"CARD","start":72,"end":91}],"category":"positive"}
+{"id":"pii-0345","text":"Tolong update data: surel: Maya.hidayat@example.com dan no. NIK 5301084508930748, terima kasih.","spans":[{"type":"EMAIL","start":27,"end":51},{"type":"NIK","start":64,"end":80}],"category":"positive"}
+{"id":"pii-0346","text":"NPWP perusahaan 01.979.799.8-672.775 ya.","spans":[{"type":"NPWP","start":16,"end":36}],"category":"positive"}
+{"id":"pii-0347","text":"Halo, NPWP perusahaan 88.588.270.7-223.107.","spans":[{"type":"NPWP","start":22,"end":42}],"category":"positive"}
+{"id":"pii-0348","text":"Tolong update data: NPWP: 66.685.987.0-186.180 dan NIK saya 1408252404050090. Lalu jatuh tempo 13-06-2020.","spans":[{"type":"NPWP","start":26,"end":46},{"type":"NIK","start":60,"end":76}],"category":"positive"}
+{"id":"pii-0349","text":"For the record, charge it to 5200824702561614","spans":[{"type":"CARD","start":29,"end":45}],"category":"positive"}
+{"id":"pii-0350","text":"Pak, hubungi saya di +62 822.1637.1638. Makasih!","spans":[{"type":"PHONE_ID","start":21,"end":38}],"category":"positive"}
+{"id":"pii-0351","text":"Pak, kirim ke putri_hidayat [at] example.com. Makasih!","spans":[{"type":"EMAIL","start":14,"end":44}],"category":"unsupported_format"}
+{"id":"pii-0352","text":"Halo, no. NIK 3607 2919 0283 0926. Makasih!","spans":[{"type":"NIK","start":14,"end":33}],"category":"unsupported_format"}
+{"id":"pii-0353","text":"Halo, email saya andi70 [at] example.org ya.","spans":[{"type":"EMAIL","start":17,"end":40}],"category":"unsupported_format"}
+{"id":"pii-0354","text":"email saya siti75 [at] example.com, terima kasih.","spans":[{"type":"EMAIL","start":11,"end":34}],"category":"unsupported_format"}
+{"id":"pii-0355","text":"Halo, surel: maya_lestari [at] example.com","spans":[{"type":"EMAIL","start":13,"end":42}],"category":"unsupported_format"}
+{"id":"pii-0356","text":"Pak, no. NIK 9119 1410 1083 0050. Makasih!","spans":[{"type":"NIK","start":13,"end":32}],"category":"unsupported_format"}
+{"id":"pii-0357","text":"Halo, kirim ke putri_hidayat [at] example.com","spans":[{"type":"EMAIL","start":15,"end":45}],"category":"unsupported_format"}
+{"id":"pii-0358","text":"Halo, email saya rizky_hidayat [at] example.org","spans":[{"type":"EMAIL","start":17,"end":47}],"category":"unsupported_format"}
+{"id":"pii-0359","text":"Please update my details: NIK: 1411 2315 0947 0331, thanks.","spans":[{"type":"NIK","start":31,"end":50}],"category":"unsupported_format"}
+{"id":"pii-0360","text":"NIK: 6404 2045 0313 0360, thanks.","spans":[{"type":"NIK","start":5,"end":24}],"category":"unsupported_format"}
+{"id":"pii-0361","text":"Halo, NIK saya 3304 1006 0343 0977. Makasih!","spans":[{"type":"NIK","start":15,"end":34}],"category":"unsupported_format"}
+{"id":"pii-0362","text":"For the record, contact: rina_hidayat [at] example.com, thanks.","spans":[{"type":"EMAIL","start":25,"end":54}],"category":"unsupported_format"}
+{"id":"pii-0363","text":"Mohon dicek ya, kirim ke siti_wijaya [at] example.com. Makasih!","spans":[{"type":"EMAIL","start":25,"end":53}],"category":"unsupported_format"}
+{"id":"pii-0364","text":"NIK saya 7413 0562 0601 0778","spans":[{"type":"NIK","start":9,"end":28}],"category":"unsupported_format"}
+{"id":"pii-0365","text":"Hi, NIK: 5214 1558 0856 0423, thanks.","spans":[{"type":"NIK","start":9,"end":28}],"category":"unsupported_format"}
+{"id":"pii-0366","text":"Tolong update data: email saya rina [at] example.com","spans":[{"type":"EMAIL","start":31,"end":52}],"category":"unsupported_format"}
+{"id":"pii-0367","text":"Pak, surel: maya89 [at] example.com ya.","spans":[{"type":"EMAIL","start":12,"end":35}],"category":"unsupported_format"}
+{"id":"pii-0368","text":"Halo, NIK pemohon 9105 0623 0754 0028","spans":[{"type":"NIK","start":18,"end":37}],"category":"unsupported_format"}
+{"id":"pii-0369","text":"Halo, surel: maya.pratama34 [at] example.com, terima kasih.","spans":[{"type":"EMAIL","start":13,"end":44}],"category":"unsupported_format"}
+{"id":"pii-0370","text":"email saya rina42 [at] example.org, terima kasih.","spans":[{"type":"EMAIL","start":11,"end":34}],"category":"unsupported_format"}
+{"id":"pii-0371","text":"For the record, contact: siti.kusuma [at] example.com","spans":[{"type":"EMAIL","start":25,"end":53}],"category":"unsupported_format"}
+{"id":"pii-0372","text":"Tolong update data: NIK saya 3608 1343 0694 0767","spans":[{"type":"NIK","start":29,"end":48}],"category":"unsupported_format"}
+{"id":"pii-0373","text":"contact: maya.kusuma66 [at] example.org. Thank you!","spans":[{"type":"EMAIL","start":9,"end":39}],"category":"unsupported_format"}
+{"id":"pii-0374","text":"For the record, contact: putri.santoso [at] example.com, thanks.","spans":[{"type":"EMAIL","start":25,"end":55}],"category":"unsupported_format"}
+{"id":"pii-0375","text":"Tolong update data: surel: putri_hidayat [at] example.com. Makasih!","spans":[{"type":"EMAIL","start":27,"end":57}],"category":"unsupported_format"}
+{"id":"pii-0376","text":"Mohon dicek ya, email saya siti_santoso [at] example.org.","spans":[{"type":"EMAIL","start":27,"end":56}],"category":"unsupported_format"}
+{"id":"pii-0377","text":"Tolong update data: NIK saya 5204 1566 0358 0088. Makasih!","spans":[{"type":"NIK","start":29,"end":48}],"category":"unsupported_format"}
+{"id":"pii-0378","text":"kirim ke putri.hidayat37 [at] example.com. Makasih!","spans":[{"type":"EMAIL","start":9,"end":41}],"category":"unsupported_format"}
+{"id":"pii-0379","text":"Tolong update data: no. NIK 5216 0668 0191 0677 ya.","spans":[{"type":"NIK","start":28,"end":47}],"category":"unsupported_format"}
+{"id":"pii-0380","text":"Please update my details: email me at siti_wijaya [at] example.org. Thank you!","spans":[{"type":"EMAIL","start":38,"end":66}],"category":"unsupported_format"}
+{"id":"pii-0381","text":"Halo, email saya putri.kusuma36 [at] example.com.","spans":[{"type":"EMAIL","start":17,"end":48}],"category":"unsupported_format"}
+{"id":"pii-0382","text":"Pak, nomor KTP: 6308 2153 0815 0512","spans":[{"type":"NIK","start":16,"end":35}],"category":"unsupported_format"}
+{"id":"pii-0383","text":"Pak, nomor KTP: 3519 0322 0226 0249, terima kasih.","spans":[{"type":"NIK","start":16,"end":35}],"category":"unsupported_format"}
+{"id":"pii-0384","text":"Tolong update data: email saya andi [at] example.com ya.","spans":[{"type":"EMAIL","start":31,"end":52}],"category":"unsupported_format"}
+{"id":"pii-0385","text":"Mohon dicek ya, email saya dewi15 [at] example.com ya.","spans":[{"type":"EMAIL","start":27,"end":50}],"category":"unsupported_format"}
+{"id":"pii-0386","text":"nomor KTP: 3405 0727 0326 0497.","spans":[{"type":"NIK","start":11,"end":30}],"category":"unsupported_format"}
+{"id":"pii-0387","text":"Tolong update data: no. NIK 7620 2858 0539 0569.","spans":[{"type":"NIK","start":28,"end":47}],"category":"unsupported_format"}
+{"id":"pii-0388","text":"Please update my details: my national ID (NIK) is 6415 1419 0782 0243. Thank you!","spans":[{"type":"NIK","start":50,"end":69}],"category":"unsupported_format"}
+{"id":"pii-0389","text":"Hi, email me at putri23 [at] example.com","spans":[{"type":"EMAIL","start":16,"end":40}],"category":"unsupported_format"}
+{"id":"pii-0390","text":"Mohon dicek ya, nomor KTP: 9105 2757 0980 0992","spans":[{"type":"NIK","start":27,"end":46}],"category":"unsupported_format"}
+{"id":"pii-0391","text":"Mohon dicek ya, kirim ke budi.hidayat [at] example.com, terima kasih.","spans":[{"type":"EMAIL","start":25,"end":54}],"category":"unsupported_format"}
+{"id":"pii-0392","text":"Halo, no. NIK 3519 0323 0979 0483, terima kasih.","spans":[{"type":"NIK","start":14,"end":33}],"category":"unsupported_format"}
+{"id":"pii-0393","text":"Halo, kirim ke rizky_wijaya [at] example.com, terima kasih.","spans":[{"type":"EMAIL","start":15,"end":44}],"category":"unsupported_format"}
+{"id":"pii-0394","text":"Tolong update data: email saya andi4 [at] example.com ya.","spans":[{"type":"EMAIL","start":31,"end":53}],"category":"unsupported_format"}
+{"id":"pii-0395","text":"Tolong update data: no. NIK 2112 1813 1270 0660, terima kasih.","spans":[{"type":"NIK","start":28,"end":47}],"category":"unsupported_format"}
+{"id":"pii-0396","text":"Pak, kirim ke joko_pratama [at] example.org, terima kasih.","spans":[{"type":"EMAIL","start":14,"end":43}],"category":"unsupported_format"}
+{"id":"pii-0397","text":"Halo, no. NIK 5120 2655 1067 0630","spans":[{"type":"NIK","start":14,"end":33}],"category":"unsupported_format"}
+{"id":"pii-0398","text":"Pak, kirim ke siti41 [at] example.org ya.","spans":[{"type":"EMAIL","start":14,"end":37}],"category":"unsupported_format"}
+{"id":"pii-0399","text":"Mohon dicek ya, surel: budi.saputra96 [at] example.org, terima kasih.","spans":[{"type":"EMAIL","start":23,"end":54}],"category":"unsupported_format"}
+{"id":"pii-0400","text":"contact: andi37 [at] example.org.","spans":[{"type":"EMAIL","start":9,"end":32}],"category":"unsupported_format"}
+{"id":"pii-0401","text":"nomor 0045670523363158. Makasih!","spans":[{"type":"NPWP","start":6,"end":22}],"category":"unlabeled"}
+{"id":"pii-0402","text":"0399082925406699","spans":[{"type":"NPWP","start":0,"end":16}],"category":"unlabeled"}
+{"id":"pii-0403","text":"Please update my details: Budi Santoso, 420496952779778, Jakarta, thanks.","spans":[{"type":"NPWP","start":40,"end":55}],"category":"unlabeled"}
+{"id":"pii-0404","text":"Tolong update data: 0145274016132408. Makasih!","spans":[{"type":"NPWP","start":20,"end":36}],"category":"unlabeled"}
+{"id":"pii-0405","text":"Pak, 0567008780289968. Makasih!","spans":[{"type":"NPWP","start":5,"end":21}],"category":"unlabeled"}
+{"id":"pii-0406","text":"Mohon dicek ya, Budi Santoso | 0347603804506622 | Jakarta Selatan ya.","spans":[{"type":"NPWP","start":31,"end":47}],"category":"unlabeled"}
+{"id":"pii-0407","text":"Halo, datanya: 0746446281513199, terima kasih.","spans":[{"type":"NPWP","start":15,"end":31}],"category":"unlabeled"}
+{"id":"pii-0408","text":"nomor 685710737735149.","spans":[{"type":"NPWP","start":6,"end":21}],"category":"unlabeled"}
+{"id":"pii-0409","text":"datanya: 747366359214694.","spans":[{"type":"NPWP","start":9,"end":24}],"category":"unlabeled"}
+{"id":"pii-0410","text":"Tolong update data: datanya: 793799170991313.","spans":[{"type":"NPWP","start":29,"end":44}],"category":"unlabeled"}
+{"id":"pii-0411","text":"0881505442273151.","spans":[{"type":"NPWP","start":0,"end":16}],"category":"unlabeled"}
+{"id":"pii-0412","text":"nomor 0710371293197854","spans":[{"type":"NPWP","start":6,"end":22}],"category":"unlabeled"}
+{"id":"pii-0413","text":"number 342706967416566.","spans":[{"type":"NPWP","start":7,"end":22}],"category":"unlabeled"}
+{"id":"pii-0414","text":"Tolong update data: 227716191138394 ya.","spans":[{"type":"NPWP","start":20,"end":35}],"category":"unlabeled"}
+{"id":"pii-0415","text":"Mohon dicek ya, Budi Santoso | 373626778520516 | Jakarta Selatan. Makasih!","spans":[{"type":"NPWP","start":31,"end":46}],"category":"unlabeled"}
+{"id":"pii-0416","text":"Pak, nomor 0408902597802507. Makasih!","spans":[{"type":"NPWP","start":11,"end":27}],"category":"unlabeled"}
+{"id":"pii-0417","text":"Mohon dicek ya, 278735348635410, terima kasih.","spans":[{"type":"NPWP","start":16,"end":31}],"category":"unlabeled"}
+{"id":"pii-0418","text":"Pak, datanya: 250470171795868, terima kasih.","spans":[{"type":"NPWP","start":14,"end":29}],"category":"unlabeled"}
+{"id":"pii-0419","text":"Halo, Budi Santoso | 0695097006713681 | Jakarta Selatan.","spans":[{"type":"NPWP","start":21,"end":37}],"category":"unlabeled"}
+{"id":"pii-0420","text":"Halo, Budi Santoso | 540462295127246 | Jakarta Selatan.","spans":[{"type":"NPWP","start":21,"end":36}],"category":"unlabeled"}
+{"id":"pii-0421","text":"Hi, 729642017173167.","spans":[{"type":"NPWP","start":4,"end":19}],"category":"unlabeled"}
+{"id":"pii-0422","text":"Halo, Budi Santoso | 0284378015513902 | Jakarta Selatan ya.","spans":[{"type":"NPWP","start":21,"end":37}],"category":"unlabeled"}
+{"id":"pii-0423","text":"Halo, nomor 0273234890596449.","spans":[{"type":"NPWP","start":12,"end":28}],"category":"unlabeled"}
+{"id":"pii-0424","text":"Tolong update data: datanya: 713488969459878.","spans":[{"type":"NPWP","start":29,"end":44}],"category":"unlabeled"}
+{"id":"pii-0425","text":"Budi Santoso | 600792504279611 | Jakarta Selatan, terima kasih.","spans":[{"type":"NPWP","start":15,"end":30}],"category":"unlabeled"}
+{"id":"pii-0426","text":"Mohon dicek ya, datanya: 969066475946940, terima kasih.","spans":[{"type":"NPWP","start":25,"end":40}],"category":"unlabeled"}
+{"id":"pii-0427","text":"Halo, 395167272549268 ya.","spans":[{"type":"NPWP","start":6,"end":21}],"category":"unlabeled"}
+{"id":"pii-0428","text":"Pak, 209531801419293, terima kasih.","spans":[{"type":"NPWP","start":5,"end":20}],"category":"unlabeled"}
+{"id":"pii-0429","text":"0972423641515316.","spans":[{"type":"NPWP","start":0,"end":16}],"category":"unlabeled"}
+{"id":"pii-0430","text":"Mohon dicek ya, 890186837014589.","spans":[{"type":"NPWP","start":16,"end":31}],"category":"unlabeled"}
+{"id":"pii-0431","text":"Halo, 0248333345853604, terima kasih.","spans":[{"type":"NPWP","start":6,"end":22}],"category":"unlabeled"}
+{"id":"pii-0432","text":"Pak, nomor 928138969890053, terima kasih.","spans":[{"type":"NPWP","start":11,"end":26}],"category":"unlabeled"}
+{"id":"pii-0433","text":"Mohon dicek ya, nomor 126251462908969.","spans":[{"type":"NPWP","start":22,"end":37}],"category":"unlabeled"}
+{"id":"pii-0434","text":"Mohon dicek ya, datanya: 0021499973089908 ya.","spans":[{"type":"NPWP","start":25,"end":41}],"category":"unlabeled"}
+{"id":"pii-0435","text":"Tolong update data: nomor 0275038494093395. Makasih!","spans":[{"type":"NPWP","start":26,"end":42}],"category":"unlabeled"}
+{"id":"pii-0436","text":"Tolong update data: datanya: 136879047102255 ya.","spans":[{"type":"NPWP","start":29,"end":44}],"category":"unlabeled"}
+{"id":"pii-0437","text":"number 808830769461753","spans":[{"type":"NPWP","start":7,"end":22}],"category":"unlabeled"}
+{"id":"pii-0438","text":"nomor 0636277841464168. Makasih!","spans":[{"type":"NPWP","start":6,"end":22}],"category":"unlabeled"}
+{"id":"pii-0439","text":"Pak, 544971851676232.","spans":[{"type":"NPWP","start":5,"end":20}],"category":"unlabeled"}
+{"id":"pii-0440","text":"Pak, datanya: 0085537528164742, terima kasih.","spans":[{"type":"NPWP","start":14,"end":30}],"category":"unlabeled"}
+{"id":"pii-0441","text":"Budi Santoso, 0717447842818901, Jakarta.","spans":[{"type":"NPWP","start":14,"end":30}],"category":"unlabeled"}
+{"id":"pii-0442","text":"Pak, datanya: 153853120307168","spans":[{"type":"NPWP","start":14,"end":29}],"category":"unlabeled"}
+{"id":"pii-0443","text":"Tolong update data: Budi Santoso | 097662124128808 | Jakarta Selatan.","spans":[{"type":"NPWP","start":35,"end":50}],"category":"unlabeled"}
+{"id":"pii-0444","text":"Halo, 0790050295659971 ya.","spans":[{"type":"NPWP","start":6,"end":22}],"category":"unlabeled"}
+{"id":"pii-0445","text":"Please update my details: 0318331581477976, thanks.","spans":[{"type":"NPWP","start":26,"end":42}],"category":"unlabeled"}
+{"id":"pii-0446","text":"Budi Santoso | 0684863954818778 | Jakarta Selatan","spans":[{"type":"NPWP","start":15,"end":31}],"category":"unlabeled"}
+{"id":"pii-0447","text":"Tolong update data: nomor 249431805030555 ya.","spans":[{"type":"NPWP","start":26,"end":41}],"category":"unlabeled"}
+{"id":"pii-0448","text":"For the record, Budi Santoso, 622872374695565, Jakarta. Thank you!","spans":[{"type":"NPWP","start":30,"end":45}],"category":"unlabeled"}
+{"id":"pii-0449","text":"Please update my details: number 0278193517586620, thanks.","spans":[{"type":"NPWP","start":33,"end":49}],"category":"unlabeled"}
+{"id":"pii-0450","text":"Tolong update data: 0407825775785626.","spans":[{"type":"NPWP","start":20,"end":36}],"category":"unlabeled"}
+{"id":"pii-0451","text":"virtual account 8808470292986795, voucher code 6001 6152 5502 3749","spans":[],"category":"hard_negative"}
+{"id":"pii-0452","text":"Mohon dicek ya, timestamp 1773007317192 dan kode registrasi 9937989290866513 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0453","text":"Tolong update data: resi JP5465477123, SKU TAS-838871, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0454","text":"Mohon dicek ya, no. referensi transfer 752500481992042614 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0455","text":"kode voucher 9781 6541 2733 1755.","spans":[],"category":"hard_negative"}
+{"id":"pii-0456","text":"Pak, timestamp 1705483814847 dan kode voucher 1853 1666 1875 3455 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0457","text":"Halo, nomor pesanan 8735637141368678 dan kode voucher 4883 2714 0913 1299, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0458","text":"Pak, bayar ke VA 8277917704986375","spans":[],"category":"hard_negative"}
+{"id":"pii-0459","text":"Pak, nomor pesanan 1246905588952750, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0460","text":"kode registrasi 8838618781171738 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0461","text":"Halo, no. referensi transfer 184270565804183082. Lalu totalnya Rp3.806.000.","spans":[],"category":"hard_negative"}
+{"id":"pii-0462","text":"jatuh tempo 14-08-2021","spans":[],"category":"hard_negative"}
+{"id":"pii-0463","text":"no. referensi transfer 850319431811018133","spans":[],"category":"hard_negative"}
+{"id":"pii-0464","text":"Please update my details: virtual account 3901091194993044, timestamp 1645994647947.","spans":[],"category":"hard_negative"}
+{"id":"pii-0465","text":"Hi, due on 22-09-2022","spans":[],"category":"hard_negative"}
+{"id":"pii-0466","text":"Mohon dicek ya, resi TKP5179213171.","spans":[],"category":"hard_negative"}
+{"id":"pii-0467","text":"Tolong update data: jatuh tempo 28-02-2026 dan timestamp 1604603784243 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0468","text":"Pak, tagihan INV/2026/04/85471, bayar ke VA 7001818729895353 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0469","text":"Mohon dicek ya, timestamp 1667224984873, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0470","text":"Please update my details: transaction ID 371378988533980 and transfer reference 743972537944166674.","spans":[],"category":"hard_negative"}
+{"id":"pii-0471","text":"Tolong update data: no. referensi transfer 549928637382523345, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0472","text":"Tolong update data: timestamp 1612458115955","spans":[],"category":"hard_negative"}
+{"id":"pii-0473","text":"For the record, order number 5208330301710714. Also, virtual account 8277219805867614, thanks.","spans":[],"category":"hard_negative"}
+{"id":"pii-0474","text":"resi JX6871117587, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0475","text":"Tolong update data: timestamp 1742353526386 dan kode voucher 0967 7805 3167 1267, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0476","text":"Pak, totalnya Rp7.309.000. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0477","text":"Hi, virtual account 8277690270022154.","spans":[],"category":"hard_negative"}
+{"id":"pii-0478","text":"Pak, kode voucher 2037 9005 2250 1608 dan timestamp 1684268328942 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0479","text":"Please update my details: transaction ID 868192185298718","spans":[],"category":"hard_negative"}
+{"id":"pii-0480","text":"Pak, totalnya Rp4.750.000","spans":[],"category":"hard_negative"}
+{"id":"pii-0481","text":"Halo, jatuh tempo 02-02-2026 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0482","text":"Hi, SKU HP-246065. Thank you!","spans":[],"category":"hard_negative"}
+{"id":"pii-0483","text":"Halo, nomor pesanan 8949188923363433. Lalu ID transaksi 232221184440772, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0484","text":"Mohon dicek ya, tagihan INV/2023/10/78070","spans":[],"category":"hard_negative"}
+{"id":"pii-0485","text":"Halo, ID transaksi 555362433166894. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0486","text":"Pak, SKU BJU-212049. Lalu no. referensi transfer 361543230578068605, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0487","text":"Halo, totalnya Rp1.238.000, timestamp 1606263452262.","spans":[],"category":"hard_negative"}
+{"id":"pii-0488","text":"Mohon dicek ya, bayar ke VA 7001772005937652.","spans":[],"category":"hard_negative"}
+{"id":"pii-0489","text":"Mohon dicek ya, no. referensi transfer 394951535536782189 dan tagihan INV/2022/08/08942 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0490","text":"Tolong update data: SKU HP-462411 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0491","text":"Pak, nomor pesanan 2903568080569192","spans":[],"category":"hard_negative"}
+{"id":"pii-0492","text":"Halo, jatuh tempo 09-03-2022. Lalu jatuh tempo 25-05-2025.","spans":[],"category":"hard_negative"}
+{"id":"pii-0493","text":"Hi, invoice INV/2022/02/36276","spans":[],"category":"hard_negative"}
+{"id":"pii-0494","text":"Mohon dicek ya, no. referensi transfer 977194714007346316. Lalu bayar ke VA 3901751043002025.","spans":[],"category":"hard_negative"}
+{"id":"pii-0495","text":"Hi, timestamp 1700931551222","spans":[],"category":"hard_negative"}
+{"id":"pii-0496","text":"Tolong update data: jatuh tempo 15-12-2022 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0497","text":"timestamp 1719586346120.","spans":[],"category":"hard_negative"}
+{"id":"pii-0498","text":"ID transaksi 539430242615277, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0499","text":"Tolong update data: no. referensi transfer 543176639621414457 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0500","text":"Mohon dicek ya, totalnya Rp4.584.000, tagihan INV/2024/07/46211. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0501","text":"Halo, tagihan INV/2025/06/09086.","spans":[],"category":"hard_negative"}
+{"id":"pii-0502","text":"bayar ke VA 3901744283211795","spans":[],"category":"hard_negative"}
+{"id":"pii-0503","text":"Pak, SKU HP-270562, nomor pesanan 4455875062758215","spans":[],"category":"hard_negative"}
+{"id":"pii-0504","text":"Tolong update data: ID transaksi 864177634110148, resi JX5408120673, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0505","text":"Halo, SKU BJU-177647 dan bayar ke VA 3901596503425672. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0506","text":"Hi, SKU BJU-794165, due on 02-03-2023. Thank you!","spans":[],"category":"hard_negative"}
+{"id":"pii-0507","text":"voucher code 5110 6613 3510 6087.","spans":[],"category":"hard_negative"}
+{"id":"pii-0508","text":"no. referensi transfer 195760541672553152, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0509","text":"Mohon dicek ya, bayar ke VA 3901354520220706, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0510","text":"kode voucher 9683 6452 6094 2297.","spans":[],"category":"hard_negative"}
+{"id":"pii-0511","text":"For the record, virtual account 7001149922087776","spans":[],"category":"hard_negative"}
+{"id":"pii-0512","text":"Tolong update data: kode registrasi 9957233113071537, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0513","text":"due on 21-12-2023. Also, order number 8064480877878987","spans":[],"category":"hard_negative"}
+{"id":"pii-0514","text":"Mohon dicek ya, kode registrasi 8873919847013453 dan resi TKP8857337881 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0515","text":"Mohon dicek ya, timestamp 1764577639938. Lalu resi TKP7958945051. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0516","text":"Mohon dicek ya, ID transaksi 943248821205365. Lalu SKU HP-556253","spans":[],"category":"hard_negative"}
+{"id":"pii-0517","text":"Halo, bayar ke VA 7001955185759497. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0518","text":"totalnya Rp1.737.000.","spans":[],"category":"hard_negative"}
+{"id":"pii-0519","text":"resi JX4262478151 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0520","text":"Tolong update data: kode registrasi 4585476722023076 dan ID transaksi 802214858350260, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0521","text":"Halo, bayar ke VA 3901342351343653 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0522","text":"Halo, kode voucher 9715 5649 3804 6787, ID transaksi 761304806036668.","spans":[],"category":"hard_negative"}
+{"id":"pii-0523","text":"Pak, no. referensi transfer 211154369663085906, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0524","text":"the total is Rp2.058.000","spans":[],"category":"hard_negative"}
+{"id":"pii-0525","text":"SKU HP-142900 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0526","text":"Pak, resi JX4321345864","spans":[],"category":"hard_negative"}
+{"id":"pii-0527","text":"Pak, kode voucher 7460 1418 9708 4982 dan nomor pesanan 7821090522336159, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0528","text":"Please update my details: transfer reference 828896917125711657. Also, due on 07-03-2021","spans":[],"category":"hard_negative"}
+{"id":"pii-0529","text":"Mohon dicek ya, ID transaksi 415583654006170. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0530","text":"Mohon dicek ya, resi JP2213280086 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0531","text":"invoice INV/2022/04/42275, thanks.","spans":[],"category":"hard_negative"}
+{"id":"pii-0532","text":"Tolong update data: no. referensi transfer 244231801338791607, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0533","text":"Mohon dicek ya, timestamp 1656055443032 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0534","text":"SKU TAS-593836. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0535","text":"For the record, transfer reference 171893291506749453.","spans":[],"category":"hard_negative"}
+{"id":"pii-0536","text":"Halo, ID transaksi 207221757491577","spans":[],"category":"hard_negative"}
+{"id":"pii-0537","text":"nomor pesanan 2492080946564354","spans":[],"category":"hard_negative"}
+{"id":"pii-0538","text":"Tolong update data: tagihan INV/2025/04/52222. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0539","text":"For the record, virtual account 3901459648090331.","spans":[],"category":"hard_negative"}
+{"id":"pii-0540","text":"Tolong update data: totalnya Rp110.000, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0541","text":"Tolong update data: jatuh tempo 18-10-2021, tagihan INV/2024/06/89612. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0542","text":"Pak, timestamp 1774833370796","spans":[],"category":"hard_negative"}
+{"id":"pii-0543","text":"bayar ke VA 8277494854260822, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0544","text":"Tolong update data: no. referensi transfer 905892999292575044.","spans":[],"category":"hard_negative"}
+{"id":"pii-0545","text":"Pak, tagihan INV/2024/05/18952. Lalu jatuh tempo 19-10-2021","spans":[],"category":"hard_negative"}
+{"id":"pii-0546","text":"Tolong update data: nomor pesanan 1049264888210488. Lalu nomor pesanan 6652110521637164. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0547","text":"Mohon dicek ya, tagihan INV/2025/11/87000","spans":[],"category":"hard_negative"}
+{"id":"pii-0548","text":"Please update my details: order number 8856659663806153. Also, due on 25-01-2023, thanks.","spans":[],"category":"hard_negative"}
+{"id":"pii-0549","text":"Halo, ID transaksi 186981069657699 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0550","text":"Tolong update data: resi TKP7911280912 dan kode voucher 1260 7686 6790 9283 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0551","text":"Mohon dicek ya, tagihan INV/2023/12/82992, kode registrasi 4579505679036699.","spans":[],"category":"hard_negative"}
+{"id":"pii-0552","text":"Hi, invoice INV/2026/04/04157","spans":[],"category":"hard_negative"}
+{"id":"pii-0553","text":"jatuh tempo 06-03-2024 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0554","text":"Halo, kode voucher 7373 5501 1577 9129","spans":[],"category":"hard_negative"}
+{"id":"pii-0555","text":"Halo, SKU TAS-789977.","spans":[],"category":"hard_negative"}
+{"id":"pii-0556","text":"timestamp 1734637793681, timestamp 1700435721787.","spans":[],"category":"hard_negative"}
+{"id":"pii-0557","text":"Please update my details: virtual account 8277502102198888. Thank you!","spans":[],"category":"hard_negative"}
+{"id":"pii-0558","text":"Tolong update data: no. referensi transfer 486067940845043538 dan kode voucher 5518 3684 2673 8144.","spans":[],"category":"hard_negative"}
+{"id":"pii-0559","text":"Halo, ID transaksi 309518174285769 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0560","text":"kode voucher 9970 1506 7594 3084. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0561","text":"Halo, timestamp 1737934414465. Lalu bayar ke VA 7001164618981731.","spans":[],"category":"hard_negative"}
+{"id":"pii-0562","text":"Pak, bayar ke VA 3901201202602744, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0563","text":"Pak, no. referensi transfer 294887006993398724 dan tagihan INV/2023/03/41216.","spans":[],"category":"hard_negative"}
+{"id":"pii-0564","text":"Mohon dicek ya, ID transaksi 686192324519911. Lalu SKU BJU-299132. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0565","text":"Hi, invoice INV/2026/11/75246 and transaction ID 147753979797840, thanks.","spans":[],"category":"hard_negative"}
+{"id":"pii-0566","text":"Tolong update data: bayar ke VA 7001757501843602, kode voucher 1981 4470 1208 5467 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0567","text":"nomor pesanan 9317950432931234. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0568","text":"Halo, jatuh tempo 02-11-2026","spans":[],"category":"hard_negative"}
+{"id":"pii-0569","text":"Mohon dicek ya, tagihan INV/2024/06/48095. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0570","text":"Mohon dicek ya, jatuh tempo 02-05-2023. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0571","text":"Mohon dicek ya, nomor pesanan 9811177509533223 dan bayar ke VA 8277875988166334","spans":[],"category":"hard_negative"}
+{"id":"pii-0572","text":"Tolong update data: bayar ke VA 7001461240736160. Lalu kode voucher 5095 6183 4331 7987 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0573","text":"Please update my details: due on 26-01-2024.","spans":[],"category":"hard_negative"}
+{"id":"pii-0574","text":"Mohon dicek ya, totalnya Rp6.733.000. Lalu kode registrasi 8816363877488690 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0575","text":"Tolong update data: totalnya Rp2.257.000.","spans":[],"category":"hard_negative"}
+{"id":"pii-0576","text":"Tolong update data: totalnya Rp2.612.000. Lalu timestamp 1752880359844, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0577","text":"Halo, tagihan INV/2024/04/97393. Lalu kode registrasi 9978402985673542 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0578","text":"Hi, the total is Rp4.324.000. Thank you!","spans":[],"category":"hard_negative"}
+{"id":"pii-0579","text":"Mohon dicek ya, tagihan INV/2024/03/05531. Lalu SKU HP-617576. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0580","text":"Halo, timestamp 1753974568528, no. referensi transfer 824954742301279365","spans":[],"category":"hard_negative"}
+{"id":"pii-0581","text":"Halo, kode registrasi 4572972325862852.","spans":[],"category":"hard_negative"}
+{"id":"pii-0582","text":"Tolong update data: timestamp 1634487345139.","spans":[],"category":"hard_negative"}
+{"id":"pii-0583","text":"Tolong update data: totalnya Rp1.085.000 dan kode registrasi 8867569727796840","spans":[],"category":"hard_negative"}
+{"id":"pii-0584","text":"Pak, kode voucher 3192 7207 5745 7842, terima kasih.","spans":[],"category":"hard_negative"}
+{"id":"pii-0585","text":"totalnya Rp6.857.000. Lalu nomor pesanan 5513154142028149.","spans":[],"category":"hard_negative"}
+{"id":"pii-0586","text":"virtual account 7001883850945919, invoice INV/2023/05/48806. Thank you!","spans":[],"category":"hard_negative"}
+{"id":"pii-0587","text":"transaction ID 430031025306652, thanks.","spans":[],"category":"hard_negative"}
+{"id":"pii-0588","text":"SKU HP-021926","spans":[],"category":"hard_negative"}
+{"id":"pii-0589","text":"Pak, totalnya Rp5.984.000","spans":[],"category":"hard_negative"}
+{"id":"pii-0590","text":"Mohon dicek ya, tagihan INV/2026/08/34997. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0591","text":"Halo, bayar ke VA 8808716960710951. Lalu kode voucher 1786 0260 4735 6827. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0592","text":"Mohon dicek ya, jatuh tempo 19-02-2026 dan SKU TAS-547875. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0593","text":"Pak, SKU HP-931985 dan kode registrasi 9905066570213908 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0594","text":"SKU BJU-210449 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0595","text":"Halo, kode voucher 2363 1914 6842 0690.","spans":[],"category":"hard_negative"}
+{"id":"pii-0596","text":"Mohon dicek ya, kode voucher 4913 1272 3245 6538, resi TKP5203259490 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0597","text":"Mohon dicek ya, totalnya Rp6.271.000. Makasih!","spans":[],"category":"hard_negative"}
+{"id":"pii-0598","text":"Mohon dicek ya, kode voucher 0251 5320 0643 3496","spans":[],"category":"hard_negative"}
+{"id":"pii-0599","text":"Halo, kode voucher 5833 4278 4884 7574 ya.","spans":[],"category":"hard_negative"}
+{"id":"pii-0600","text":"Tolong update data: resi JX4626451408.","spans":[],"category":"hard_negative"}

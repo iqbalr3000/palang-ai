@@ -30,6 +30,17 @@ test("valid: longest allowed (8 + 11 more digits = 12 total after prefix)", () =
   });
 });
 
+test("valid: parenthesized operator prefix", () => {
+  expect(normalizePhoneId("(0812) 3456-7890")).toEqual({
+    valid: true,
+    normalized: "+6281234567890",
+  });
+  expect(normalizePhoneId("+62 (812) 3456 7890")).toEqual({
+    valid: true,
+    normalized: "+6281234567890",
+  });
+});
+
 test("invalid: does not start with 8 after the prefix", () => {
   expect(normalizePhoneId("0712345678")).toEqual({ valid: false });
 });

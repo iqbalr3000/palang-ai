@@ -16,3 +16,7 @@ next-env.d.ts
 
 # Local gateway config (may hold secrets); palang.example.yaml is the template
 palang.yaml
+
+# Local-only planning docs (rules that still apply live in docs/plans/constraints.md)
+docs/TSD.md
+docs/improvement-plan.md
